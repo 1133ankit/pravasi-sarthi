@@ -183,7 +183,7 @@ const UI_TEXT = {
     editionTag: 'कुटुंब व वरिष्ठ साथी',
     tagline: 'यूरोप में भारतीय परिवारों और बुजुर्ग माता-पिता का विश्वसनीय साथी',
     lostHelpBtn: '🚨 रास्ता भटक गए? (मदद)',
-    selectLangTitle: 'अपनी मातृभाषा चुनें (Select Language)',
+    selectLangTitle: 'अपनी मातृभाषा चुनें',
     policeAmbulance: 'पुलिस / एम्बुलेंस:',
     nonEmergencyDoc: 'डॉक्टर ऑन-कॉल:',
     currencyCalc: 'करेंसी कैलकुलेटर (रुपये ↔ यूरो)',
@@ -195,49 +195,825 @@ const UI_TEXT = {
       desiRadar: '५. किराना व रेस्टोरेंट',
       community: '६. परिवार व मंदिर',
       chat: '७. कम्युनिटी चैट',
-      about: '८. हमारे बारे में (About)'
+      about: '८. हमारे बारे में'
     },
     aboutHeading: 'प्रवासी सारथी के बारे में',
     aboutSub: 'भारतीय डेवलपर्स द्वारा, यूरोप में भारतीय परिवारों के लिए निर्मित',
     problemTitle: 'हम किस समस्या का समाधान कर रहे हैं?',
-    problemDesc1: 'यूरोप (जर्मनी, नीदरलैंड, फ्रांस, आयरलैंड आदि) जाना कई भारतीय पेशेवरों और उनके परिवारों का सपना होता है। हालांकि, पहले कुछ महीने भारी प्रशासनिक उलझनों से भरे होते हैं। जब बुजुर्ग माता-पिता घूमने आते हैं या नए लोग उतरते हैं, तो उन्हें भाषा की बाधाओं, सख्त कागजी कार्रवाई (जैसे Anmeldung पता पंजीकरण), सख्त शाकाहारी भोजन नियमों और विदेशी आपातकालीन कमरों से निपटने के कारण भारी चिंता का सामना करना पड़ता है।',
-    problemDesc2: 'मौजूदा ऐप्स संग्रहालयों का दौरा करने वाले पश्चिमी पर्यटकों के लिए बनाए गए हैं - उन परिवारों के लिए नहीं जो यूरोपीय नौकरशाही से जूझ रहे हैं। प्रवासी सारथी इस सटीक समस्या को एक विश्वसनीय डिजिटल साथी के रूप में हल करने के लिए बनाया गया है।',
+    problemDesc1: 'यूरोप (जर्मनी, नीदरलैंड, फ्रांस, आयरलैंड आदि) जाना कई भारतीय पेशेवरों और उनके परिवारों का सपना होता है। हालांकि, पहले कुछ महीने भारी प्रशासनिक उलझनों से भरे होते हैं।',
+    problemDesc2: 'प्रवासी सारथी इस सटीक समस्या को एक विश्वसनीय डिजिटल साथी के रूप में हल करने के लिए बनाया गया है।',
     monetizationTitle: 'हम ऐप को मुफ्त और टिकाऊ कैसे रखते हैं?',
-    monetizationDesc1: 'हमारा मानना है कि माता-पिता और नए लोगों के लिए आवश्यक निपटान और आपातकालीन उपकरण हमेशा 100% मुफ्त होने चाहिए। बिना उपयोगकर्ता शुल्क लिए या कष्टप्रद बैनर विज्ञापनों से परेशान किए प्रवासी सारथी को मुफ्त रखने के लिए, हम विश्वसनीय रिलेकेशन, बैंकिंग और बीमा प्रदाताओं के साथ साझेदारी करते हैं।',
-    monetizationDesc2: 'जब उपयोगकर्ता हमारे अनुशंसित पार्टनर लिंक के माध्यम से आवश्यक प्रवासी सेवाओं (जैसे Wise के साथ सीमा पार से पैसे ट्रांसफर, Feather या Expatrio के साथ प्रवासी स्वास्थ्य बीमा, या N26 के साथ डिजिटल बैंक खाते) के लिए साइन अप करते हैं, तो हमें प्रदाता से शून्य अतिरिक्त लागत पर एक छोटा रेफरल कमीशन मिलता है।',
-    contactTitle: 'साझेदारी और सहयोग (Partnerships)',
-    contactDesc: 'क्या आप यूरोपीय रीलोकेशन सेवा, बीमा प्रदाता या देसी रेस्टोरेंट हैं जो प्रवासी सारथी के साथ साझेदारी करना चाहते हैं? हम आपके साथ सहयोग करना पसंद करेंगे।',
-    contactEmail: '📧 हमारी पार्टनरशिप टीम से संपर्क करें: 1122ankitverma@gmail.com',
+    monetizationDesc1: 'हमारा मानना है कि माता-पिता और नए लोगों के लिए आवश्यक निपटान और आपातकालीन उपकरण हमेशा 100% मुफ्त होने चाहिए।',
+    monetizationDesc2: 'जब उपयोगकर्ता हमारे अनुशंसित पार्टनर लिंक के माध्यम से आवश्यक प्रवासी सेवाओं के लिए साइन अप करते हैं, तो हमें एक छोटा रेफरल कमीशन मिलता है।',
+    contactTitle: 'साझेदारी और सहयोग',
+    contactDesc: 'पार्टनरशिप के लिए संपर्क करें:',
+    contactEmail: '📧 1122ankitverma@gmail.com',
     roadmapHeading: 'पहले ३० दिन की कानूनी प्रक्रिया',
     roadmapSub: 'सभी कार्य क्रमवार पूरे करें। पता पंजीकरण के बिना कोई टैक्स या बैंक खाता नहीं बनेगा।',
     simpleBriefHeading: 'सरल भाषा में समझें:',
-    actionPlanHeading: 'कार्य योजना (Action Plan):',
+    actionPlanHeading: 'कार्य योजना:',
     markCompleteBtn: 'सम्पन्न चिह्नित करें',
     completedBtn: 'सम्पन्न हुआ ✓',
     youAreAsking: 'आप क्या पूछ रहे हैं:',
-    showToLocal: 'स्थानीय व्यक्ति को दिखाएं (Show to Local):',
+    showToLocal: 'स्थानीय व्यक्ति को दिखाएं:',
     tapToAnswer: '👇 सामने वाला व्यक्ति सीधे स्क्रीन पर जवाब चुन सकता है:',
     localAnswered: 'सामने वाले व्यक्ति ने यह उत्तर चुना:',
     addNewCardBtn: '➕ नया फ्लैशकार्ड बनाएं',
     customCardBadge: 'कस्टम कार्ड',
     templateLabel: '⚡ रेडीमेड टेम्पलेट चुनें:',
     substitutesTitle: 'यूरोपीय सुपरमार्केट में देसी विकल्प',
-    substitutesSub: 'अगर पास में कोई भारतीय दुकान न हो, तो आम सुपरमार्केट (Rewe, Lidl, Aldi) से ये खरीदें:',
+    substitutesSub: 'अगर पास में कोई भारतीय दुकान न हो, तो आम सुपरमार्केट से ये खरीदें:',
     safeAlternative: 'सुरक्षित विकल्प',
-    vegAlertHeading: 'शाकाहारी परिवारों के लिए चेतावनी (Vegetarian Alert):',
-    vegAlertText: 'सामग्री सूची में Gelatine (सुअर का जिलेटिन), Karmin / E120 (कीटों का लाल रंग), और Tierisches Lab (जानवरों का रेनेट) अवश्य जांचें। हमेशा "Mikrobielles Lab" या हरे V-Label वाले उत्पाद चुनें।',
     restaurantsTitle: 'भारतीय रेस्टोरेंट व किराना स्टोर',
-    restaurantsSub: 'प्रमाणित किराना स्टोर और शुद्ध शाकाहारी भोजनालय।',
     communityTitle: 'भारतीय परिवार, मंदिर व गुरुद्वारे',
-    communitySub: 'सप्ताहांत मिलन और सांस्कृतिक उत्सवों के लिए स्थानीय परिवारों से जुड़ें।',
-    lostCardNotice: 'यह कार्ड स्थानीय भाषा में है। अगर आप रास्ता भटक जाएं, तो इसे किसी भी राहगीर, बस ड्राइवर या पुलिस को दिखाएं।',
-    homeAddressLabel: 'घर का पता (Home Address):',
+    homeAddressLabel: 'घर का पता:',
     callFamilyBtn: 'कॉल करें',
     navigateHome: '📍 गूगल मैप्स पर घर का रास्ता',
     openGoogleMaps: '📍 गूगल मैप्स पर खोलें',
     openPortal: '🌐 आधिकारिक पोर्टल खोलें',
-    downloadForm: '📄 फॉर्म डाउनलोड करें (PDF)',
-    officeSectionTitle: 'प्रमुख सरकारी कार्यालय और अपॉइंटमेंट गाइड्स'
+    officeSectionTitle: 'प्रमुख सरकारी कार्यालय और अपॉइंटमेंट गाइड्स',
+    liveMedicalLocator: 'लाइव मेडिकल लोकेटर',
+    gpsMedicalDesc: 'निकटतम आपातकालीन कक्ष, बाल रोग विशेषज्ञ और 24/7 फार्मेसी खोजने के लिए GPS का उपयोग करें।',
+    hospitalBtn: 'अस्पताल / ER',
+    pediatricianBtn: 'बाल रोग विशेषज्ञ',
+    pharmacyBtn: 'फार्मेसी',
+    clinicBtn: 'क्लिनिक / GP',
+    nightPharmacyTitle: 'नाइट फार्मेसी (Notdienst)',
+    nightPharmacyDesc: 'फार्मेसियों में 24 घंटे की नाइट ड्यूटी होती है। जरूरी सिरप के लिए नाइट बेल बजाएं।',
+    findOpenPharmacy: 'खुली फार्मेसी खोजें',
+    babyCareTitle: 'बेबी केयर (dm / Rossmann)',
+    babyCareDesc: 'फॉर्मूला मिल्क: Aptamil, HiPP Bio Combiotik। डायपर स्टॉक में रखें।',
+    locateNearestStore: 'निकटतम स्टोर ढूंढें',
+    liveLocationSearch: 'लाइव लोकेशन सर्च',
+    gpsGroceryDesc: 'निकटतम भारतीय किराना और टिफिन सेवाओं को खोजने के लिए GPS का उपयोग करें।',
+    groceriesBtn: 'किराना',
+    restaurantsBtn: 'रेस्टोरेंट',
+    tiffinBtn: 'टिफिन सेंटर',
+    buyOnShelf: 'शेल्फ पर यह खरीदें:',
+    liveCommunityLocator: 'लाइव कम्युनिटी लोकेटर',
+    gpsCommunityDesc: 'GPS का उपयोग करके निकटतम धार्मिक केंद्र और भारतीय संघ खोजें।',
+    temple: 'मंदिर',
+    mosque: 'मस्जिद',
+    gurudwara: 'गुरुद्वारा',
+    church: 'चर्च',
+    associations: 'एसोसिएशन',
+    publicBoard: 'पब्लिक बोर्ड',
+    myInbox: 'मेरा इनबॉक्स',
+    enterPublicBoard: 'पब्लिक बोर्ड में प्रवेश करें',
+    noPublicPosts: 'अभी तक कोई पब्लिक पोस्ट नहीं है। पहला प्रश्न पूछें!',
+    yourPost: 'आपकी पोस्ट',
+    messagePrivately: 'प्राइवेट मैसेज करें',
+    postToBoard: 'बोर्ड पर पोस्ट करें',
+    myPrivateMessages: 'मेरे प्राइवेट मैसेज',
+    emptyInbox: 'आपका इनबॉक्स खाली है। पब्लिक बोर्ड से किसी को मैसेज करें।',
+    privateChatHeading: 'प्राइवेट 1-ऑन-1 चैट',
+    shareWhatsapp: 'व्हाट्सएप शेयर करें',
+    composePlaceholder: 'पब्लिक बोर्ड पर प्रश्न पूछें या सलाह साझा करें...',
+    displayNamePlaceholder: 'डिस्प्ले नाम चुनें (उदा. राहुल एम.)'
+  },
+  ta: {
+    appName: 'பிரவாசி சாரதி',
+    editionTag: 'குடும்ப & மூத்த குடிமக்கள் தோழன்',
+    tagline: 'ஐரோப்பாவில் உள்ள இந்திய குடும்பங்கள் மற்றும் பெற்றோர்களுக்கான நம்பகமான வழிகாட்டி',
+    lostHelpBtn: '🚨 வழி தவறிவிட்டதா? (உதவி)',
+    selectLangTitle: 'உங்கள் தாய்மொழியைத் தேர்ந்தெடுக்கவும்',
+    policeAmbulance: 'காவல்துறை / அவசர ஊர்தி:',
+    nonEmergencyDoc: 'மருத்துவர் ஆன்-கால்:',
+    currencyCalc: 'நாணய மாற்றி (ரூபாய் ↔ யூரோ)',
+    tabs: {
+      journey: '1. முதல் 30 நாட்கள் (திட்டம்)',
+      offices: '2. அரசு அலுவலகங்கள் & வரைபடம்',
+      flashcards: '3. திரையைக் காட்டுங்கள் (கார்டுகள்)',
+      essentials: '4. மருத்துவமனைகள் & அவசியங்கள்',
+      desiRadar: '5. மளிகை & உணவகங்கள்',
+      community: '6. குடும்பங்கள் & கோயில்கள்',
+      chat: '7. சமூகம் அரட்டை',
+      about: '8. எங்களைப் பற்றி'
+    },
+    aboutHeading: 'பிரவாசி சாரதி பற்றி',
+    aboutSub: 'ஐரோப்பாவில் உள்ள இந்திய குடும்பங்களுக்காக இந்திய டெவலப்பர்களால் உருவாக்கப்பட்டது',
+    problemTitle: 'நாம் தீர்க்கும் சிக்கல் என்ன?',
+    problemDesc1: 'ஐரோப்பாவிற்கு மாறுவது பல இந்தியர்களின் கனவு. இருப்பினும், முதல் சில மாதங்கள் கடினமான நிர்வாக நடைமுறைகளால் நிறைந்திருக்கும்.',
+    problemDesc2: 'ஐரோப்பிய அதிகாரத்துவத்தை சமாளிக்க உதவும் ஒரு நம்பகமான டிஜிட்டல் தோழனாக பிரவாசி சாரதி உருவாக்கப்பட்டுள்ளது.',
+    monetizationTitle: 'இந்த செயலியை எவ்வாறு இலவசமாக பராமரிக்கிறோம்?',
+    monetizationDesc1: 'அவசர மற்றும் அடிப்படை கருவிகள் எப்போதும் 100% இலவசமாக இருக்க வேண்டும்.',
+    monetizationDesc2: 'எங்கள் பரிந்துரைக்கப்பட்ட பார்ட்னர் இணைப்புகள் மூலம் நீங்கள் பதிவு செய்யும்போது சிறு கமிஷன் கிடைக்கும்.',
+    contactTitle: 'கூட்டாண்மை மற்றும் தொடர்புகள்',
+    contactDesc: 'கூட்டாண்மைக்கு எங்களை தொடர்பு கொள்ளவும்:',
+    contactEmail: '📧 1122ankitverma@gmail.com',
+    roadmapHeading: 'முதல் 30 நாட்களுக்கான சட்டப் பட்டியல்',
+    roadmapSub: 'முகவரி பதிவு இல்லாமல் வங்கி கணக்கு அல்லது வரி எண் பெற முடியாது.',
+    simpleBriefHeading: 'எளிய மொழியில்:',
+    actionPlanHeading: 'செயல் திட்டம்:',
+    markCompleteBtn: 'முடிந்தது என குறிக்கவும்',
+    completedBtn: 'நிறைவு பெற்றது ✓',
+    youAreAsking: 'நீங்கள் கேட்பது:',
+    showToLocal: 'உள்ளூர் நபரிடம் காட்டவும்:',
+    tapToAnswer: '👇 பதிலைத் தேர்ந்தெடுக்கவும்:',
+    localAnswered: 'உள்ளூர் நபர் தேர்ந்தெடுத்தது:',
+    addNewCardBtn: '➕ புதிய அட்டை உருவாக்கு',
+    customCardBadge: 'தனிப்பயன் அட்டை',
+    templateLabel: '⚡ வார்ப்புருவைத் தேர்ந்தெடுக்கவும்:',
+    substitutesTitle: 'உள்ளூர் சூப்பர் மார்க்கெட்டுகளில் இந்திய பொருட்கள்',
+    substitutesSub: 'அருகில் இந்திய கடை இல்லையெனில் இவற்றை வாங்குங்கள்:',
+    safeAlternative: 'பாதுகாப்பான மாற்று',
+    restaurantsTitle: 'இந்திய உணவகங்கள் & மளிகை கடைகள்',
+    communityTitle: 'இந்திய குடும்பங்கள் & கோயில்கள்',
+    homeAddressLabel: 'வீட்டு முகவரி:',
+    callFamilyBtn: 'இப்போது அழைக்கவும்',
+    navigateHome: '📍 கூகுள் மேப்ஸில் வீட்டுக்கு செல்ல',
+    openGoogleMaps: '📍 கூகுள் மேப்ஸில் திற',
+    openPortal: '🌐 அதிகாரப்பூர்வ போர்ட்டலைத் திற',
+    officeSectionTitle: 'அரசு அலுவலகங்கள் மற்றும் வழிகாட்டிகள்',
+    liveMedicalLocator: 'நேரலை மருத்துவ கண்டறிதல்',
+    gpsMedicalDesc: 'அவசர சிகிச்சை பிரிவுகள் மற்றும் மருந்தகங்களை உடтடியாக கண்டறியவும்.',
+    hospitalBtn: 'மருத்துவமனை',
+    pediatricianBtn: 'குழந்தைகள் மருத்துவர்',
+    pharmacyBtn: 'மருந்தகம்',
+    clinicBtn: 'கிளினிக்',
+    nightPharmacyTitle: 'இரவு மருந்தகம்',
+    nightPharmacyDesc: 'அவசர மருந்துகளுக்கு இரவு மணி பெல்லை அழுத்தவும்.',
+    findOpenPharmacy: 'திறந்திருக்கும் மருந்தகத்தைக் காண்க',
+    babyCareTitle: 'குழந்தை பராமரிப்பு',
+    babyCareDesc: 'ஃபார்முலா பால் மற்றும் டயப்பர்கள்.',
+    locateNearestStore: 'அருகிலுள்ள கடையைக் கண்டறியவும்',
+    liveLocationSearch: 'நேரலை இருப்பிடத் தேடல்',
+    gpsGroceryDesc: 'அருகிலுள்ள இந்திய மளிகை கடைகளைக் கண்டறியவும்.',
+    groceriesBtn: 'மளிகை',
+    restaurantsBtn: 'உணவகங்கள்',
+    tiffinBtn: 'டிபன் சென்டர்கள்',
+    buyOnShelf: 'அடுக்கி வைக்கப்பட்டுள்ளவை:',
+    liveCommunityLocator: 'சமூக வழிகாட்டி',
+    gpsCommunityDesc: 'அருகிலுள்ள வழிபாட்டு தலங்களைக் கண்டறியவும்.',
+    temple: 'கோயில்',
+    mosque: 'பள்ளிவாசல்',
+    gurudwara: 'குருத்துவாரா',
+    church: 'தேவாலயம்',
+    associations: 'சங்கங்கள்',
+    publicBoard: 'பொது பலகை',
+    myInbox: 'எனது இன்பாக்ஸ்',
+    enterPublicBoard: 'உள்ளநுழைக',
+    noPublicPosts: 'பதிவுகள் எதுவும் இல்லை.',
+    yourPost: 'உங்கள் பதிவு',
+    messagePrivately: 'தனிப்பட்ட முறையில் செய்தி அனுப்பவும்',
+    postToBoard: 'பதிவு செய்',
+    myPrivateMessages: 'தனிப்பட்ட செய்திகள்',
+    emptyInbox: 'இன்பாக்ஸ் காலியாக உள்ளது.',
+    privateChatHeading: 'தனிப்பட்ட அரட்டை',
+    shareWhatsapp: 'WhatsApp ஐப் பகிரவும்',
+    composePlaceholder: 'உங்கள் கேள்வியைப் பதிவிடவும்...',
+    displayNamePlaceholder: 'பெயரை உள்ளிடவும்'
+  },
+  te: {
+    appName: 'ప్రవాసి సార్థి',
+    editionTag: 'కుటుంబ & సీనియర్ సహచరుడు',
+    tagline: 'యూరప్‌లో భారతీయ కుటుంబాలు మరియు తల్లిదండ్రుల కోసం నమ్మకమైన మార్గదర్శి',
+    lostHelpBtn: '🚨 దారి తప్పారా? (సహాయం)',
+    selectLangTitle: 'మీ మాతృభాషను ఎంచుకోండి',
+    policeAmbulance: 'పోలీసు / ఆంబులెన్స్:',
+    nonEmergencyDoc: 'డాక్టర్ ఆన్-కాల్:',
+    currencyCalc: 'కరెన్సీ కాలిక్యులేటర్ (రూపాయలు ↔ యూరో)',
+    tabs: {
+      journey: '1. మొదటి 30 రోజులు (రోడ్‌మ్యాప్)',
+      offices: '2. ప్రభుత్వ కార్యాలయాలు & మ్యాప్స్',
+      flashcards: '3. స్క్రీన్ చూపించండి (కార్డ్స్)',
+      essentials: '4. ఆసుపత్రులు & ముఖ్యమైనవి',
+      desiRadar: '5. కిరాణా & రెస్టారెంట్లు',
+      community: '6. కుటుంబాలు & ఆలయాలు',
+      chat: '7. కమ్యూనిటీ చాట్',
+      about: '8. మా గురించి'
+    },
+    aboutHeading: 'ప్రవాసి సార్థి గురించి',
+    aboutSub: 'యూరప్‌లోని భారతీయ కుటుంబాల కోసం భారతీయ డెవలపర్ల చేత రూపొందించబడింది',
+    problemTitle: 'మేము పరిష్కరిస్తున్న సమస్య ఏమిటి?',
+    problemDesc1: 'యూరప్‌కు వెళ్లడం చాలా మంది భారతీయుల కల. అయితే మొదటి కొన్ని నెలలు పరిపాలనాపరమైన ఇబ్బందికరంగా ఉంటాయి.',
+    problemDesc2: 'యూరోపియన్ బ్యూరోక్రసీని ఎదుర్కోవడానికి మరియు స్థిరపడటానికి ప్రవాసి సార్థి నమ్మకమైన డిజిటల్ సహచరుడిగా సహాయపడుతుంది.',
+    monetizationTitle: 'యాప్‌ను ఉచితంగా ఎలా నిర్వహిస్తాము?',
+    monetizationDesc1: 'అత్యవసర మరియు సెటిల్‌మెంట్ టూల్స్ ఎల్లప్పుడూ 100% ఉచితం.',
+    monetizationDesc2: 'మా భాగస్వామ్య లింక్‌ల ద్వారా మీరు సైన్ అప్ చేసినప్పుడు మాకు చిన్న కమిషన్ లభిస్తుంది.',
+    contactTitle: 'భాగస్వామ్యం కోసం సంప్రదించండి',
+    contactDesc: 'మా భాగస్వామ్య బృందాన్ని సంప్రదించండి:',
+    contactEmail: '📧 1122ankitverma@gmail.com',
+    roadmapHeading: 'మొదటి 30 రోజుల చట్టపరమైన జాబితా',
+    roadmapSub: 'చిరునామా నమోదు లేకుండా బ్యాంకు ఖాతా లేదా ట్యాక్స్ నంబర్ రాదు.',
+    simpleBriefHeading: 'సరళమైన భాషలో:',
+    actionPlanHeading: 'చర్య ప్రణాళిక:',
+    markCompleteBtn: 'పూర్తయినట్లు గుర్తించండి',
+    completedBtn: 'పూర్తయింది ✓',
+    youAreAsking: 'మీరు అడుగుతున్నది:',
+    showToLocal: 'స్థానిక వ్యక్తికి చూపించండి:',
+    tapToAnswer: '👇 సమాధానాన్ని ఎంచుకోండి:',
+    localAnswered: 'స్థానిక వ్యక్తి ఎంచుకున్న సమాధానం:',
+    addNewCardBtn: '➕ కొత్త కార్డ్ సృష్టించండి',
+    customCardBadge: 'కస్టమ్ కార్డ్',
+    templateLabel: '⚡ టెంప్లేట్‌ని ఎంచుకోండి:',
+    substitutesTitle: 'స్థానిక సూపర్ మార్కెట్లలో భారతీయ వస్తువులు',
+    substitutesSub: 'అగ్గర్ భారతీయ దుకాణం అందుబాటులో లేకపోతే వీటిని కొనండి:',
+    safeAlternative: 'సురక్షితమైన ప్రత్యామ్నాయం',
+    restaurantsTitle: 'భారతీయ రెస్టారెంట్లు & కిరాణా దుకాణాలు',
+    communityTitle: 'భారతీయ కుటుంబాలు & గురుద్వారాలు',
+    homeAddressLabel: 'ఇంటి చిరునామా:',
+    callFamilyBtn: 'ఇప్పుడే కాల్ చేయండి',
+    navigateHome: '📍 గూగుల్ మ్యాప్స్‌లో ఇంటికి మార్గం',
+    openGoogleMaps: '📍 గూగుల్ మ్యాప్స్‌లో తెరవండి',
+    openPortal: '🌐 అధికారిక పోర్టల్‌ని తెరవండి',
+    officeSectionTitle: 'ప్రభుత్వ కార్యాలయాలు మరియు గైడ్‌లు',
+    liveMedicalLocator: 'లైవ్ మెడికల్ లోకేటర్',
+    gpsMedicalDesc: 'సమీప ఆసుపత్రులు మరియు ఫార్మసీలను కనుగొనండి.',
+    hospitalBtn: 'ఆసుపత్రి',
+    pediatricianBtn: 'పిల్లల డాక్టర్',
+    pharmacyBtn: 'ఫార్మసీ',
+    clinicBtn: 'క్లినిక్',
+    nightPharmacyTitle: 'నైట్ ఫార్మసీ',
+    nightPharmacyDesc: 'అత్యవసర మందుల కోసం రాత్రి గంటను మోగించండి.',
+    findOpenPharmacy: 'ఫార్మసీని కనుగొనండి',
+    babyCareTitle: 'బేబీ కేర్',
+    babyCareDesc: 'ఫార్ములా మిల్క్ మరియు డైపర్లు.',
+    locateNearestStore: 'స్టోర్‌ని కనుగొనండి',
+    liveLocationSearch: 'లైవ్ లొకేషన్ సెర్చ్',
+    gpsGroceryDesc: 'భారతీయ కిరాణా దుకాణాలను కనుగొనండి.',
+    groceriesBtn: 'కిరాణా',
+    restaurantsBtn: 'రెస్టారెంట్లు',
+    tiffinBtn: 'టిఫిన్ సెంటర్లు',
+    buyOnShelf: 'ఇక్కడ కొనుగోలు చేయండి:',
+    liveCommunityLocator: 'లైవ్ కమ్యూనిటీ లోకేటర్',
+    gpsCommunityDesc: 'సమీప ప్రార్థనా స్థలాలను కనుగొనండి.',
+    temple: 'ఆలయం',
+    mosque: 'మసీదు',
+    gurudwara: 'గురుద్వారా',
+    church: 'చర్చి',
+    associations: 'అసోసియేషన్లు',
+    publicBoard: 'పబ్లిక్ బోర్డ్',
+    myInbox: 'నా ఇన్‌బాక్స్',
+    enterPublicBoard: 'ప్రవేశించండి',
+    noPublicPosts: 'పోస్ట్‌లు లేవు.',
+    yourPost: 'మీ పోస్ట్',
+    messagePrivately: 'ప్రైవేట్ మెసేజ్',
+    postToBoard: 'పోస్ట్ చేయండి',
+    myPrivateMessages: 'నా ప్రైవేట్ మెసేజ్‌లు',
+    emptyInbox: 'ఇన్‌బాక్స్ ఖాళీగా ఉంది.',
+    privateChatHeading: 'ప్రైవేట్ చాట్',
+    shareWhatsapp: 'WhatsApp షేర్ చేయండి',
+    composePlaceholder: 'ప్రశ్నను అడగండి...',
+    displayNamePlaceholder: 'పేరును నమోదు చేయండి'
+  },
+  bn: {
+    appName: 'প্রবাসী সারথি',
+    editionTag: 'পরিবার ও প্রবীণ সহচর',
+    tagline: 'ইউরোপে ভারতীয় পরিবার এবং বাবা-মায়ের জন্য বিশ্বস্ত নির্দেশিকা',
+    lostHelpBtn: '🚨 রাস্তা হারিয়েছেন? (সাহায্য)',
+    selectLangTitle: 'আপনার মাতৃভাষা নির্বাচন করুন',
+    policeAmbulance: 'পুলিশ / অ্যাম্বুলেন্স:',
+    nonEmergencyDoc: 'ডাক্তার অন-কল:',
+    currencyCalc: 'কারেন্সি ক্যালকুলেটর (টাকা ↔ ইউরো)',
+    tabs: {
+      journey: '১. প্রথম ৩০ দিন (রোডম্যাপ)',
+      offices: '২. সরকারি অফিস ও মানচিত্র',
+      flashcards: '৩. স্ক্রিন দেখান (কার্ড)',
+      essentials: '৪. হাসপাতাল ও জরুরি পরিষেবা',
+      desiRadar: '৫. গ্রোসারী ও রেস্তোরাঁ',
+      community: '৬. পরিবার ও মন্দির',
+      chat: '৭. কমিউনিটি চ্যাট',
+      about: '৮. আমাদের সম্পর্কে'
+    },
+    aboutHeading: 'প্রবাসী সারথি সম্পর্কে',
+    aboutSub: 'ইউরোপে ভারতীয় পরিবারগুলির জন্য ভারতীয় ডেভেলপারদের দ্বারা নির্মিত',
+    problemTitle: 'আমরা কোন সমস্যার সমাধান করছি?',
+    problemDesc1: 'ইউরোপে যাওয়া অনেক ভারতীয়র স্বপ্ন। তবে প্রথম কয়েক মাস বেশ জটিল হয়ে থাকে।',
+    problemDesc2: 'ইউরোপীয় আমলাতন্ত্র এবং দৈনন্দিন সমস্যা সমাধানে প্রবাসী সারথি একটি নির্ভরযোগ্য ডিজিটাল সহচর।',
+    monetizationTitle: 'কীভাবে অ্যাপটি বিনামূল্যে রাখা হয়?',
+    monetizationDesc1: 'জরুরি এবং প্রয়োজনীয় সরঞ্জামগুলি সর্বদা ১০০% বিনামূল্যে হওয়া উচিত।',
+    monetizationDesc2: 'আমাদের অংশীদার লিঙ্কগুলির মাধ্যমে সাইন আপ করার সময় আমরা একটি ছোট কমিশন পেয়ে থাকি।',
+    contactTitle: 'অংশীদারিত্ব এবং যোগাযোগ',
+    contactDesc: 'আমাদের অংশীদারিত্ব দলের সাথে যোগাযোগ করুন:',
+    contactEmail: '📧 1122ankitverma@gmail.com',
+    roadmapHeading: 'প্রথম ৩০ দিনের আইনি চেকলিস্ট',
+    roadmapSub: 'ঠিকানা নিবন্ধন ছাড়া কোনো ব্যাংক অ্যাকাউন্ট বা ট্যাক্স নম্বর তৈরি করা যাবে না।',
+    simpleBriefHeading: 'সহজ কথায়:',
+    actionPlanHeading: 'কর্মপরিকল্পনা:',
+    markCompleteBtn: 'সম্পন্ন বলে চিহ্নিত করুন',
+    completedBtn: 'সম্পন্ন হয়েছে ✓',
+    youAreAsking: 'আপনি যা জিজ্ঞাসা করছেন:',
+    showToLocal: 'স্থানীয় ব্যক্তিকে দেখান:',
+    tapToAnswer: '👇 উত্তর চয়ন করুন:',
+    localAnswered: 'স্থানীয় ব্যক্তি এই উত্তরটি বেছে নিয়েছেন:',
+    addNewCardBtn: '➕ নতুন ফ্ল্যাশকার্ড তৈরি করুন',
+    customCardBadge: 'কাস্টম কার্ড',
+    templateLabel: '⚡ টেমপ্লেট নির্বাচন করুন:',
+    substitutesTitle: 'স্থানীয় সুপারমার্কেটে দেশি বিকল্প',
+    substitutesSub: 'কাছে ভারতীয় দোকান না থাকলে এগুলো কিনুন:',
+    safeAlternative: 'নিরাপদ বিকল্প',
+    restaurantsTitle: 'ভারতীয় রেস্তোরাঁ ও মুদি দোকান',
+    communityTitle: 'ভারতীয় পরিবার ও মন্দির',
+    homeAddressLabel: 'মূল ঠিকানা:',
+    callFamilyBtn: 'এখন কল করুন',
+    navigateHome: '📍 গুগল ম্যাপে বাড়ির পথ',
+    openGoogleMaps: '📍 গুগল ম্যাপে খুলুন',
+    openPortal: '🌐 অফিসিয়াল পোর্টাল খুলুন',
+    officeSectionTitle: 'সরকারি অফিস এবং গাইড',
+    liveMedicalLocator: 'লাইভ মেডিকেল লোকেটর',
+    gpsMedicalDesc: 'জরুরি রুম এবং ফার্মেসি খুঁজুন।',
+    hospitalBtn: 'হাসপাতাল',
+    pediatricianBtn: 'শিশু বিশেষজ্ঞ',
+    pharmacyBtn: 'ফার্মেসি',
+    clinicBtn: 'ক্লিনিক',
+    nightPharmacyTitle: 'নাইট ফার্মেসি',
+    nightPharmacyDesc: 'জরুরি ওষুধের জন্য নাইট বেল বাজান।',
+    findOpenPharmacy: 'ফার্মেসি খুঁজুন',
+    babyCareTitle: 'বেবি কেয়ার',
+    babyCareDesc: 'ফর্মুলা মিল্ক এবং ডাইপার।',
+    locateNearestStore: 'নিকটতম দোকান খুঁজুন',
+    liveLocationSearch: 'লাইভ লোকেশন সার্চ',
+    gpsGroceryDesc: 'ভারতীয় মুদি দোকান খুঁজুন।',
+    groceriesBtn: 'গ্রোসারী',
+    restaurantsBtn: 'রেস্তোরাঁ',
+    tiffinBtn: 'টিফিন সেন্টার',
+    buyOnShelf: 'এটি কিনুন:',
+    liveCommunityLocator: 'কমিউনিটি লোকেটর',
+    gpsCommunityDesc: 'নিকটবর্তী উপাসনালয় খুঁজুন।',
+    temple: 'মন্দির',
+    mosque: 'মসজিদ',
+    gurudwara: 'গুরুদ্বারা',
+    church: 'চার্চ',
+    associations: 'সংস্থা',
+    publicBoard: 'পাবলিক বোর্ড',
+    myInbox: 'ইনবক্স',
+    enterPublicBoard: 'প্রবেশ করুন',
+    noPublicPosts: 'কোনো পোস্ট নেই।',
+    yourPost: 'আপনার পোস্ট',
+    messagePrivately: 'প্রাইভেট মেসেজ',
+    postToBoard: 'পোস্ট করুন',
+    myPrivateMessages: 'প্রাইভেট মেসেজ',
+    emptyInbox: 'ইনবক্স খালি।',
+    privateChatHeading: 'প্রাইভেট চ্যাট',
+    shareWhatsapp: 'WhatsApp শেয়ার করুন',
+    composePlaceholder: 'প্রশ্ন জিজ্ঞাসা করুন...',
+    displayNamePlaceholder: 'নাম লিখুন'
+  },
+  mr: {
+    appName: 'प्रवासी सारथी',
+    editionTag: 'कुटुंब आणि वरिष्ठ सोबती',
+    tagline: 'युरोपमधील भारतीय कुटुंबे आणि पालकांसाठी विश्वासू मार्गदर्शक',
+    lostHelpBtn: '🚨 रस्ता चुकलात? (मदत)',
+    selectLangTitle: 'तुमची मातृभाषा निवडा',
+    policeAmbulance: 'पोलिस / रुग्णवाहिका:',
+    nonEmergencyDoc: 'डॉक्टर ऑन-कॉल:',
+    currencyCalc: 'चलम गणक (रुपये ↔ युरो)',
+    tabs: {
+      journey: '१. पहिला महिना (रोडमॅप)',
+      offices: '२. सरकारी कार्यालये व नकाशे',
+      flashcards: '३. स्क्रीन दाखवा (कार्ड्स)',
+      essentials: '४. रुग्णालये व सेवा',
+      desiRadar: '५. किराणा व रेस्टॉरंट्स',
+      community: '६. कुटुंबे व मंदिरे',
+      chat: '७. कम्युनिटी चॅट',
+      about: '८. आमच्याबद्दल'
+    },
+    aboutHeading: 'प्रवासी सारथीबद्दल',
+    aboutSub: 'युरोपमधील भारतीय कुटुंबांसाठी भारतीय डेव्हलपर्सद्वारे निर्मित',
+    problemTitle: 'आपण कोणत्या समस्येचे निराकरण करत आहोत?',
+    problemDesc1: 'युरोपमध्ये जाणे अनेकांचे स्वप्न असते. मात्र पहिले काही महिने कागदपत्रे आणि प्रशासकीय कामांमुळे कठीण जाऊ शकतात.',
+    problemDesc2: 'युरोपियन नोकरशाही सोडवण्यासाठी प्रवासी सारथी एक डिजिटल सोबती म्हणून काम करते.',
+    monetizationTitle: 'आम्ही हे ॲप विनामूल्य कसे ठेवतो?',
+    monetizationDesc1: 'अत्यावश्यक आणि आपत्कालीन साधने नेहमी १००% विनामूल्य असावीत.',
+    monetizationDesc2: 'भागीदार लिंक्सद्वारे सेवा वापरताना आम्हाला लहान कमिशन मिळते.',
+    contactTitle: 'भागीदारीसाठी संपर्क',
+    contactDesc: 'आमच्या भागीदारी टीमशी संपर्क साधा:',
+    contactEmail: '📧 1122ankitverma@gmail.com',
+    roadmapHeading: 'पहिल्या ३० दिवसांची कायदेशीर यादी',
+    roadmapSub: 'पत्ता नोंदणीशिवाय बँक खाते किंवा टॅक्स नंबर मिळवता येणार नाही.',
+    simpleBriefHeading: 'सोप्या भाषेत:',
+    actionPlanHeading: 'कृती आराखडा:',
+    markCompleteBtn: 'पूर्ण म्हणून चिन्हांकित करा',
+    completedBtn: 'पूर्ण झाले ✓',
+    youAreAsking: 'तुम्ही काय विचारत आहात:',
+    showToLocal: 'स्थानिक व्यक्तीला दाखवा:',
+    tapToAnswer: '👇 उत्तर निवडा:',
+    localAnswered: 'स्थानिक व्यक्तीने हे उत्तर निवडले:',
+    addNewCardBtn: '➕ नवीन कार्ड तयार करा',
+    customCardBadge: 'कस्टम कार्ड',
+    templateLabel: '⚡ टेम्पलेट निवडा:',
+    substitutesTitle: 'सुपरमार्केटमधील भारतीय पर्याय',
+    substitutesSub: 'जवळ भारतीय दुकान नसल्यास हे खरेदी करा:',
+    safeAlternative: 'सुरक्षित पर्याय',
+    restaurantsTitle: 'भारतीय रेस्टॉरंट्स व किराणा दुकाने',
+    communityTitle: 'भारतीय कुटुंबे, मंदिरे व गुरुद्वारे',
+    homeAddressLabel: 'घरचा पत्ता:',
+    callFamilyBtn: 'कॉल करा',
+    navigateHome: '📍 गुगल मॅपवर घराचा मार्ग',
+    openGoogleMaps: '📍 गुगल मॅपवर उघडा',
+    openPortal: '🌐 अधिकृत पोर्टल उघडा',
+    officeSectionTitle: 'सरकारी कार्यालये आणि मार्गदर्शक',
+    liveMedicalLocator: 'लाइव्ह मेडिकल लोकेटर',
+    gpsMedicalDesc: 'जवळची रुग्णालये आणि औषधालये शोधा.',
+    hospitalBtn: 'रुग्णालय',
+    pediatricianBtn: 'बालरोगतज्ज्ञ',
+    pharmacyBtn: 'औषधालय',
+    clinicBtn: 'क्लिनिक',
+    nightPharmacyTitle: 'रात्रीचे औषधालय',
+    nightPharmacyDesc: 'आपत्कालीन औषधांसाठी बेल वाजवा.',
+    findOpenPharmacy: 'औषधालय शोधा',
+    babyCareTitle: 'बाळ काळजी',
+    babyCareDesc: 'दूध आणि डायपर.',
+    locateNearestStore: 'जवळचे दुकान शोधा',
+    liveLocationSearch: 'लाइव्ह लोकेशन शोध',
+    gpsGroceryDesc: 'भारतीय किराणा दुकाने शोधा.',
+    groceriesBtn: 'किराणा',
+    restaurantsBtn: 'रेस्टॉरंट्स',
+    tiffinBtn: 'टिफिन सेंटर्स',
+    buyOnShelf: 'हे खरेदी करा:',
+    liveCommunityLocator: 'समुदाय लोकेटर',
+    gpsCommunityDesc: 'जवळची प्रार्थनास्थळे शोधा.',
+    temple: 'मंदिर',
+    mosque: 'मशीद',
+    gurudwara: 'गुरुद्वारा',
+    church: 'चर्च',
+    associations: 'संघटना',
+    publicBoard: 'पब्लिक बोर्ड',
+    myInbox: 'माझे इनबॉक्स',
+    enterPublicBoard: 'प्रवेश करा',
+    noPublicPosts: 'कोणत्याही पोस्ट नाहीत.',
+    yourPost: 'तुमची पोस्ट',
+    messagePrivately: 'खाजगी संदेश',
+    postToBoard: 'पोस्ट करा',
+    myPrivateMessages: 'खाजगी संदेश',
+    emptyInbox: 'इनबॉक्स रिकामे आहे.',
+    privateChatHeading: 'खाजगी चॅट',
+    shareWhatsapp: 'WhatsApp शेअर करा',
+    composePlaceholder: 'प्रश्न विचार करा...',
+    displayNamePlaceholder: 'नाव प्रविष्ट करा'
+  },
+  gu: {
+    appName: 'પ્રवासी સારથી',
+    editionTag: 'કુટુંબ અને વરિષ્ઠ સાથી',
+    tagline: 'યુરોપમાં ભારતીય પરિવારો અને વરિષ્ઠ માતા-પિતા માટે વિશ્વાસુ માર્ગદર્શક',
+    lostHelpBtn: '🚨 રસ્તો ભૂલી ગયા? (મદદ)',
+    selectLangTitle: 'તમારી માતૃભાષા પસંદ કરો',
+    policeAmbulance: 'પોલીસ / એમ્બ્યુલન્સ:',
+    nonEmergencyDoc: 'ડૉક્ટર ઓન-કૉલ:',
+    currencyCalc: 'કરન્સી કેલ્ક્યુલેટર (રૂપિયા ↔ યુરો)',
+    tabs: {
+      journey: '૧. પહેલો મહિનો (રોડમેપ)',
+      offices: '૨. સરકારી ઓફિસ અને નશા',
+      flashcards: '૩. સ્ક્રીન બતાવો (કાર્ડ્સ)',
+      essentials: '૪. હોસ્પિટલ અને સેવાઓ',
+      desiRadar: '૫. કરિયાણા અને રેસ્ટોરન્ટ',
+      community: '૬. પરિવારો અને મંદિરો',
+      chat: '૭. કમ્યુનિટી ચેટ',
+      about: '૮. અમારા વિશે'
+    },
+    aboutHeading: 'પ્રवासी સારથી વિશે',
+    aboutSub: 'યુરોપમાં ભારતીય પરિવારો માટે ભારતીય ડેવલપર્સ દ્વારા નિર્મિત',
+    problemTitle: 'આપણે કઈ સમસ્યાનું નિરાકરણ લાવી રહ્યા છીએ?',
+    problemDesc1: 'યુરોપ જવું એ ઘણા ભારતીયોનું સ્વપ્ન છે. જો કે, શરૂઆતના મહિનાઓ મુશ્કેલ હોય છે.',
+    problemDesc2: 'યુરોપિયન અમલશાહી સામે લડવા માટે प्रवासी सारथी એક વિશ્વસનીય ડિજિટલ સાથી તરીકે મદદ કરે છે.',
+    monetizationTitle: 'આપણી એપ્લિકેશન મફત કેવી રીતે રહે છે?',
+    monetizationDesc1: 'આપણા આવશ્યક સાધનો હંમેશા ૧૦૦% મફત છે.',
+    monetizationDesc2: 'ભાગીદાર લિંક્સ દ્વારા સાઇન અપ કરવાથી અમને નાનું કમિશન મળે છે.',
+    contactTitle: 'ભાગીદારી માટે સંપર્ક',
+    contactDesc: 'અમારી પાર્ટનરશિપ ટીમનો સંપર્ક કરો:',
+    contactEmail: '📧 1122ankitverma@gmail.com',
+    roadmapHeading: 'પહેલા ૩૦ દિવસની કાનૂની યાદી',
+    roadmapSub: 'સરનામાની નોંધણી વિના બેંક ખાતું કે ટેક્સ નંબર મળશે નહીં.',
+    simpleBriefHeading: 'સરળ ભાષામાં:',
+    actionPlanHeading: 'કાર્ય યોજના:',
+    markCompleteBtn: 'પૂર્ણ તરીકે ચિહ્નિત કરો',
+    completedBtn: 'પૂર્ણ થયું ✓',
+    youAreAsking: 'તમે શું પૂછી રહ્યા છો:',
+    showToLocal: 'સ્થાનિક વ્યક્તિને બતાવો:',
+    tapToAnswer: '👇 જવાબ પસંદ કરો:',
+    localAnswered: 'સ્થાનિક વ્યક્તિએ આ જવાબ પસંદ કર્યો:',
+    addNewCardBtn: '➕ નવું કાર્ડ બનાવો',
+    customCardBadge: 'કસ્ટમ કાર્ડ',
+    templateLabel: '⚡ ટેમ્પલેટ પસંદ કરો:',
+    substitutesTitle: 'સુપરમાર્કેટમાં ભારતીય વિકલ્પો',
+    substitutesSub: 'નજીકમાં ભારતીય દુકાન ન હોય તો આ ખરીદો:',
+    safeAlternative: 'સુરક્ષિત વિકલ્પ',
+    restaurantsTitle: 'ભારતીય રેસ્ટોરન્ટ્સ અને કરિયાણા',
+    communityTitle: 'ભારતીય પરિવારો અને મંદિરો',
+    homeAddressLabel: 'ઘરનું સરનામું:',
+    callFamilyBtn: 'હવે કૉલ કરો',
+    navigateHome: '📍 ગૂગલ મેપ પર ઘરનો રસ્તો',
+    openGoogleMaps: '📍 ગૂગલ મેપ પર ખોલો',
+    openPortal: '🌐 સત્તાવાર પોર્ટલ ખોલો',
+    officeSectionTitle: 'સરકારી కార్యాలయాలు మరియు మార్గદર્શికਾ',
+    liveMedicalLocator: 'લાઇવ મેડિકલ લોકેટર',
+    gpsMedicalDesc: 'નજીકની હોસ્પિટલો અને ફાર્મસી શોધો.',
+    hospitalBtn: 'હોસ્પિટલ',
+    pediatricianBtn: 'બાળ રોગ નિષ્ણાત',
+    pharmacyBtn: 'ફાર્મસી',
+    clinicBtn: 'ક્લિનિક',
+    nightPharmacyTitle: 'નાઈટ ફાર્મસી',
+    nightPharmacyDesc: 'કટોકટીની દવાઓ માટે બેલ વગાડો.',
+    findOpenPharmacy: 'ફાર્મસી શોધો',
+    babyCareTitle: 'બાળ સંભાળ',
+    babyCareDesc: 'દૂધ અને ડાયપર.',
+    locateNearestStore: 'નજીકની દુકાન શોધો',
+    liveLocationSearch: 'લાઇવ લોકેશન શોધ',
+    gpsGroceryDesc: 'ભારતીય કરિયાણાની દુકાનો શોધો.',
+    groceriesBtn: 'કરિયાણા',
+    restaurantsBtn: 'રેસ્ટોરન્ટ્સ',
+    tiffinBtn: 'ટિફિન સેન્ટર્સ',
+    buyOnShelf: 'આ ખરીદો:',
+    liveCommunityLocator: 'કમ્યુનિટી લોકેટર',
+    gpsCommunityDesc: 'નજીકના પૂજા સ્થાનો શોધો.',
+    temple: 'મંદિર',
+    mosque: 'મસ્જિદ',
+    gurudwara: 'ગુરુદ્વારા',
+    church: 'ચર્ચ',
+    associations: 'એસોસિએશનો',
+    publicBoard: 'પબ્લિક બોર્ડ',
+    myInbox: 'ઇનબોક્સ',
+    enterPublicBoard: 'ప్రవేశించండి',
+    noPublicPosts: 'કોઈ પોસ્ટ નથી.',
+    yourPost: 'તમારી પોસ્ટ',
+    messagePrivately: 'પ્રાઇવેટ મેસેજ',
+    postToBoard: 'પોસ્ટ કરો',
+    myPrivateMessages: 'પ્રાઇવેટ મેસેજ',
+    emptyInbox: 'ઇનબોક્સ ખાલી છે.',
+    privateChatHeading: 'પ્રાઇવેટ ચેટ',
+    shareWhatsapp: 'WhatsApp શેર કરો',
+    composePlaceholder: 'પ્રશ્ન પૂછો...',
+    displayNamePlaceholder: 'નામ દાખલ કરો'
+  },
+  pa: {
+    appName: 'ਪ੍ਰਵਾਸੀ ਸਾਰਥੀ',
+    editionTag: 'ਪਰਿਵਾਰ ਅਤੇ ਸੀਨੀਅਰ ਸਾਥੀ',
+    tagline: 'ਯੂਰਪ ਵਿੱਚ ਭਾਰਤੀ ਪਰਿਵਾਰਾਂ ਅਤੇ ਬਜ਼ੁਰਗ ਮਾਪਿਆਂ ਲਈ ਭਰੋਸੇਯੋਗ ਸਾਥੀ',
+    lostHelpBtn: '🚨 ਰਸਤਾ ਭੁੱਲ ਗਏ? (ਮਦਦ)',
+    selectLangTitle: 'ਆਪਣੀ ਮਾਂ ਬੋਲੀ ਚੁਣੋ',
+    policeAmbulance: 'ਪੁਲਿਸ / ਐਂਬੂਲੈਂਸ:',
+    nonEmergencyDoc: 'ਡਾਕਟਰ ਆਨ-ਕਾਲ:',
+    currencyCalc: 'ਕਰੰਸੀ ਕੈਲਕੁਲੇਟਰ (ਰੁਪਏ ↔ ਯੂਰੋ)',
+    tabs: {
+      journey: '੧. ਪਹਿਲਾ ਮਹੀਨਾ (ਰੋਡਮੈਪ)',
+      offices: '੨. ਸਰਕਾਰੀ ਦਫ਼ਤਰ ਅਤੇ ਨਕਸ਼ੇ',
+      flashcards: '੩. ਸਕ੍ਰੀਨ ਦਿਖਾਓ (ਕਾਰਡ)',
+      essentials: '੪. ਹਸਪਤਾਲ ਅਤੇ ਸੇਵਾਵਾਂ',
+      desiRadar: '੫. ਕਰਿਆਨਾ ਅਤੇ ਰੈਸਟੋਰੈਂਟ',
+      community: '੬. ਪਰਿਵਾਰ ਅਤੇ ਮੰਦਿਰ',
+      chat: '੭. ਕਮਿਊਨਿਟੀ ਚੈਟ',
+      about: '੮. ਸਾਡੇ ਬਾਰੇ'
+    },
+    aboutHeading: 'ਪ੍ਰਵਾਸੀ ਸਾਰਥੀ ਬਾਰੇ',
+    aboutSub: 'ਭਾਰਤੀ ਡਿਵੈਲਪਰਾਂ ਦੁਆਰਾ, ਯੂਰਪ ਵਿੱਚ ਭਾਰਤੀ ਪਰਿਵਾਰਾਂ ਲਈ ਬਣਾਇਆ ਗਿਆ',
+    problemTitle: 'ਅਸੀਂ ਕਿਸ ਸਮੱਸਿਆ ਦਾ ਹੱਲ ਕਰ ਰਹੇ ਹਾਂ?',
+    problemDesc1: 'ਯੂਰਪ ਜਾਣਾ ਬਹੁਤ ਸਾਰੇ ਭਾਰਤੀਆਂ ਦਾ ਸੁਪਨਾ ਹੁੰਦਾ ਹੈ। ਹਾਲਾਂਕਿ, ਪਹਿਲੇ ਕੁਝ ਮਹੀਨੇ ਪ੍ਰਸ਼ਾਸਕੀ ਉਲਝਣਾਂ ਨਾਲ ਭਰੇ ਹੁੰਦੇ ਹਨ।',
+    problemDesc2: 'ਯੂਰਪੀਅਨ ਨੌਕਰਸ਼ਾਹੀ ਨਾਲ ਨਜਿੱਠਣ ਲਈ ਪ੍ਰਵਾਸੀ ਸਾਰਥੀ ਇੱਕ ਭਰੋਸੇਯੋਗ ਡਿਜੀਟਲ ਸਾਥੀ ਹੈ।',
+    monetizationTitle: 'ਅਸੀਂ ਐਪ ਨੂੰ ਮੁਫ਼ਤ ਕਿਵੇਂ ਰੱਖਦੇ ਹਾਂ?',
+    monetizationDesc1: 'ਜ਼ਰੂਰੀ ਅਤੇ ਐਮਰਜੈਂਸੀ ਟੂਲ ਹਮੇਸ਼ਾ 100% ਮੁਫ਼ਤ ਹੁੰਦੇ ਹਨ।',
+    monetizationDesc2: 'ਸਾਡੇ ਭਾਈਵਾਲ ਲਿੰਕਾਂ ਰਾਹੀਂ ਸਾਈਨ ਅੱਪ ਕਰਨ ‘ਤੇ ਸਾਨੂੰ ਕਮਿਸ਼ਨ ਮਿਲਦਾ ਹੈ।',
+    contactTitle: 'ਸਾਂਝੇਦਾਰੀ ਲਈ ਸੰਪਰਕ',
+    contactDesc: 'ਸਾਡੀ ਭਾਈਵਾਲੀ ਟੀਮ ਨਾਲ ਸੰਪਰਕ ਕਰੋ:',
+    contactEmail: '📧 1122ankitverma@gmail.com',
+    roadmapHeading: 'ਪਹਿਲੇ 30 ਦਿਨਾਂ ਦੀ ਕਾਨੂੰਨੀ ਸੂਚੀ',
+    roadmapSub: 'ਪਤਾ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਤੋਂ ਬਿਨਾਂ ਕੋਈ ਬੈਂਕ ਖਾਤਾ ਜਾਂ ਟੈਕਸ ਨੰਬਰ ਨਹੀਂ ਬਣੇਗਾ।',
+    simpleBriefHeading: 'ਸੌਖੇ ਸ਼ਬਦਾਂ ਵਿੱਚ:',
+    actionPlanHeading: 'ਐਕਸ਼ਨ ਪਲਾਨ:',
+    markCompleteBtn: 'ਪੂਰਾ ਹੋ ਗਿਆ ਚਿੰਨ੍ਹਿਤ ਕਰੋ',
+    completedBtn: 'ਮੁਕੰਮਲ ✓',
+    youAreAsking: 'ਤੁਸੀਂ ਕੀ ਪੁੱਛ ਰਹੇ ਹੋ:',
+    showToLocal: 'ਸਥਾਨਕ ਵਿਅਕਤੀ ਨੂੰ ਦਿਖਾਓ:',
+    tapToAnswer: '👇 ਜਵਾਬ ਚੁਣੋ:',
+    localAnswered: 'ਸਥਾਨਕ ਵਿਅਕਤੀ ਨੇ ਇਹ ਜਵਾਬ ਚੁਣਿਆ:',
+    addNewCardBtn: '➕ ਨਵਾਂ ਫਲੈਸ਼ਕਾਰਡ ਬਣਾਓ',
+    customCardBadge: 'ਕਸਟਮ ਕਾਰਡ',
+    templateLabel: '⚡ ਟೆಂਪਲੇਟ ਚੁਣੋ:',
+    substitutesTitle: 'ਸੁਪਰਮਾਰਕੀਟਾਂ ਵਿੱਚ ਦੇਸੀ ਵਿਕਲਪ',
+    substitutesSub: 'ਜੇਕਰ ਨੇੜੇ ਕੋਈ ਭਾਰਤੀ ਦੁਕਾਨ ਨਾ ਹੋਵੇ, ਤਾਂ ਇਹ ਖਰੀਦੋ:',
+    safeAlternative: 'ਸੁਰੱਖਿਅਤ ਵਿਕਲਪ',
+    restaurantsTitle: 'ਭਾਰਤੀ ਰੈਸਟੋਰੈਂਟ ਅਤੇ ਕਰਿਆਨੇ ਦੀਆਂ ਦੁکانਾਂ',
+    communityTitle: 'ਭਾਰਤੀ ਪਰਿਵਾਰ ਅਤੇ ਗੁਰਦੁਆਰੇ',
+    homeAddressLabel: 'ਘਰ ਦਾ ਪਤਾ:',
+    callFamilyBtn: 'ਹੁਣੇ ਕਾਲ ਕਰੋ',
+    navigateHome: '📍 ਗੂਗਲ ਮੈਪਸ ਉੱਤੇ ਘਰ ਦਾ ਰਸਤਾ',
+    openGoogleMaps: '📍 ਗੂਗਲ ਮੈਪਸ ਉੱਤੇ ਖੋਲ੍ਹੋ',
+    openPortal: '🌐 ਅਧਿਕਾਰਤ ਪੋਰਟਲ ਖੋਲ੍ਹੋ',
+    officeSectionTitle: 'ਸਰਕਾਰੀ ਦਫ਼ਤਰ ਅਤੇ ਗਾਈਡ',
+    liveMedicalLocator: 'ਲਾਈਵ ਮੈਡੀਕਲ ਲੋਕੇਟਰ',
+    gpsMedicalDesc: 'ਨੇੜਲੇ ਹਸਪਤਾਲ ਅਤੇ ਫਾਰਮਸੀ ਲੱਭੋ।',
+    hospitalBtn: 'ਹਸਪਤਾਲ',
+    pediatricianBtn: 'ਬਾਲ ਡਾਕਟਰ',
+    pharmacyBtn: 'ਫਾਰਮਸੀ',
+    clinicBtn: 'ਕਲੀਨਿਕ',
+    nightPharmacyTitle: 'ਰਾਤ ਦੀ ਫਾਰਮਸੀ',
+    nightPharmacyDesc: 'ਐਮਰਜੈਂਸੀ ਦਵਾਈਆਂ ਲਈ ਘੰਟੀ बजाओ।',
+    findOpenPharmacy: 'ਫਾਰਮਸੀ ਲੱਭੋ',
+    babyCareTitle: 'ਬੇਬੀ ਕੇਅਰ',
+    babyCareDesc: 'ਦੁੱਧ ਅਤੇ ਡਾਇਪਰ।',
+    locateNearestStore: 'ਸਟੋਰ ਲੱਭੋ',
+    liveLocationSearch: 'ਲਾਈਵ ਲੋਕੇਸ਼ਨ ਖੋਜ',
+    gpsGroceryDesc: 'ਭਾਰਤੀ ਕਰਿਆਨੇ ਦੀਆਂ ਦੁکانਾਂ ਲੱਭੋ।',
+    groceriesBtn: 'ਕਰਿਆਨਾ',
+    restaurantsBtn: 'ਰੈਸਟੋਰੈਂਟ',
+    tiffinBtn: 'ਟਿਫਿਨ ਸੈਂਟਰ',
+    buyOnShelf: 'ਇਹ ਖਰੀਦੋ:',
+    liveCommunityLocator: 'ਕਮਿਊਨਿਟੀ ਲੋਕੇਟਰ',
+    gpsCommunityDesc: 'ਨੇੜਲੇ ਧਾਰਮਿਕ ਕੇਂਦਰ ਲੱਭੋ।',
+    temple: 'ਮੰਦਿਰ',
+    mosque: 'ਮਸਜਿਦ',
+    gurudwara: 'ਗੁਰਦੁਆਰਾ',
+    church: 'ਚਰਚ',
+    associations: 'ਸੰਸਥਾਵਾਂ',
+    publicBoard: 'ਪਬਲਿਕ ਬੋਰਡ',
+    myInbox: 'ਇਨਬਾਕਸ',
+    enterPublicBoard: 'ਦਾਖਲ ਹੋਵੋ',
+    noPublicPosts: 'ਕੋਈ ਪੋਸਟ ਨਹੀਂ ਹੈ।',
+    yourPost: 'ਤੁਹਾਡੀ ਪੋਸਟ',
+    messagePrivately: 'ਨਿੱਜੀ ਸੁਨੇਹਾ',
+    postToBoard: 'ਪੋਸਟ ਕਰੋ',
+    myPrivateMessages: 'ਨਿੱਜੀ ਸੁਨੇਹੇ',
+    emptyInbox: 'ਇਨਬਾਕਸ ਖਾਲੀ ਹੈ।',
+    privateChatHeading: 'ਨਿੱਜੀ ਚੈਟ',
+    shareWhatsapp: 'WhatsApp ਸਾਂਝਾ ਕਰੋ',
+    composePlaceholder: 'ਸਵਾਲ ਪੁੱਛੋ...',
+    displayNamePlaceholder: 'ਨਾਮ ਦਰਜ ਕਰੋ'
+  },
+  kn: {
+    appName: 'ಪ್ರವಾಸಿ ಸಾರಥಿ',
+    editionTag: 'ಕುಟುಂಬ & ಹಿರಿಯರ ಸಂಗಾತಿ',
+    tagline: 'ಯುರೋಪ್‌ನಲ್ಲಿರುವ ಭಾರತೀಯ ಕುಟುಂಬಗಳು ಮತ್ತು ಪೋಷಕರಿಗೆ ವಿಶ್ವಾಸಾರ್ಹ ಮಾರ್ಗದರ್ಶಿ',
+    lostHelpBtn: '🚨 ದಾರಿ ತಪ್ಪಿದೆಯೇ? (ಸಹಾಯ)',
+    selectLangTitle: 'ನಿಮ್ಮ ಮಾತೃಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ',
+    policeAmbulance: 'ಪೊಲೀಸ್ / ಆಂಬುಲೆನ್ಸ್:',
+    nonEmergencyDoc: 'ವೈದ್ಯರು ಆನ್-ಕాల్:',
+    currencyCalc: 'ಕರೆನ್ಸಿ ಕ್ಯಾಲ್ಕುಲೇಟರ್ (ರೂಪಾಯಿ ↔ ಯೂರೋ)',
+    tabs: {
+      journey: '೧. ಮೊದಲ 30 ದಿನಗಳು (ರೋಡ್‌ಮ್ಯಾಪ್)',
+      offices: '೨. ಸರ್ಕಾರಿ ಕಚೇರಿಗಳು & ನಕ್ಷೆಗಳು',
+      flashcards: '೩. ಪರದೆಯನ್ನು ತೋರಿಸಿ (ಕಾರ್ಡ್‌ಗಳು)',
+      essentials: '೪. ಆಸ್ಪತ್ರೆಗಳು & ಅಗತ್ಯತೆಗಳು',
+      desiRadar: '೫. ಕಿರಾಣಿ & ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು',
+      community: '೬. ಕುಟುಂಬಗಳು & ದೇವಾಲಯಗಳು',
+      chat: '೭. ಕಮ್ಯೂನಿಟಿ ಚಾಟ್',
+      about: '೮. ನಮ್ಮ ಬಗ್ಗೆ'
+    },
+    aboutHeading: 'ಪ್ರವಾಸಿ ಸಾರಥಿ ಬಗ್ಗೆ',
+    aboutSub: 'ಯುರೋಪ್‌ನಲ್ಲಿರುವ ಭಾರತೀಯ ಕುಟುಂಬಗಳಿಗಾಗಿ ಭಾರತೀಯ ಡೆವಲಪರ್‌ಗಳಿಂದ ನಿರ್ಮಿಸಲಾಗಿದೆ',
+    problemTitle: 'ನಾವು ಯಾವ ಸಮಸ್ಯೆಯನ್ನು ಪರಿಹರಿಸುತ್ತಿದ್ದೇವೆ?',
+    problemDesc1: 'ಯುರೋಪ್‌ಗೆ ತೆರಳುವುದು ಅನೇಕ ಭಾರತೀಯರ ಕನಸು. ಆದಾಗ್ಯೂ, ಮೊದಲ ಕೆಲವು ತಿಂಗಳುಗಳು ಆಡಳಿತಾತ್ಮಕ ತೊಡಕುಗಳಿಂದ ಕೂಡಿರುತ್ತವೆ.',
+    problemDesc2: 'ಯುರೋಪಿಯನ್ ಅಧಿಕಾರಶಾಹಿಯನ್ನು ಎದುರಿಸಲು ಪ್ರವಾಸಿ ಸಾರಥಿ ವಿಶ್ವಾಸಾರ್ಹ ಡಿಜಿಟಲ್ ಸಂಗಾತಿಯಾಗಿ ಸಹಾಯ ಮಾಡುತ್ತದೆ.',
+    monetizationTitle: 'ನಾವು ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಉಚಿತವಾಗಿ ಹೇಗೆ ಇಟ್ಟುಕೊಳ್ಳುತ್ತೇವೆ?',
+    monetizationDesc1: 'ಅಗತ್ಯವಿರುವ ಸೆಟಲ್ಮೆಂಟ್ ಮತ್ತು ತುರ್ತು ಉಪಕರಣಗಳು ಯಾವಾಗಲೂ 100% ಉಚಿತ.',
+    monetizationDesc2: 'ಪಾಲುದಾರ ಲಿಂಕ್‌ಗಳ ಮೂಲಕ ನೀವು ಸೈನ್ ಅಪ್ ಮಾಡಿದಾಗ ನಮಗೆ ಸಣ್ಣ ಕಮಿಷನ್ ಸಿಗುತ್ತದೆ.',
+    contactTitle: 'ಪಾಲುದಾರಿಕೆಗಾಗಿ ಸಂಪರ್ಕಿಸಿ',
+    contactDesc: 'ನಮ್ಮ ಪಾಲುದಾರಿಕೆ ತಂಡವನ್ನು ಸಂಪರ್ಕಿಸಿ:',
+    contactEmail: '📧 1122ankitverma@gmail.com',
+    roadmapHeading: 'ಮೊದಲ 30 ದಿನಗಳ ಕಾನೂನು ಪರಿಶೀಲನಾಪಟ್ಟಿ',
+    roadmapSub: 'ವಿಳಾಸ ನೋಂದಣಿ ಇಲ್ಲದೆ ಯಾವುದೇ ಬ್ಯಾಂಕ್ ಖಾತೆ ಅಥವಾ ತೆರಿಗೆ ಸಂಖ್ಯೆ ಸಿಗುವುದಿಲ್ಲ.',
+    simpleBriefHeading: 'ಸರಳ ಭಾಷೆಯಲ್ಲಿ:',
+    actionPlanHeading: 'ಕ್ರಿಯಾ ಯೋಜನೆ:',
+    markCompleteBtn: 'ಪೂರ್ಣಗೊಂಡಿದೆ ಎಂದು ಗುರುತಿಸಿ',
+    completedBtn: 'ಪೂರ್ಣಗೊಂಡಿದೆ ✓',
+    youAreAsking: 'ನೀವು ಕೇಳುತ್ತಿರುವುದು:',
+    showToLocal: 'ಸ್ಥಳೀಯ ವ್ಯಕ್ತಿಗೆ ತೋರಿಸಿ:',
+    tapToAnswer: '👇 ಉತ್ತರವನ್ನು ಆಯ್ಕೆಮಾಡಿ:',
+    localAnswered: 'ಸ್ಥಳೀಯ ವ್ಯಕ್ತಿ ಈ ಉತ್ತರವನ್ನು ಆಯ್ಕೆ ಮಾಡಿದ್ದಾರೆ:',
+    addNewCardBtn: '➕ ಹೊಸ ಕಾರ್ಡ್ ರಚಿಸಿ',
+    customCardBadge: 'ಕಸ್ಟಮ್ ಕಾರ್ಡ್',
+    templateLabel: '⚡ ಟೆಂಪ್ಲೇಟ್ ಆಯ್ಕೆಮಾಡಿ:',
+    substitutesTitle: 'ಸ್ಥಳೀಯ ಸೂಪರ್‌ಮಾರ್ಕೆಟ್‌ಗಳಲ್ಲಿ ಭಾರತೀಯ ಪರ್ಯಾಯಗಳು',
+    substitutesSub: 'ಹತ್ತಿರದಲ್ಲಿ ಭಾರತೀಯ ಅಂಗಡಿ ಇಲ್ಲದಿದ್ದರೆ ಇವುಗಳನ್ನು ಖರೀದಿಸಿ:',
+    safeAlternative: 'ಸುರಕ್ಷಿತ ಪರ್ಯಾಯ',
+    restaurantsTitle: 'ಭಾರತೀಯ ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು & ಕಿರಾಣಿ ಅಂಗಡಿಗಳು',
+    communityTitle: 'ಭಾರತೀಯ ಕುಟುಂಬಗಳು & ದೇವಾಲಯಗಳು',
+    homeAddressLabel: 'ಮನೆ ವಿಳಾಸ:',
+    callFamilyBtn: 'ಈಗ ಕರೆ ಮಾಡಿ',
+    navigateHome: '📍 ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್‌ನಲ್ಲಿ ಮನೆಗೆ ದಾರಿ',
+    openGoogleMaps: '📍 ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ',
+    openPortal: '🌐 ಅಧಿಕೃತ ಪೋರ್ಟಲ್ ತೆರೆಯಿರಿ',
+    officeSectionTitle: 'ಸರ್ಕಾರಿ ಕಚೇರಿಗಳು ಮತ್ತು ಮಾರ್ಗದರ್ಶಿಗಳು',
+    liveMedicalLocator: 'ಲೈವ್ ಮೆಡಿಕಲ್ ಲೊಕೇಟರ್',
+    gpsMedicalDesc: 'ಹತ್ತಿರದ ಆಸ್ಪತ್ರೆಗಳನ್ನು ಹುಡುಕಿ.',
+    hospitalBtn: 'ಆಸ್ಪತ್ರೆ',
+    pediatricianBtn: 'ಮಕ್ಕಳ ವೈದ್ಯರು',
+    pharmacyBtn: 'ಔಷಧ ಅಂಗಡಿ',
+    clinicBtn: 'ಕ್ಲಿನಿಕ್',
+    nightPharmacyTitle: 'ರಾತ್ರಿ ಔಷಧ ಅಂಗಡಿ',
+    nightPharmacyDesc: 'ತುರ್ತು ಔಷಧಿಗಳಿಗಾಗಿ ಬೆಲ್ ಒತ್ತಿ.',
+    findOpenPharmacy: 'ಔಷಧ ಅಂಗಡಿ ಹುಡುಕಿ',
+    babyCareTitle: 'ಮಕ್ಕಳ ಆರೈಕೆ',
+    babyCareDesc: 'ಹಾಲು ಮತ್ತು ಡೈಪರ್‌ಗಳು.',
+    locateNearestStore: 'ಅಂಗಡಿ ಹುಡುಕಿ',
+    liveLocationSearch: 'ಲೈವ್ ಸ್ಥಳ ಹುಡುಕಾಟ',
+    gpsGroceryDesc: 'ಭಾರತೀಯ ಕಿರಾಣಿ ಅಂಗಡಿಗಳನ್ನು ಹುಡುಕಿ.',
+    groceriesBtn: 'ಕಿರಾಣಿ',
+    restaurantsBtn: 'ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು',
+    tiffinBtn: 'ಟಿಫಿನ್ ಸೆಂಟರ್‌ಗಳು',
+    buyOnShelf: 'ಇದನ್ನು ಖರೀದಿಸಿ:',
+    liveCommunityLocator: 'ಸಮುದಾಯ ಲೊಕೇಟರ್',
+    gpsCommunityDesc: 'ಹತ್ತಿರದ ಪ್ರಾರ್ಥನಾ ಸ್ಥಳಗಳನ್ನು ಹುಡುಕಿ.',
+    temple: 'ದೇವಾಲಯ',
+    mosque: 'ಮಸೀದಿ',
+    gurudwara: 'ಗುರುದ್ವಾರ',
+    church: 'ಚರ್ಚ್',
+    associations: 'ಸಂಘಗಳು',
+    publicBoard: 'ಸಾರ್ವಜನಿಕ ಬೋರ್ಡ್',
+    myInbox: 'ಇನ್‌ಬಾಕ್ಸ್',
+    enterPublicBoard: 'ಪ್ರವೇಶಿಸಿ',
+    noPublicPosts: 'ಯಾವುದೇ ಪೋಸ್ಟ್‌ಗಳಿಲ್ಲ.',
+    yourPost: 'ನಿಮ್ಮ ಪೋಸ್ಟ್',
+    messagePrivately: 'ಖಾಸಗಿ ಸಂದೇಶ',
+    postToBoard: 'ಪೋಸ್ಟ್ ಮಾಡಿ',
+    myPrivateMessages: 'ಖಾಸಗಿ ಸಂದೇಶಗಳು',
+    emptyInbox: 'ಇನ್‌ಬಾಕ್ಸ್ ಖಾಲಿಯಿದೆ.',
+    privateChatHeading: 'ಖಾಸಗಿ ಚಾಟ್',
+    shareWhatsapp: 'WhatsApp ಹಂಚಿಕೊಳ್ಳಿ',
+    composePlaceholder: 'ಪ್ರಶ್ನೆ ಕೇಳಿ...',
+    displayNamePlaceholder: 'ಹೆಸರನ್ನು ನಮूदಿಸಿ'
+  },
+  ml: {
+    appName: 'പ്രവാസി സാരഥി',
+    editionTag: 'കുടുംബ & മുതിർന്നവരുടെ കൂട്ടുകാരൻ',
+    tagline: 'യൂറോപ്പിലെ ഇന്ത്യൻ കുടുംബങ്ങൾക്കും മാതാപിതാക്കൾക്കും വിശ്വസ്ത ഗൈഡ്',
+    lostHelpBtn: '🚨 വഴി തെറ്റിയോ? (സഹായം)',
+    selectLangTitle: 'നിങ്ങളുടെ മാതൃഭാഷ തിരഞ്ഞെടുക്കുക',
+    policeAmbulance: 'പോലീസ് / ആംബുലൻസ്:',
+    nonEmergencyDoc: 'ഡോക്ടർ ഓൺ-കോൾ:',
+    currencyCalc: 'കറൻസി കാൽക്കുലേറ്റർ (രൂപ ↔ യൂറോ)',
+    tabs: {
+      journey: '1. ആദ്യ 30 ദിവസങ്ങൾ (റോഡ്‌മാപ്പ്)',
+      offices: '2. സർക്കാർ ഓഫീസുകൾ & മാപ്പുകൾ',
+      flashcards: '3. സ്ക്രീൻ കാണിക്കുക (കാർഡുകൾ)',
+      essentials: '4. ആശുപത്രികളും സേവനങ്ങളും',
+      desiRadar: '5. പലചരക്ക് & റെസ്റ്റോറന്റുകൾ',
+      community: '6. കുടുംബങ്ങൾ & ക്ഷേത്രങ്ങൾ',
+      chat: '7. കമ്മ്യൂണിറ്റി ചാറ്റ്',
+      about: '8. ഞങ്ങളെക്കുറിച്ച്'
+    },
+    aboutHeading: 'പ്രവാസി സാരഥിയെക്കുറിച്ച്',
+    aboutSub: 'യൂറോപ്പിലെ ഇന്ത്യൻ കുടുംബങ്ങൾക്കായി ഇന്ത്യൻ ഡെവലപ്പർമാർ നിർമ്മിച്ചത്',
+    problemTitle: 'ഞങ്ങൾ പരിഹരിക്കുന്ന പ്രശ്നം എന്താണ്?',
+    problemDesc1: 'യൂറോപ്പിലേക്ക് പോകുന്നത് നിരവധി ഇന്ത്യക്കാരുടെ സ്വപ്നമാണ്. എങ്കിലും ആദ്യ മാസങ്ങളിൽ ഭാഷാ തടസ്സങ്ങളും രേഖകളും ആശങ്ക സൃഷ്ടിക്കാറുണ്ട്.',
+    problemDesc2: 'യൂറോപ്യൻ ബ്യൂറോക്രസിയെ നേരിടാൻ പ്രവാസി സാരഥി ഒരു വിശ്വസ്ത ഡിജിറ്റൽ കൂട്ടുകാരനായി സഹായിക്കുന്നു.',
+    monetizationTitle: 'ഞങ്ങൾ ആപ്പ് എങ്ങനെ സൗജന്യമായി നിലനിർത്തുന്നു?',
+    monetizationDesc1: 'അത്യാവശ്യമായ സെറ്റിൽമെന്റ് ടൂളുകൾ എപ്പോഴും 100% സൗജന്യമാണ്.',
+    monetizationDesc2: 'പങ്കാളി ലിങ്കുകൾ വഴി സൈൻ അപ്പ് ചെയ്യുമ്പോൾ ചെറിയ കമ്മീഷൻ ലഭിക്കുന്നു.',
+    contactTitle: 'പങ്കാളിത്ത അന്വേഷണങ്ങൾ',
+    contactDesc: 'ഞങ്ങളുടെ പങ്കാളിത്ത ടീമുമായി ബന്ധപ്പെടുക:',
+    contactEmail: '📧 1122ankitverma@gmail.com',
+    roadmapHeading: 'ആദ്യ 30 ദിവസത്തെ നിയമപരമായ ചെക്ക്‌ലിസ്റ്റ്',
+    roadmapSub: 'വിലാസ രജിസ്‌ടേഷൻ ഇല്ലാതെ ബാങ്ക് അക്കൗണ്ടോ ടാക്സ് നമ്പറോ ലഭിക്കില്ല.',
+    simpleBriefHeading: 'ലളിതമായ ഭാഷയിൽ:',
+    actionPlanHeading: 'കർമ്മപദ്ധതി:',
+    markCompleteBtn: 'പൂർത്തിയായി എന്ന് അടയാളപ്പെടുത്തുക',
+    completedBtn: 'പൂർത്തിയായി ✓',
+    youAreAsking: 'നിങ്ങൾ ചോദിക്കുന്നത്:',
+    showToLocal: 'പ്രാദേശിക വ്യക്തിക്ക് കാണിക്കുക:',
+    tapToAnswer: '👇 മറുപടി തിരഞ്ഞെടുക്കുക:',
+    localAnswered: 'പ്രാദേശിക വ്യക്തി ഈ ഉത്തരം തിരഞ്ഞെടുത്തിരിക്കുന്നു:',
+    addNewCardBtn: '➕ പുതിയ കാർഡ് നിർമ്മിക്കുക',
+    customCardBadge: 'കസ്റ്റം കാർഡ്',
+    templateLabel: '⚡ ടെംപ്ലേറ്റ് തിരഞ്ഞെടുക്കുക:',
+    substitutesTitle: 'സൂപ്പർമാർക്കറ്റുകളിലെ ഇന്ത്യൻ പകരക്കാർ',
+    substitutesSub: 'അടുത്ത് ഇന്ത്യൻ കട ഇല്ലെങ്കിൽ ഇവ വാങ്ങുക:',
+    safeAlternative: 'സുരക്ഷിതമായ പകരക്കാരൻ',
+    restaurantsTitle: 'ഇന്ത്യൻ റെസ്റ്റോറന്റുകൾ & പലചരക്ക് കടകൾ',
+    communityTitle: 'ഇന്ത്യൻ കുടുംബങ്ങൾ & ആരാധനാലയങ്ങൾ',
+    homeAddressLabel: 'വീട്ടു വിലാസം:',
+    callFamilyBtn: 'ഇപ്പോൾ വിളിക്കുക',
+    navigateHome: '📍 ഗൂഗിൾ മാപ്പിൽ വീട്ടിലേക്കുള്ള വഴി',
+    openGoogleMaps: '📍 ഗൂഗിൾ മാപ്പിൽ തുറക്കുക',
+    openPortal: '🌐 ഔദ്യോഗിക പോർട്ടൽ തുറക്കുക',
+    officeSectionTitle: 'സർക്കാർ ഓഫീസുകളും ഗൈഡുകളും',
+    liveMedicalLocator: 'ലൈവ് മെഡിക്കൽ ലൊക്കേറ്റർ',
+    gpsMedicalDesc: 'അടുത്തുള്ള ആശുപത്രികൾ കണ്ടെത്തുക.',
+    hospitalBtn: 'ആശുപത്രി',
+    pediatricianBtn: 'ശിശുരോഗ വിദഗ്ദ്ധൻ',
+    pharmacyBtn: 'ഫാർമസി',
+    clinicBtn: 'ക്ലിനിക്ക്',
+    nightPharmacyTitle: 'രാത്രി ഫാർമസി',
+    nightPharmacyDesc: 'അത്യാവശ്യ മരുന്നുകൾക്കായി ബെൽ അടിക്കുക.',
+    findOpenPharmacy: 'ഫാർമസി കണ്ടെത്തുക',
+    babyCareTitle: 'ശിശുപരിപാലനം',
+    babyCareDesc: 'പാലും ഡൈപ്പറും.',
+    locateNearestStore: 'കട കണ്ടെത്തുക',
+    liveLocationSearch: 'ലൈവ് ലൊക്കേഷൻ തിരയൽ',
+    gpsGroceryDesc: 'ഇന്ത്യൻ പലചരക്ക് കടകൾ കണ്ടെത്തുക.',
+    groceriesBtn: 'പലചരക്ക്',
+    restaurantsBtn: 'റെസ്റ്റോറന്റുകൾ',
+    tiffinBtn: 'ടിഫിൻ സെന്ററുകൾ',
+    buyOnShelf: 'ഇത് വാങ്ങുക:',
+    liveCommunityLocator: 'കമ്മ്യൂണിറ്റി ലൊക്കേറ്റർ',
+    gpsCommunityDesc: 'അടുത്തുള്ള ആരാധനാലയങ്ങൾ കണ്ടെത്തുക.',
+    temple: 'ക്ഷേത്രം',
+    mosque: 'പള്ളി',
+    gurudwara: 'ഗുരുദ്വാര',
+    church: 'പള്ളി',
+    associations: 'അസോസിയേഷനുകൾ',
+    publicBoard: 'പബ്ലിക് ബോർഡ്',
+    myInbox: 'ഇൻബോക്സ്',
+    enterPublicBoard: 'പ്രവേശിക്കുക',
+    noPublicPosts: 'പോസ്റ്റുകൾ ഒന്നും ഇല്ല.',
+    yourPost: 'നിങ്ങളുടെ പോസ്റ്റ്',
+    messagePrivately: 'പ്രൈവറ്റ് സന്ദേശം',
+    postToBoard: 'പോസ്റ്റ് ചെയ്യുക',
+    myPrivateMessages: 'പ്രൈവറ്റ് സന്ദേശങ്ങൾ',
+    emptyInbox: 'ഇൻബോക്സ് കാലിയാണ്.',
+    privateChatHeading: 'പ്രൈവറ്റ് ചാറ്റ്',
+    shareWhatsapp: 'WhatsApp പങ്കിടുക',
+    composePlaceholder: 'ചോദ്യം ചോദിക്കുക...',
+    displayNamePlaceholder: 'പേര് നൽകുക'
   },
   en: {
     appName: 'Pravasi Sarthi',
@@ -261,11 +1037,11 @@ const UI_TEXT = {
     aboutHeading: 'About Pravasi Sarthi',
     aboutSub: 'Built by Indian Developers, For Indian Families in Europe',
     problemTitle: 'The Problem We Are Solving',
-    problemDesc1: 'Moving to Europe (Germany, Netherlands, France, Ireland, etc.) is a dream for many Indian professionals and their families. However, the first few months are an absolute bureaucratic maze. When elderly parents visit or newcomers land, they face massive anxiety due to language barriers, strict paperwork (like Anmeldung address registration), strict vegetarian food rules, and navigating foreign emergency rooms.',
-    problemDesc2: 'Existing apps are built for Western tourists visiting museums—not for families trying to survive European bureaucracy and settle down. Pravasi Sarthi was built to solve this exact problem by acting as a trusted digital companion.',
+    problemDesc1: 'Moving to Europe (Germany, Netherlands, France, Ireland, etc.) is a dream for many Indian professionals and their families. However, the first few months are an absolute bureaucratic maze.',
+    problemDesc2: 'Pravasi Sarthi was built to solve this exact problem by acting as a trusted digital companion.',
     monetizationTitle: 'How We Keep the App Free & Sustainable',
-    monetizationDesc1: 'We believe that essential settlement and emergency tools should always be 100% free for parents and newcomers. To keep Pravasi Sarthi free without charging user fees or bombarding you with banner ads, we partner with trusted relocation, banking, and insurance providers.',
-    monetizationDesc2: 'When users sign up for essential expat services (such as cross-border money transfers with Wise, expat health insurance with Feather or Expatrio, or digital bank accounts with N26) through our recommended partner links, we earn a small referral commission from the provider at zero extra cost to you.',
+    monetizationDesc1: 'We believe that essential settlement and emergency tools should always be 100% free for parents and newcomers.',
+    monetizationDesc2: 'When users sign up for essential expat services through our recommended partner links, we earn a small referral commission.',
     contactTitle: 'Partnership & Affiliate Inquiries',
     contactDesc: 'Are you a European relocation service, insurance provider, or desi restaurant looking to partner with Pravasi Sarthi? We would love to collaborate.',
     contactEmail: '📧 Reach out to our partnership team at: 1122ankitverma@gmail.com',
@@ -283,45 +1059,56 @@ const UI_TEXT = {
     customCardBadge: 'Custom Card',
     templateLabel: '⚡ Select a Template:',
     substitutesTitle: 'Desi Cooking Substitutes in Local Supermarkets',
-    substitutesSub: 'If an Indian grocery is not nearby, buy these in standard European stores (Rewe, Lidl, Aldi):',
+    substitutesSub: 'If an Indian grocery is not nearby, buy these in standard European stores:',
     safeAlternative: 'Safe Alternative',
-    vegAlertHeading: 'Strict Vegetarian Warning (Vegetarian Alert):',
-    vegAlertText: 'Always check ingredients for Gelatine (pork collagen), Karmin / E120 (insect red dye), and Tierisches Lab (animal rennet). Choose "Mikrobielles Lab" or green V-Label products.',
     restaurantsTitle: 'Indian Restaurants & Grocery Stores',
-    restaurantsSub: 'Verified desi supermarkets and pure vegetarian dining options.',
     communityTitle: 'Indian Families, Temples & Gurudwaras',
-    communitySub: 'Connect with local Indian families for weekend get-togethers and cultural festivals.',
-    winterGearTitle: 'Pre-Loved Kids Winter Gear & Snowsuit Exchange',
-    winterGearText: 'Children outgrow -15°C winter jackets fast. Share and exchange winter gear and strollers freely with local families.',
-    lostCardNotice: 'This card is written in the local country language. If you are lost, show this screen to any passerby, driver, or police officer.',
     homeAddressLabel: 'Home Address:',
     callFamilyBtn: 'Call Now',
     navigateHome: '📍 Navigate Home on Google Maps',
     openGoogleMaps: '📍 Open on Google Maps',
     openPortal: '🌐 Open Official Portal',
-    downloadForm: '📄 Download Form (PDF)',
-    officeSectionTitle: 'Official Government Offices & Maps'
+    officeSectionTitle: 'Official Government Offices & Maps',
+    liveMedicalLocator: 'Live Medical Locator',
+    gpsMedicalDesc: 'Use your phone\'s GPS to find the nearest emergency rooms, pediatricians, and 24/7 pharmacies instantly.',
+    hospitalBtn: 'Hospital / ER',
+    pediatricianBtn: 'Pediatrician',
+    pharmacyBtn: 'Pharmacy',
+    clinicBtn: 'Clinic / GP',
+    nightPharmacyTitle: 'Night Pharmacy (Notdienst)',
+    nightPharmacyDesc: 'Pharmacies rotate 24-hour night duty. Ring the night bell (Notdienstglocke) for urgent baby fever syrup.',
+    findOpenPharmacy: 'Find Open Pharmacy',
+    babyCareTitle: 'Baby Care (dm / Rossmann)',
+    babyCareDesc: 'Formula milk: Aptamil (Pre / 1), HiPP Bio Combiotik. Stock up on diapers.',
+    locateNearestStore: 'Locate Nearest Store',
+    liveLocationSearch: 'Live Location Search',
+    gpsGroceryDesc: 'Access your device\'s GPS to find the nearest curated Indian groceries, tiffins, and food services.',
+    groceriesBtn: 'Groceries',
+    restaurantsBtn: 'Restaurants',
+    tiffinBtn: 'Tiffin Centers',
+    buyOnShelf: 'Buy this on shelf:',
+    liveCommunityLocator: 'Live Community Locator',
+    gpsCommunityDesc: 'Find the nearest religious centers and Indian associations securely using GPS.',
+    temple: 'Temple',
+    mosque: 'Mosque',
+    gurudwara: 'Gurudwara',
+    church: 'Church',
+    associations: 'Associations',
+    publicBoard: 'Public Board',
+    myInbox: 'My Inbox',
+    enterPublicBoard: 'Enter Public Board',
+    noPublicPosts: 'No public posts yet. Be the first to ask a question!',
+    yourPost: 'Your Post',
+    messagePrivately: 'Message Privately',
+    postToBoard: 'Post to Board',
+    myPrivateMessages: 'My Private Messages',
+    emptyInbox: 'Your inbox is empty. Message someone from the Public Board.',
+    privateChatHeading: 'Private 1-on-1 Chat',
+    shareWhatsapp: 'Share WhatsApp',
+    composePlaceholder: 'Ask a question or share advice to the public board...',
+    displayNamePlaceholder: 'Choose a Display Name (e.g. Rahul M.)'
   }
 };
-
-// Fallback logic for other languages keeping appName as 'प्रवासी सारथी'
-['ta', 'te', 'bn', 'mr', 'gu', 'pa', 'kn', 'ml'].forEach(lang => {
-  UI_TEXT[lang] = {
-    ...UI_TEXT.en,
-    appName: 'प्रवासी सारथी',
-    aboutHeading: 'प्रवासी सारथी के बारे में',
-    aboutSub: 'भारतीय डेवलपर्स द्वारा, यूरोप में भारतीय परिवारों के लिए निर्मित',
-    problemTitle: 'हम किस समस्या का समाधान कर रहे हैं?',
-    problemDesc1: 'यूरोप जाना कई भारतीय परिवारों का सपना होता है। पहले कुछ महीने प्रशासनिक उलझनों से भरे होते हैं। भाषा की बाधाओं और कागजी कार्रवाई के कारण भारी चिंता का सामना करना पड़ता है।',
-    problemDesc2: 'प्रवासी सारथी एक विश्वसनीय डिजिटल साथी के रूप में इस समस्या को हल करता है।',
-    monetizationTitle: 'हम ऐप को मुफ्त और टिकाऊ कैसे रखते हैं?',
-    monetizationDesc1: 'आवश्यक निपटान और आपातकालीन उपकरण हमेशा 100% मुफ्त हैं।',
-    monetizationDesc2: 'जब उपयोगकर्ता हमारे अनुशंसित पार्टनर लिंक से साइन अप करते हैं, तो हमें एक छोटा रेफरल कमीशन मिलता है।',
-    contactTitle: 'साझेदारी और सहयोग',
-    contactDesc: 'पार्टनरशिप के लिए संपर्क करें:',
-    contactEmail: '📧 1122ankitverma@gmail.com'
-  };
-});
 
 // ============================================================================
 // 4. GOVERNMENT OFFICES & MAPS DATABASE
@@ -1174,14 +1961,14 @@ export default function App() {
             <div className="bg-gradient-to-br from-rose-50 to-red-50 border border-rose-200 p-5 sm:p-6 rounded-3xl flex flex-col md:flex-row justify-between md:items-center gap-6 relative overflow-hidden">
                <div className="absolute top-0 left-0 w-1.5 h-full bg-rose-400 rounded-l-3xl"></div>
                <div className="pl-2">
-                 <h3 className="font-bold text-rose-900 flex items-center gap-2.5 text-lg"><span className="relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span></span>Live Medical Locator</h3>
-                 <p className="text-sm text-rose-700 mt-1.5 max-w-md leading-relaxed">Use your phone's GPS to find the nearest emergency rooms, pediatricians, and 24/7 pharmacies instantly.</p>
+                 <h3 className="font-bold text-rose-900 flex items-center gap-2.5 text-lg"><span className="relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span></span>{t.liveMedicalLocator}</h3>
+                 <p className="text-sm text-rose-700 mt-1.5 max-w-md leading-relaxed">{t.gpsMedicalDesc}</p>
                </div>
                <div className="flex flex-wrap gap-3 shrink-0">
-                 <a href="https://www.google.com/maps/search/?api=1&query=Emergency+Hospital+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-rose-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><span className="text-lg opacity-80">🏥</span> Hospital / ER</a>
-                 <a href="https://www.google.com/maps/search/?api=1&query=Pediatrician+Kinderarzt+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><span className="text-lg opacity-80">👶</span> Pediatrician</a>
-                 <a href="https://www.google.com/maps/search/?api=1&query=Pharmacy+Apotheke+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-emerald-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><span className="text-lg opacity-80">💊</span> Pharmacy</a>
-                 <a href="https://www.google.com/maps/search/?api=1&query=General+Doctor+Clinic+Hausarzt+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-indigo-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><span className="text-lg opacity-80">🩺</span> Clinic / GP</a>
+                 <a href="https://www.google.com/maps/search/?api=1&query=Emergency+Hospital+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-rose-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><span className="text-lg opacity-80">🏥</span> {t.hospitalBtn}</a>
+                 <a href="https://www.google.com/maps/search/?api=1&query=Pediatrician+Kinderarzt+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><span className="text-lg opacity-80">👶</span> {t.pediatricianBtn}</a>
+                 <a href="https://www.google.com/maps/search/?api=1&query=Pharmacy+Apotheke+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-emerald-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><span className="text-lg opacity-80">💊</span> {t.pharmacyBtn}</a>
+                 <a href="https://www.google.com/maps/search/?api=1&query=General+Doctor+Clinic+Hausarzt+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-indigo-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><span className="text-lg opacity-80">🩺</span> {t.clinicBtn}</a>
                </div>
             </div>
 
@@ -1204,15 +1991,15 @@ export default function App() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-slate-200">
               <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3 relative overflow-hidden">
                 <div className="w-10 h-10 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4 border border-rose-100"><Stethoscope className="w-5 h-5" /></div>
-                <h4 className="font-bold text-slate-900 text-base">Night Pharmacy (Notdienst)</h4>
-                <p className="text-sm text-slate-500 leading-relaxed pb-6">Pharmacies rotate 24-hour night duty. Ring the night bell (Notdienstglocke) for urgent baby fever syrup.</p>
-                <div className="absolute bottom-6 left-6"><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Notdienst Apotheke ' + selectedCity)}`} target="_blank" rel="noreferrer" className="text-sm text-indigo-600 font-medium hover:underline inline-flex items-center gap-1.5"><span>Find Open Pharmacy</span><ArrowRight className="w-3.5 h-3.5" /></a></div>
+                <h4 className="font-bold text-slate-900 text-base">{t.nightPharmacyTitle}</h4>
+                <p className="text-sm text-slate-500 leading-relaxed pb-6">{t.nightPharmacyDesc}</p>
+                <div className="absolute bottom-6 left-6"><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Notdienst Apotheke ' + selectedCity)}`} target="_blank" rel="noreferrer" className="text-sm text-indigo-600 font-medium hover:underline inline-flex items-center gap-1.5"><span>{t.findOpenPharmacy}</span><ArrowRight className="w-3.5 h-3.5" /></a></div>
               </div>
               <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3 relative overflow-hidden">
                 <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4 border border-blue-100"><Package className="w-5 h-5" /></div>
-                <h4 className="font-bold text-slate-900 text-base">Baby Care (dm / Rossmann)</h4>
-                <p className="text-sm text-slate-500 leading-relaxed pb-6">Formula milk: Aptamil (Pre / 1), HiPP Bio Combiotik. 'Pre' is closest to breast milk. Stock up on diapers.</p>
-                <div className="absolute bottom-6 left-6"><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('dm drogerie ' + selectedCity)}`} target="_blank" rel="noreferrer" className="text-sm text-indigo-600 font-medium hover:underline inline-flex items-center gap-1.5"><span>Locate Nearest Store</span><ArrowRight className="w-3.5 h-3.5" /></a></div>
+                <h4 className="font-bold text-slate-900 text-base">{t.babyCareTitle}</h4>
+                <p className="text-sm text-slate-500 leading-relaxed pb-6">{t.babyCareDesc}</p>
+                <div className="absolute bottom-6 left-6"><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('dm drogerie ' + selectedCity)}`} target="_blank" rel="noreferrer" className="text-sm text-indigo-600 font-medium hover:underline inline-flex items-center gap-1.5"><span>{t.locateNearestStore}</span><ArrowRight className="w-3.5 h-3.5" /></a></div>
               </div>
             </div>
           </div>
@@ -1224,13 +2011,13 @@ export default function App() {
             <div className="bg-white border border-slate-100 shadow-sm p-6 sm:p-8 rounded-3xl flex flex-col md:flex-row justify-between md:items-center gap-6 relative overflow-hidden">
                <div className="absolute top-0 left-0 w-1.5 h-full bg-amber-400 rounded-l-3xl"></div>
                <div className="pl-2">
-                 <h3 className="font-bold text-slate-800 flex items-center gap-2.5 text-lg"><span className="relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span></span>Live Location Search</h3>
-                 <p className="text-sm text-slate-500 mt-1.5 max-w-md leading-relaxed">Access your device's GPS to find the nearest curated Indian groceries, tiffins, and food services.</p>
+                 <h3 className="font-bold text-slate-800 flex items-center gap-2.5 text-lg"><span className="relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span></span>{t.liveLocationSearch}</h3>
+                 <p className="text-sm text-slate-500 mt-1.5 max-w-md leading-relaxed">{t.gpsGroceryDesc}</p>
                </div>
                <div className="flex flex-wrap gap-3 shrink-0">
-                 <a href="https://www.google.com/maps/search/?api=1&query=Indian+grocery+store+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><ShoppingBag className="w-4 h-4 text-slate-400"/> Groceries</a>
-                 <a href="https://www.google.com/maps/search/?api=1&query=Indian+restaurant+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><MapPin className="w-4 h-4 text-slate-400"/> Restaurants</a>
-                 <a href="https://www.google.com/maps/search/?api=1&query=Indian+tiffin+service+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><Package className="w-4 h-4 text-slate-400"/> Tiffin Centers</a>
+                 <a href="https://www.google.com/maps/search/?api=1&query=Indian+grocery+store+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><ShoppingBag className="w-4 h-4 text-slate-400"/> {t.groceriesBtn}</a>
+                 <a href="https://www.google.com/maps/search/?api=1&query=Indian+restaurant+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><MapPin className="w-4 h-4 text-slate-400"/> {t.restaurantsBtn}</a>
+                 <a href="https://www.google.com/maps/search/?api=1&query=Indian+tiffin+service+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition"><Package className="w-4 h-4 text-slate-400"/> {t.tiffinBtn}</a>
                </div>
             </div>
 
@@ -1240,7 +2027,7 @@ export default function App() {
                 {GROCERY_SUBSTITUTES.map((sub, i) => (
                   <div key={i} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4 hover:shadow-md transition">
                     <div className="flex items-center justify-between"><h3 className="font-bold text-slate-900 text-base">{sub.item}</h3><span className="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2.5 py-1 rounded-full border border-emerald-100 uppercase tracking-wider">{t.safeAlternative}</span></div>
-                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1"><span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1">Buy this on shelf:</span><span className="text-sm font-bold text-slate-800 block">{sub.substitute}</span></div>
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1"><span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1">{t.buyOnShelf}</span><span className="text-sm font-bold text-slate-800 block">{sub.substitute}</span></div>
                     <p className="text-sm text-slate-600 leading-relaxed flex gap-2"><span className="opacity-60">💡</span><span>{sub.note}</span></p>
                   </div>
                 ))}
@@ -1270,15 +2057,15 @@ export default function App() {
             <div className="bg-white border border-slate-100 shadow-sm p-6 sm:p-8 rounded-3xl relative overflow-hidden mb-6">
               <div className="absolute top-0 left-0 w-1.5 h-full bg-indigo-400 rounded-l-3xl"></div>
               <div className="pl-2 mb-6">
-                <h3 className="font-bold text-slate-800 flex items-center gap-2.5 text-lg"><span className="relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span></span>Live Community Locator</h3>
-                <p className="text-sm text-slate-500 mt-1.5 max-w-md leading-relaxed">Find the nearest religious centers and Indian associations securely using GPS.</p>
+                <h3 className="font-bold text-slate-800 flex items-center gap-2.5 text-lg"><span className="relative flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span></span>{t.liveCommunityLocator}</h3>
+                <p className="text-sm text-slate-500 mt-1.5 max-w-md leading-relaxed">{t.gpsCommunityDesc}</p>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 pl-2">
-                <a href="https://www.google.com/maps/search/?api=1&query=Hindu+Temple+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 border border-slate-200 px-3 py-3 rounded-2xl text-sm font-medium text-slate-700 flex flex-col items-center justify-center gap-2 shadow-sm transition"><span className="text-2xl mb-1 opacity-90">🛕</span> Temple</a>
-                <a href="https://www.google.com/maps/search/?api=1&query=Mosque+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 border border-slate-200 px-3 py-3 rounded-2xl text-sm font-medium text-slate-700 flex flex-col items-center justify-center gap-2 shadow-sm transition"><span className="text-2xl mb-1 opacity-90">🕌</span> Mosque</a>
-                <a href="https://www.google.com/maps/search/?api=1&query=Gurudwara+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 border border-slate-200 px-3 py-3 rounded-2xl text-sm font-medium text-slate-700 flex flex-col items-center justify-center gap-2 shadow-sm transition"><span className="text-2xl mb-1 opacity-90">🪯</span> Gurudwara</a>
-                <a href="https://www.google.com/maps/search/?api=1&query=Church+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 border border-slate-200 px-3 py-3 rounded-2xl text-sm font-medium text-slate-700 flex flex-col items-center justify-center gap-2 shadow-sm transition"><span className="text-2xl mb-1 opacity-90">⛪</span> Church</a>
-                <a href="https://www.google.com/maps/search/?api=1&query=Indian+Community+Association+Club+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 border border-slate-200 px-3 py-3 rounded-2xl text-sm font-medium text-slate-700 flex flex-col items-center justify-center gap-2 shadow-sm transition"><span className="text-2xl mb-1 opacity-90">🤝</span> Associations</a>
+                <a href="https://www.google.com/maps/search/?api=1&query=Hindu+Temple+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 border border-slate-200 px-3 py-3 rounded-2xl text-sm font-medium text-slate-700 flex flex-col items-center justify-center gap-2 shadow-sm transition"><span className="text-2xl mb-1 opacity-90">🛕</span> {t.temple}</a>
+                <a href="https://www.google.com/maps/search/?api=1&query=Mosque+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 border border-slate-200 px-3 py-3 rounded-2xl text-sm font-medium text-slate-700 flex flex-col items-center justify-center gap-2 shadow-sm transition"><span className="text-2xl mb-1 opacity-90">🕌</span> {t.mosque}</a>
+                <a href="https://www.google.com/maps/search/?api=1&query=Gurudwara+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 border border-slate-200 px-3 py-3 rounded-2xl text-sm font-medium text-slate-700 flex flex-col items-center justify-center gap-2 shadow-sm transition"><span className="text-2xl mb-1 opacity-90">🪯</span> {t.gurudwara}</a>
+                <a href="https://www.google.com/maps/search/?api=1&query=Church+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 border border-slate-200 px-3 py-3 rounded-2xl text-sm font-medium text-slate-700 flex flex-col items-center justify-center gap-2 shadow-sm transition"><span className="text-2xl mb-1 opacity-90">⛪</span> {t.church}</a>
+                <a href="https://www.google.com/maps/search/?api=1&query=Indian+Community+Association+Club+near+me" target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 border border-slate-200 px-3 py-3 rounded-2xl text-sm font-medium text-slate-700 flex flex-col items-center justify-center gap-2 shadow-sm transition"><span className="text-2xl mb-1 opacity-90">🤝</span> {t.associations}</a>
               </div>
             </div>
 
@@ -1303,8 +2090,8 @@ export default function App() {
           <div className="bg-white rounded-3xl border border-slate-200 shadow-sm h-[700px] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-slate-50 border-b border-slate-200 p-4 flex justify-between items-center shrink-0">
               <div className="flex bg-slate-200/60 p-1 rounded-xl">
-                <button onClick={() => setChatView('board')} className={`px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition ${chatView === 'board' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}><MessageSquare className="w-4 h-4"/> Public Board</button>
-                <button onClick={() => setChatView('inbox')} className={`px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition ${chatView === 'inbox' || chatView === 'private' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}><Inbox className="w-4 h-4"/> My Inbox</button>
+                <button onClick={() => setChatView('board')} className={`px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition ${chatView === 'board' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}><MessageSquare className="w-4 h-4"/> {t.publicBoard}</button>
+                <button onClick={() => setChatView('inbox')} className={`px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition ${chatView === 'inbox' || chatView === 'private' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'}`}><Inbox className="w-4 h-4"/> {t.myInbox}</button>
               </div>
             </div>
 
@@ -1313,8 +2100,8 @@ export default function App() {
                 <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-4xl shadow-sm border border-slate-200">👋</div>
                 <div><h4 className="font-bold text-xl text-slate-900 mb-2">Join {currentCountry.name} Community</h4><p className="text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">Choose a display name. Your identity is hidden until you choose to safely share your WhatsApp number in a private chat.</p></div>
                 <form onSubmit={joinChat} className="w-full max-w-sm space-y-4 pt-4">
-                  <input type="text" required placeholder="Choose a Display Name (e.g. Rahul M.)" value={chatName} onChange={(e) => setChatName(e.target.value)} className="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-slate-400 focus:ring-4 focus:ring-slate-100 text-center font-medium shadow-sm transition" />
-                  <button type="submit" className="w-full bg-slate-900 text-white font-medium py-3.5 rounded-2xl shadow-sm hover:bg-slate-800 transition">Enter Public Board</button>
+                  <input type="text" required placeholder={t.displayNamePlaceholder} value={chatName} onChange={(e) => setChatName(e.target.value)} className="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-slate-400 focus:ring-4 focus:ring-slate-100 text-center font-medium shadow-sm transition" />
+                  <button type="submit" className="w-full bg-slate-900 text-white font-medium py-3.5 rounded-2xl shadow-sm hover:bg-slate-800 transition">{t.enterPublicBoard}</button>
                 </form>
               </div>
             ) : (
@@ -1323,7 +2110,7 @@ export default function App() {
                   <div className="flex-1 flex flex-col overflow-hidden">
                     <div className="flex-1 p-6 overflow-y-auto bg-slate-50/50 space-y-4">
                       {publicPosts.filter(p => p.country === currentCountryKey).length === 0 ? (
-                        <div className="text-center text-slate-400 text-sm mt-10">No public posts yet. Be the first to ask a question!</div>
+                        <div className="text-center text-slate-400 text-sm mt-10">{t.noPublicPosts}</div>
                       ) : (
                         publicPosts.filter(p => p.country === currentCountryKey).map((post) => (
                           <div key={post.id} className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-3">
@@ -1331,9 +2118,9 @@ export default function App() {
                             <p className="text-sm text-slate-700 leading-relaxed">{post.text}</p>
                             <div className="pt-3 flex justify-end">
                               {post.authorId === myUserId ? (
-                                <span className="text-xs font-semibold text-slate-400 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">Your Post</span>
+                                <span className="text-xs font-semibold text-slate-400 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">{t.yourPost}</span>
                               ) : (
-                                <button onClick={() => startPrivateChat(post)} className="text-xs font-semibold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-4 py-2 rounded-xl transition border border-indigo-100 flex items-center gap-1.5"><MessageCircle className="w-3.5 h-3.5"/> Message Privately</button>
+                                <button onClick={() => startPrivateChat(post)} className="text-xs font-semibold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-4 py-2 rounded-xl transition border border-indigo-100 flex items-center gap-1.5"><MessageCircle className="w-3.5 h-3.5"/> {t.messagePrivately}</button>
                               )}
                             </div>
                           </div>
@@ -1342,8 +2129,8 @@ export default function App() {
                     </div>
                     <div className="p-4 bg-white border-t border-slate-200 shrink-0">
                       <form onSubmit={handlePostToBoard} className="flex flex-col gap-3">
-                        <textarea rows={2} placeholder="Ask a question or share advice to the public board..." value={composeText} onChange={(e) => setComposeText(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3 text-sm focus:outline-none focus:border-slate-300 focus:ring-4 focus:ring-slate-100 font-medium transition resize-none" />
-                        <div className="flex justify-end"><button type="submit" disabled={!composeText.trim()} className="bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 text-white px-6 py-2.5 rounded-xl transition shadow-sm text-sm font-semibold">Post to Board</button></div>
+                        <textarea rows={2} placeholder={t.composePlaceholder} value={composeText} onChange={(e) => setComposeText(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3 text-sm focus:outline-none focus:border-slate-300 focus:ring-4 focus:ring-slate-100 font-medium transition resize-none" />
+                        <div className="flex justify-end"><button type="submit" disabled={!composeText.trim()} className="bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 text-white px-6 py-2.5 rounded-xl transition shadow-sm text-sm font-semibold">{t.postToBoard}</button></div>
                       </form>
                     </div>
                   </div>
@@ -1351,9 +2138,9 @@ export default function App() {
 
                 {chatView === 'inbox' && (
                   <div className="flex-1 p-6 overflow-y-auto bg-slate-50/50">
-                    <h2 className="text-lg font-bold text-slate-900 mb-4">My Private Messages</h2>
+                    <h2 className="text-lg font-bold text-slate-900 mb-4">{t.myPrivateMessages}</h2>
                     {Object.keys(privateChats).length === 0 ? (
-                      <div className="text-center text-slate-400 text-sm mt-10">Your inbox is empty. Message someone from the Public Board.</div>
+                      <div className="text-center text-slate-400 text-sm mt-10">{t.emptyInbox}</div>
                     ) : (
                       <div className="space-y-3">
                         {Object.entries(privateChats).map(([uid, chatData]) => {
@@ -1375,9 +2162,9 @@ export default function App() {
                     <div className="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between shadow-sm z-10">
                       <div className="flex items-center gap-3">
                         <button onClick={() => setChatView('inbox')} className="p-2 -ml-2 rounded-full hover:bg-slate-100 text-slate-500 transition"><ChevronLeft className="w-5 h-5" /></button>
-                        <div><div className="font-bold text-sm text-slate-900">{activePrivateChatUser.name}</div><div className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Private 1-on-1 Chat</div></div>
+                        <div><div className="font-bold text-sm text-slate-900">{activePrivateChatUser.name}</div><div className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">{t.privateChatHeading}</div></div>
                       </div>
-                      <button onClick={shareWhatsAppNumber} className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 border border-emerald-200"><Smartphone className="w-3.5 h-3.5" /> <span>Share WhatsApp</span></button>
+                      <button onClick={shareWhatsAppNumber} className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 border border-emerald-200"><Smartphone className="w-3.5 h-3.5" /> <span>{t.shareWhatsapp}</span></button>
                     </div>
 
                     <div className="flex-1 p-6 overflow-y-auto bg-slate-50 space-y-4">
