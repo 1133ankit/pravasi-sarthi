@@ -1423,6 +1423,8 @@ export default function App() {
   const [selectedLang, setSelectedLang] = useState('hi');
   const [showLangModal, setShowLangModal] = useState(false);
 
+
+
   const [currentCountryKey, setCurrentCountryKey] = useState('germany');
   const currentCountry = EUROPEAN_COUNTRIES[currentCountryKey];
   const [selectedCity, setSelectedCity] = useState(currentCountry.cities[0]);
@@ -1555,6 +1557,73 @@ export default function App() {
       supabase.removeChannel(postSub);
     };
   }, []);
+
+  // --- ADD THIS: Community Recommendations State & Fetching ---
+  const [recommendations, setRecommendations] = useState([]);
+  const [recCategory, setRecCategory] = useState('grocery'); 
+  const [newRecTitle, setNewRecTitle] = useState('');
+  const [newRecDesc, setNewRecDesc] = useState('');
+
+  useEffect(() => {
+    async function fetchRecommendations() {
+      const { data } = await supabase
+        .from('city_recommendations')
+        .select('*')
+        .eq('country', currentCountryKey)
+        .eq('city', selectedCity)
+        .order('id', { ascending: false });
+
+      if (data && data.length > 0) {
+        setRecommendations(data);
+      } else {
+        setRecommendations([
+          {
+            id: 1,
+            country: currentCountryKey,
+            city: selectedCity,
+            category: 'grocery',
+            title: 'EuroGourmet Indian Spices',
+            description: 'Best place for fresh paneer, basmati rice, and South Indian staples.',
+            rating: 4.8,
+            author_name: 'Rahul M.'
+          },
+          {
+            id: 2,
+            country: currentCountryKey,
+            city: selectedCity,
+            category: 'restaurant',
+            title: 'Taj Mahal Authentic Curry',
+            description: 'Amazing garlic naan and butter chicken. Feels just like home.',
+            rating: 4.6,
+            author_name: 'Priya S.'
+          }
+        ]);
+      }
+    }
+    fetchRecommendations();
+  }, [currentCountryKey, selectedCity]);
+
+  const handleAddRecommendation = async (e) => {
+    e.preventDefault();
+    if (!newRecTitle.trim() || !newRecDesc.trim()) return;
+
+    const item = {
+      country: currentCountryKey,
+      city: selectedCity,
+      category: recCategory,
+      title: newRecTitle,
+      description: newRecDesc,
+      rating: 5.0,
+      author_name: chatName || 'Expat Member'
+    };
+
+    const { error } = await supabase.from('city_recommendations').insert([item]);
+    if (!error) {
+      setRecommendations(prev => [item, ...prev]);
+      setNewRecTitle('');
+      setNewRecDesc('');
+    }
+  };
 
   // 2. Live Private Chats state & real-time sync
   const [privateChats, setPrivateChats] = useState({});
@@ -1865,7 +1934,8 @@ export default function App() {
             { id: 'desiRadar', label: t.tabs.desiRadar, icon: ShoppingBag },
             { id: 'community', label: t.tabs.community, icon: Users },
             { id: 'chat', label: t.tabs.chat || 'Chat', icon: MessageCircle },
-            { id: 'about', label: t.tabs.about || 'About Us', icon: Info }
+            { id: 'about', label: t.tabs.about || 'About Us', icon: Info },
+            { id: 'recommendations', label: t.tabs?.recommendations || 'Expat Guide', icon: MapPin }
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -2222,6 +2292,8 @@ export default function App() {
           </div>
         )}
 
+
+
         {/* TAB 7: CHAT */}
         {activeTab === 'chat' && (
           <div className="bg-white rounded-3xl border border-slate-200 shadow-sm h-[700px] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -2334,6 +2406,64 @@ export default function App() {
             )}
           </div>
         )}
+
+        {activeTab === 'recommendations' && (
+  <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-6 max-w-4xl mx-auto my-4 animate-in fade-in duration-300">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 pb-4">
+      <div>
+        <h2 className="text-xl font-bold text-slate-900">🌟 Expat Guide: {selectedCity}</h2>
+        <p className="text-sm text-slate-500">Trusted Indian grocery stores, eateries, and clubs recommended by peers.</p>
+      </div>
+      
+      {/* Category Filter Pills */}
+      <div className="flex bg-slate-100 p-1 rounded-xl">
+        <button type="button" onClick={() => setRecCategory('grocery')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${recCategory === 'grocery' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>🛒 Groceries</button>
+        <button type="button" onClick={() => setRecCategory('restaurant')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${recCategory === 'restaurant' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>🍲 Food</button>
+        <button type="button" onClick={() => setRecCategory('club')} className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${recCategory === 'club' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'}`}>🤝 Clubs</button>
+      </div>
+    </div>
+
+    {/* Recommendations Feed */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {recommendations.filter(r => r.category === recCategory).map((item, idx) => (
+        <div key={item.id || idx} className="p-4 rounded-2xl border border-slate-100 bg-slate-50/60 transition space-y-2">
+          <div className="flex justify-between items-start">
+            <h3 className="font-bold text-slate-900 text-sm">{item.title}</h3>
+            <span className="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">★ {item.rating}</span>
+          </div>
+          <p className="text-xs text-slate-600 leading-relaxed">{item.description}</p>
+          <div className="flex justify-between items-center pt-2 text-[11px] text-slate-400 font-medium">
+            <span>Suggested by {item.author_name}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Add Recommendation Form */}
+    <form onSubmit={handleAddRecommendation} className="pt-6 border-t border-slate-100 space-y-3">
+      <h3 className="font-semibold text-slate-800 text-sm">💡 Share a Secret Spot in {selectedCity}</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <input 
+          type="text" 
+          placeholder="Place or Club Name" 
+          value={newRecTitle} 
+          onChange={(e) => setNewRecTitle(e.target.value)} 
+          className="p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+        <input 
+          type="text" 
+          placeholder="Short review or specialty..." 
+          value={newRecDesc} 
+          onChange={(e) => setNewRecDesc(e.target.value)} 
+          className="p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+        <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-2.5 px-4 rounded-xl transition shadow-sm">
+          Submit Recommendation
+        </button>
+      </div>
+    </form>
+  </div>
+)}
 
         {/* TAB 8: ABOUT US & PARTNERSHIPS */}
         {activeTab === 'about' && (
