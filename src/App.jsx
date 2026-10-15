@@ -1685,6 +1685,27 @@ export default function App() {
     }
   };
 
+  const startPrivateChat = (post) => {
+    // Fallback to check both snake_case (Supabase) and camelCase (Mock/Local)
+    const authorId = post.author_id || post.authorId;
+    const authorName = post.author_name || post.authorName;
+
+    if (!authorId) {
+      console.error("Missing author ID on post object:", post);
+      return;
+    }
+
+    if (!privateChats[authorId]) {
+      setPrivateChats(prev => ({ 
+        ...prev, 
+        [authorId]: { name: authorName, messages: [] } 
+      }));
+    }
+    
+    setActivePrivateChatUser({ id: authorId, name: authorName });
+    setChatView('private');
+  };
+
   const shareWhatsAppNumber = async () => {
     const num = window.prompt("Enter your WhatsApp number with country code (e.g., +49176... or +9198...):");
     if (num) {
