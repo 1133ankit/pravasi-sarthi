@@ -40,6 +40,12 @@ import {
   Heart
 } from 'lucide-react';
 
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://auidzdcvivgcndeyhfgd.supabase.co';
+const supabaseKey = 'sb_publishable_JmnBDLOHFbCQuV3p_ojRkA_yS9-Uqhi';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 // ============================================================================
 // 1. ALL 10 INDIAN MOTHER TONGUES CONFIGURATION
 // ============================================================================
