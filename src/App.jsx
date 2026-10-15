@@ -1523,13 +1523,87 @@ export default function App() {
   const [composeText, setComposeText] = useState('');
   const messagesEndRef = useRef(null);
 
-  const [publicPosts, setPublicPosts] = useState([
-    { id: 101, country: 'germany', authorId: 'mock1', authorName: 'Rahul M.', text: 'Landing in Munich next week. Can someone guide me on which SIM card to buy at the airport?', time: '10:30 AM' },
-    { id: 102, country: 'germany', authorId: 'mock2', authorName: 'Priya S.', text: 'Does anyone have a contact for a reliable moving van in Berlin?', time: '09:15 AM' }
-  ]);
-  const [privateChats, setPrivateChats] = useState({
-    'mock1': { name: 'Rahul M.', messages: [{ id: 1, senderId: myUserId, text: 'Hey Rahul! Get a Lebara SIM at REWE.', time: '10:45 AM' }] }
-  });
+  // 1. Live Public Posts state & real-time sync
+  const [publicPosts, setPublicPosts] = useState([]);
+  
+  useEffect(() => {
+    async function fetchPosts() {
+      const { data } = await supabase
+        .from('public_posts')
+        .select('*')
+        .order('id', { ascending: false });
+      if (data && data.length > 0) {
+        setPublicPosts(data);
+      } else {
+        // Fallback default posts if database is empty
+        setPublicPosts([
+          { id: 101, country: 'germany', authorId: 'mock1', authorName: 'Rahul M.', text: 'Landing in Munich next week. Can someone guide me on which SIM card to buy at the airport?', time: '10:30 AM' },
+          { id: 102, country: 'germany', authorId: 'mock2', authorName: 'Priya S.', text: 'Does anyone have a contact for a reliable moving van in Berlin?', time: '09:15 AM' }
+        ]);
+      }
+    }
+    fetchPosts();
+
+    const postSub = supabase
+      .channel('public_posts_realtime')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'public_posts' }, (payload) => {
+        setPublicPosts((prev) => [payload.new, ...prev]);
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(postSub);
+    };
+  }, []);
+
+  // 2. Live Private Chats state & real-time sync
+  const [privateChats, setPrivateChats] = useState({});
+
+  useEffect(() => {
+    if (!activePrivateChatUser) return;
+
+    async function fetchPrivateMessages() {
+      const { data } = await supabase
+        .from('private_messages')
+        .select('*')
+        .or(`and(sender_id.eq.${myUserId},recipient_id.eq.${activePrivateChatUser.id}),and(sender_id.eq.${activePrivateChatUser.id},recipient_id.eq.${myUserId})`)
+        .order('id', { ascending: true });
+
+      if (data) {
+        setPrivateChats(prev => ({
+          ...prev,
+          [activePrivateChatUser.id]: {
+            name: activePrivateChatUser.name,
+            messages: data
+          }
+        }));
+      }
+    }
+    fetchPrivateMessages();
+
+    const chatSub = supabase
+      .channel(`private_${myUserId}_${activePrivateChatUser.id}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'private_messages' }, (payload) => {
+        const msg = payload.new;
+        if (
+          (msg.sender_id === activePrivateChatUser.id && msg.recipient_id === myUserId) ||
+          (msg.sender_id === myUserId && msg.recipient_id === activePrivateChatUser.id)
+        ) {
+          setPrivateChats(prev => ({
+            ...prev,
+            [activePrivateChatUser.id]: {
+              ...prev[activePrivateChatUser.id],
+              messages: [...(prev[activePrivateChatUser.id]?.messages || []), msg]
+            }
+          }));
+        }
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(chatSub);
+    };
+  }, [activePrivateChatUser, myUserId]);
 
   useEffect(() => {
     try { localStorage.setItem('pravasi_custom_flashcards_v4', JSON.stringify(customCards)); } catch (e) { console.error(e); }
@@ -1557,11 +1631,20 @@ export default function App() {
     }
   };
 
-  const handlePostToBoard = (e) => {
+  const handlePostToBoard = async (e) => {
     e.preventDefault();
     if (!composeText.trim()) return;
-    const newPost = { id: Date.now(), country: currentCountryKey, authorId: myUserId, authorName: chatName, text: composeText, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) };
-    setPublicPosts([newPost, ...publicPosts]);
+    const newPost = { 
+      id: Date.now(), 
+      country: currentCountryKey, 
+      author_id: myUserId,        // Matches Supabase column naming
+      author_name: chatName,     // Matches Supabase column naming
+      text: composeText, 
+      time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
+    };
+    
+    // Save to Supabase cloud database
+    await supabase.from('public_posts').insert([newPost]);
     setComposeText('');
   };
 
@@ -1573,20 +1656,35 @@ export default function App() {
     setChatView('private');
   };
 
-  const handleSendPrivateMessage = (e) => {
+  const handleSendPrivateMessage = async (e) => {
     e.preventDefault();
     if (!composeText.trim() || !activePrivateChatUser) return;
-    const newMsg = { id: Date.now(), senderId: myUserId, text: composeText, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) };
-    setPrivateChats(prev => ({ ...prev, [activePrivateChatUser.id]: { ...prev[activePrivateChatUser.id], messages: [...prev[activePrivateChatUser.id].messages, newMsg] } }));
+    const newMsg = { 
+      id: Date.now(), 
+      sender_id: myUserId,             // Matches Supabase column naming
+      recipient_id: activePrivateChatUser.id, // Matches Supabase column naming
+      text: composeText, 
+      time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
+    };
+
+    // Save direct message to Supabase cloud database
+    await supabase.from('private_messages').insert([newMsg]);
     setComposeText('');
   };
 
-  const shareWhatsAppNumber = () => {
+  const shareWhatsAppNumber = async () => {
     const num = window.prompt("Enter your WhatsApp number with country code (e.g., +49176... or +9198...):");
     if (num) {
       const cleanNum = num.replace(/[^0-9]/g, '');
-      const newMsg = { id: Date.now(), senderId: myUserId, text: `📱 I have shared my WhatsApp number with you. Let's chat there!\n\nClick here: https://wa.me/${cleanNum}`, isSystem: true, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) };
-      setPrivateChats(prev => ({ ...prev, [activePrivateChatUser.id]: { ...prev[activePrivateChatUser.id], messages: [...prev[activePrivateChatUser.id].messages, newMsg] } }));
+      const newMsg = { 
+        id: Date.now(), 
+        sender_id: myUserId, 
+        recipient_id: activePrivateChatUser.id,
+        text: `📱 I have shared my WhatsApp number with you. Let's chat there!\n\nClick here: https://wa.me/${cleanNum}`, 
+        is_system: true, 
+        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
+      };
+      await supabase.from('private_messages').insert([newMsg]);
     }
   };
 
