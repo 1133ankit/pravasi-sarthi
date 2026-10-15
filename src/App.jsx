@@ -1634,42 +1634,55 @@ export default function App() {
   const handlePostToBoard = async (e) => {
     e.preventDefault();
     if (!composeText.trim()) return;
+
     const newPost = { 
       id: Date.now(), 
       country: currentCountryKey, 
-      author_id: myUserId,        // Matches Supabase column naming
-      author_name: chatName,     // Matches Supabase column naming
+      author_name: chatName || 'Anonymous', 
       text: composeText, 
-      time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
     };
-    
-    // Save to Supabase cloud database
-    await supabase.from('public_posts').insert([newPost]);
-    setComposeText('');
-  };
 
-  const startPrivateChat = (userObj) => {
-    if (!privateChats[userObj.authorId]) {
-      setPrivateChats(prev => ({ ...prev, [userObj.authorId]: { name: userObj.authorName, messages: [] } }));
+    console.log("Attempting to insert post:", newPost);
+
+    const { data, error } = await supabase
+      .from('public_posts')
+      .insert([newPost]);
+
+    if (error) {
+      console.error("Supabase Post Error:", error.message, error.details, error.hint);
+      alert("Error posting: " + error.message);
+    } else {
+      console.log("Post inserted successfully!", data);
+      setComposeText('');
     }
-    setActivePrivateChatUser({ id: userObj.authorId, name: userObj.authorName });
-    setChatView('private');
   };
 
   const handleSendPrivateMessage = async (e) => {
     e.preventDefault();
     if (!composeText.trim() || !activePrivateChatUser) return;
+
     const newMsg = { 
       id: Date.now(), 
-      sender_id: myUserId,             // Matches Supabase column naming
-      recipient_id: activePrivateChatUser.id, // Matches Supabase column naming
+      sender_id: myUserId, 
+      recipient_id: activePrivateChatUser.id, 
       text: composeText, 
-      time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
     };
 
-    // Save direct message to Supabase cloud database
-    await supabase.from('private_messages').insert([newMsg]);
-    setComposeText('');
+    console.log("Attempting to send private message:", newMsg);
+
+    const { data, error } = await supabase
+      .from('private_messages')
+      .insert([newMsg]);
+
+    if (error) {
+      console.error("Supabase Message Error:", error.message, error.details, error.hint);
+      alert("Error sending message: " + error.message);
+    } else {
+      console.log("Private message sent successfully!", data);
+      setComposeText('');
+    }
   };
 
   const shareWhatsAppNumber = async () => {
