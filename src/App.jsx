@@ -53,7 +53,7 @@ const INDIAN_LANGUAGES = [
   { code: 'te', name: 'తెలుగు', label: 'Telugu', greeting: 'నమస్కారం' },
   { code: 'bn', name: 'বাংলা', label: 'Bengali', greeting: 'নমস্কার' },
   { code: 'mr', name: 'मराठी', label: 'Marathi', greeting: 'नमस्कार' },
-  { code: 'gu', name: 'ગુજરાતી', label: 'Gujarati', greeting: 'નમસ્તે' },
+  { code: 'gu', name: 'ગુજરાતી', label: 'Gujarati', greeting: 'નમસ્ते' },
   { code: 'pa', name: 'ਪੰਜਾਬੀ', label: 'Punjabi', greeting: 'ਸਤਿ ਸ਼੍ਰੀ ਅਕਾਲ' },
   { code: 'kn', name: 'ಕನ್ನಡ', label: 'Kannada', greeting: 'ನಮಸ್ಕಾರ' },
   { code: 'ml', name: 'മലയാളം', label: 'Malayalam', greeting: 'നമസ്കാരം' },
@@ -122,12 +122,11 @@ const UI_TEXT = {
       journey: '१. पहला महीना (रोडमैप)',
       offices: '२. सरकारी ऑफिस',
       regulations: '३. जर्मन नियम व कानून',
-      flashcards: '४. स्क्रीन कार्ड्स',
-      essentials: '५. अस्पताल व 24/7 फार्मेसी',
-      desiRadar: '६. किराना व रेस्टोरेंट',
-      community: '७. मंदिर व पार्क',
-      chat: '८. कम्युनिटी चैट',
-      about: '९. हमारे बारे में'
+      essentials: '४. अस्पताल व 24/7 फार्मेसी',
+      desiRadar: '५. किराना व रेस्टोरेंट',
+      community: '६. मंदिर व पार्क',
+      chat: '७. कम्युनिटी चैट',
+      about: '८. हमारे बारे में'
     },
     roadmapHeading: 'जर्मनी में पहले ३० दिन का मास्टर रोडमैप',
     roadmapSub: 'सिम कार्ड से लेकर अपार्टमेंट रेंटिंग, Anmeldung, Deutschlandticket और टैक्स आईडी तक की पूरी कानूनी प्रक्रिया।',
@@ -141,9 +140,6 @@ const UI_TEXT = {
     showToLocal: 'स्थानीय व्यक्ति को दिखाएं:',
     tapToAnswer: '👇 सामने वाला व्यक्ति सीधे स्क्रीन पर जवाब चुन सकता है:',
     localAnswered: 'सामने वाले व्यक्ति ने यह उत्तर चुना:',
-    addNewCardBtn: '➕ नया फ्लैशकार्ड बनाएं',
-    customCardBadge: 'कस्टम कार्ड',
-    templateLabel: '⚡ रेडीमेड टेम्पलेट चुनें:',
     substitutesTitle: 'जर्मन सुपरमार्केट (Rewe/Aldi/Lidl) में देसी विकल्प',
     substitutesSub: 'पनीर, आटा और दही के स्थानीय विकल्प:',
     safeAlternative: 'सुरक्षित विकल्प',
@@ -158,232 +154,370 @@ const UI_TEXT = {
     liveMedicalLocator: 'लाइव मेडिकल और क्लिनिक लोकेटर',
     gpsMedicalDesc: 'निकटतम आपातकालीन कक्ष, 24/7 डॉक्टर (Hausarzt) और रविवार को खुली फार्मेसी (Notdienst) खोजें।'
   },
-  en: {
-    appName: 'Pravasi Sarthi: Germany',
-    editionTag: 'Germany Edition',
-    tagline: 'Trusted Settlement & Daily Living Guide for Indian Families & Professionals in Germany',
-    lostHelpBtn: '🚨 Lost & Need Help?',
-    selectLangTitle: 'Select Your Mother Tongue',
-    policeAmbulance: 'Police / Ambulance:',
-    nonEmergencyDoc: 'Doctor On-Call:',
-    currencyCalc: 'Currency Calculator (INR ↔ EUR)',
+  ta: {
+    appName: 'பிரவாசி சாரதி: ஜெர்மனி',
+    editionTag: 'ஜெர்மனி வழிகாட்டி',
+    tagline: 'ஜெர்மனியில் உள்ள இந்திய குடும்பங்களுக்கான நம்பகமான தோழன்',
+    lostHelpBtn: '🚨 வழி தவறிவிட்டதா?',
+    selectLangTitle: 'உங்கள் தாய்மொழியைத் தேர்ந்தெடுக்கவும்',
+    policeAmbulance: 'காவல்துறை / அவசர ஊர்தி:',
+    nonEmergencyDoc: 'மருத்துவர் ஆன்-கால்:',
+    currencyCalc: 'நாணய மாற்றி',
     tabs: {
-      journey: '1. First 30 Days (Roadmap)',
-      offices: '2. Govt Offices',
-      regulations: '3. German Regulations',
-      flashcards: '4. Flashcards',
-      essentials: '5. Hospitals & Pharmacy',
-      desiRadar: '6. Groceries & Food',
-      community: '7. Temples & Parks',
-      chat: '8. Community Chat',
-      about: '9. About Us'
+      journey: '1. முதல் 30 நாட்கள் திட்டம்',
+      offices: '2. அரசு அலுவலகங்கள்',
+      regulations: '3. ஜெர்மன் சட்டங்கள்',
+      essentials: '4. மருத்துவமனைகள்',
+      desiRadar: '5. மளிகை & உணவு',
+      community: '6. கோயில்கள் & பூங்காக்கள்',
+      chat: '7. சமூகம் அரட்டை',
+      about: '8. எங்களைப் பற்றி'
     },
-    roadmapHeading: 'First 30 Days Master Relocation Roadmap',
-    roadmapSub: 'Complete tasks from landing in Germany to getting your D-Ticket, apartment, and Tax ID.',
-    regulationsHeading: 'German Rules & Regulations',
-    regulationsSub: 'Mandatory legal obligations, quiet hours, and recycling laws in Germany.',
-    simpleBriefHeading: 'In Simple Words:',
-    actionPlanHeading: 'Action Plan:',
-    markCompleteBtn: 'Mark Complete',
-    completedBtn: 'Completed ✓',
-    youAreAsking: 'What you are asking:',
-    showToLocal: 'Show to Local Person:',
-    tapToAnswer: '👇 The local person can tap their answer directly on the screen:',
-    localAnswered: 'The local person selected this answer:',
-    addNewCardBtn: '➕ Create Custom Card',
-    customCardBadge: 'Custom Card',
-    templateLabel: '⚡ Select a Template:',
-    substitutesTitle: 'Desi Substitutes in German Supermarkets (Rewe/Edeka)',
-    substitutesSub: 'Find alternatives for paneer, chakki atta, and curd locally:',
-    safeAlternative: 'Safe Alternative',
-    restaurantsTitle: 'Indian Restaurants & Grocery Stores',
-    communityTitle: 'Indian Families, Temples & Gurudwaras',
-    homeAddressLabel: 'Home Address:',
-    callFamilyBtn: 'Call Now',
-    navigateHome: '📍 Navigate Home on Google Maps',
-    openGoogleMaps: '📍 Open on Google Maps',
-    openPortal: '🌐 Open Official Portal',
-    officeSectionTitle: 'Official German Government Offices',
-    liveMedicalLocator: 'Live Medical & Clinic Locator',
-    gpsMedicalDesc: 'Find nearest emergency rooms, 24/7 doctors, and Sunday duty pharmacies (Notdienst).'
+    roadmapHeading: 'ஜெர்மனிக்கான 30 நாள் மாஸ்டர் திட்டம்',
+    roadmapSub: 'சிம் கார்டு, D-Ticket முதல் வீடு வாடகை மற்றும் வரி எண் வரை.',
+    regulationsHeading: 'ஜெர்மன் விதிகள் மற்றும் சட்டங்கள்',
+    regulationsSub: 'ஜெர்மனியில் வாழும்போது தெரிந்து கொள்ள வேண்டிய முக்கிய சட்டங்கள்.',
+    simpleBriefHeading: 'எளிய மொழியில்:',
+    actionPlanHeading: 'செயல் திட்டம்:',
+    markCompleteBtn: 'முடிந்தது என குறிக்கவும்',
+    completedBtn: 'நிறைவு பெற்றது ✓',
+    youAreAsking: 'நீங்கள் கேட்பது:',
+    showToLocal: 'உள்ளூர் நபரிடம் காட்டவும்:',
+    tapToAnswer: '👇 பததைத் தேர்ந்தெடுக்கவும்:',
+    localAnswered: 'உள்ளூர் நபர் தேர்ந்தெடுத்தது:',
+    substitutesTitle: 'ஜெர்மன் சூப்பர் மார்க்கெட் பொருட்கள்',
+    substitutesSub: 'பன்னீர் மற்றும் மாவுக்கான மாற்றுகள்:',
+    safeAlternative: 'பாதுகாப்பான மாற்று',
+    restaurantsTitle: 'இந்திய உணவகங்கள்',
+    communityTitle: 'இந்திய குடும்பங்கள் & கோயில்கள்',
+    homeAddressLabel: 'வீட்டு முகவரி:',
+    callFamilyBtn: 'அழை',
+    navigateHome: '📍 கூகுள் மேப்ஸில் வீட்டுக்கு செல்ல',
+    openGoogleMaps: '📍 கூகுள் மேப்ஸில் திற',
+    openPortal: '🌐 போர்ட்டலைத் திற',
+    officeSectionTitle: 'ஜெர்மன் அரசு அலுவலகங்கள்',
+    liveMedicalLocator: 'மருத்துவ கண்டறிதல்',
+    gpsMedicalDesc: 'அருகிலுள்ள மருத்துவமனைகள் மற்றும் மருந்தகங்களைக் கண்டறியவும்.'
+  },
+  te: {
+    appName: 'ప్రవాసి సార్థి: జర్మనీ',
+    editionTag: 'జర్మనీ గైడ్',
+    tagline: 'జర్మనీలో భారతీయ కుటుంబాలు మరియు నిపుణుల కోసం నమ్మకమైన సహచరుడు',
+    lostHelpBtn: '🚨 దారి తప్పారా?',
+    selectLangTitle: 'మీ మాతృభాషను ఎంచుకోండి',
+    policeAmbulance: 'పోలీసు / ఆంబులెన్స్:',
+    nonEmergencyDoc: 'డాక్టర్ ఆన్-కాల్:',
+    currencyCalc: 'కరెన్సీ కాలిక్యులేటర్',
+    tabs: {
+      journey: '1. మొదటి 30 రోజులు రోడ్‌మ్యాప్',
+      offices: '2. ప్రభుత్వ కార్యాలయాలు',
+      regulations: '3. జర్మన్ నిబంధనలు',
+      essentials: '4. ఆసుపత్రులు',
+      desiRadar: '5. కిరాణా & ఆహారం',
+      community: '6. ఆలయాలు & పార్కులు',
+      chat: '7. కమ్యూనిటీ చాట్',
+      about: '8. మా గురించి'
+    },
+    roadmapHeading: 'జర్మనీలో మొదటి 30 రోజుల రోడ్‌మ్యాప్',
+    roadmapSub: 'సిమ్ కార్డ్, డి-టికెట్ నుండి అపార్ట్‌మెంట్ మరియు టాక్స్ ఐడి వరకు.',
+    regulationsHeading: 'జర్మన్ నిబంధనలు మరియు చట్టాలు',
+    regulationsSub: 'జర్మనీలో అనుసరించాల్సిన ముఖ్యమైన చట్టపరమైన నియమాలు.',
+    simpleBriefHeading: 'సరళమైన భాషలో:',
+    actionPlanHeading: 'చర్య ప్రణాళిక:',
+    markCompleteBtn: 'పూర్తయినట్లు గుర్తించండి',
+    completedBtn: 'పూర్తయింది ✓',
+    youAreAsking: 'మీరు అడుగుతున్నది:',
+    showToLocal: 'స్థానిక వ్యక్తికి చూపించండి:',
+    tapToAnswer: '👇 సమాధానాన్ని ఎంచుకోండి:',
+    localAnswered: 'స్థానిక వ్యక్తి ఎంచుకున్న సమాధానం:',
+    substitutesTitle: 'జర్మన్ సూపర్ మార్కెట్ ప్రత్యామ్నాయాలు',
+    substitutesSub: 'పన్నీర్ మరియు పిండి కోసం ప్రత్యామ్నాయాలు:',
+    safeAlternative: 'సురక్షితమైన ప్రత్యామ్నాయం',
+    restaurantsTitle: 'భారతీయ రెస్టారెంట్లు',
+    communityTitle: 'భారతీయ కుటుంబాలు & ఆలయాలు',
+    homeAddressLabel: 'ఇంటి చిరునామా:',
+    callFamilyBtn: 'కాల్ చేయండి',
+    navigateHome: '📍 గూగుల్ మ్యాప్స్‌లో ఇంటికి మార్గం',
+    openGoogleMaps: '📍 గూగుల్ మ్యాప్స్‌లో తెరవండి',
+    openPortal: '🌐 పోర్టల్‌ని తెరవండి',
+    officeSectionTitle: 'జర్మన్ ప్రభుత్వ కార్యాలయాలు',
+    liveMedicalLocator: 'లైవ్ మెడికల్ లోకేటర్',
+    gpsMedicalDesc: 'సమీప ఆసుపత్రులు మరియు ఫార్మసీలను కనుగొనండి.'
+  },
+  bn: {
+    appName: 'প্রবাসী সারথি: জার্মানি',
+    editionTag: 'জার্মানি গাইড',
+    tagline: 'জার্মানিতে ভারতীয় পরিবার এবং পেশাদারদের জন্য বিশ্বস্ত সহচর',
+    lostHelpBtn: '🚨 রাস্তা হারিয়েছেন?',
+    selectLangTitle: 'আপনার মাতৃভাষা নির্বাচন করুন',
+    policeAmbulance: 'পুলিশ / অ্যাম্বুলেন্স:',
+    nonEmergencyDoc: 'ডাক্তার অন-কল:',
+    currencyCalc: 'কারেন্সি ক্যালকুলেটর',
+    tabs: {
+      journey: '১. প্রথম ৩০ দিন রোডম্যাপ',
+      offices: '২. সরকারি অফিস',
+      regulations: '৩. জার্মান নিয়মকানুন',
+      essentials: '৪. হাসপাতাল',
+      desiRadar: '৫. গ্রোসারী ও খাদ্য',
+      community: '৬. মন্দির ও পার্ক',
+      chat: '৭. কমিউনিটি চ্যাট',
+      about: '৮. আমাদের সম্পর্কে'
+    },
+    roadmapHeading: 'জার্মানিতে প্রথম ৩০ দিনের মাস্টার রোডম্যাপ',
+    roadmapSub: 'সিম কার্ড, ডি-টিকিট থেকে শুরু করে অ্যাপার্টমেন্ট এবং ট্যাক্স আইডি।',
+    regulationsHeading: 'জার্মান নিয়ম ও আইন',
+    regulationsSub: 'জার্মানিতে বসবাসের জন্য গুরুত্বপূর্ণ আইন ও প্রবিধান।',
+    simpleBriefHeading: 'সহজ কথায়:',
+    actionPlanHeading: 'কর্মপরিকল্পনা:',
+    markCompleteBtn: 'সম্পন্ন বলে চিহ্নিত করুন',
+    completedBtn: 'সম্পন্ন হয়েছে ✓',
+    youAreAsking: 'আপনি যা জিজ্ঞাসা করছেন:',
+    showToLocal: 'স্থানীয় ব্যক্তিকে দেখান:',
+    tapToAnswer: '👇 উত্তর চয়ন করুন:',
+    localAnswered: 'স্থানীয় ব্যক্তি এই উত্তরটি বেছে নিয়েছেন:',
+    substitutesTitle: 'জার্মান সুপারমার্কেটের বিকল্প',
+    substitutesSub: 'পনির ও আটার স্থানীয় বিকল্প:',
+    safeAlternative: 'নিরাপদ বিকল্প',
+    restaurantsTitle: 'ভারতীয় রেস্তোরাঁ',
+    communityTitle: 'ভারতীয় পরিবার ও মন্দির',
+    homeAddressLabel: 'মূল ঠিকানা:',
+    callFamilyBtn: 'কল করুন',
+    navigateHome: '📍 গুগল ম্যাপে বাড়ির পথ',
+    openGoogleMaps: '📍 গুগল ম্যাপে খুলুন',
+    openPortal: '🌐 পোর্টাল খুলুন',
+    officeSectionTitle: 'জার্মান সরকারি অফিস',
+    liveMedicalLocator: 'মেডিকেল লোকেটর',
+    gpsMedicalDesc: 'নিকটবর্তী হাসপাতাল এবং ফার্মেসি খুঁজুন।'
+  },
+  mr: {
+    appName: 'प्रवासी सारथी: जर्मनी',
+    editionTag: 'जर्मनी विशेष गाइड',
+    tagline: 'जर्मनीतील भारतीय कुटुंबे आणि व्यावसायिकांसाठी विश्वासू सोबती',
+    lostHelpBtn: '🚨 रस्ता चुकलात?',
+    selectLangTitle: 'तुमची मातृभाषा निवडा',
+    policeAmbulance: 'पोलिस / रुग्णवाहिका:',
+    nonEmergencyDoc: 'डॉक्टर ऑन-कॉल:',
+    currencyCalc: 'चलम गणक',
+    tabs: {
+      journey: '१. पहिला महिना रोडमॅप',
+      offices: '२. सरकारी कार्यालये',
+      regulations: '३. जर्मन नियम व कायदे',
+      essentials: '४. रुग्णालये',
+      desiRadar: '५. किराणा व अन्न',
+      community: '६. मंदिरे व उद्याने',
+      chat: '७. कम्युनिटी चॅट',
+      about: '८. आमच्याबद्दल'
+    },
+    roadmapHeading: 'जर्मनीतील पहिल्या ३० दिवसांचा मास्टर रोडमॅप',
+    roadmapSub: 'सिम कार्ड, डी-तिकीटपासून अपार्टमेन्ट आणि टॅक्स आयडीपर्यंत सर्व काही.',
+    regulationsHeading: 'जर्मन नियम आणि कायदे',
+    regulationsSub: 'जर्मनीमध्ये राहताना पाळायचे महत्त्वाचे कायदेशीर नियम.',
+    simpleBriefHeading: 'सोप्या भाषेत:',
+    actionPlanHeading: 'कृती आराखडा:',
+    markCompleteBtn: 'पूर्ण म्हणून चिन्हांकित करा',
+    completedBtn: 'पूर्ण झाले ✓',
+    youAreAsking: 'तुम्ही काय विचारत आहात:',
+    showToLocal: 'स्थानिक व्यक्तीला दाखवा:',
+    tapToAnswer: '👇 उत्तर निवडा:',
+    localAnswered: 'स्थानिक व्यक्तीने हे उत्तर निवडले:',
+    substitutesTitle: 'जर्मन सुपरमार्केटमधील भारतीय पर्याय',
+    substitutesSub: 'पनीर आणि गव्हाच्या पिठाचे पर्याय:',
+    safeAlternative: 'सुरक्षित पर्याय',
+    restaurantsTitle: 'भारतीय रेस्टॉरंट्स',
+    communityTitle: 'भारतीय कुटुंबे व मंदिरे',
+    homeAddressLabel: 'घरचा पत्ता:',
+    callFamilyBtn: 'कॉल करा',
+    navigateHome: '📍 गुगल मॅपवर घराचा मार्ग',
+    openGoogleMaps: '📍 गुगल मॅपवर उघडा',
+    openPortal: '🌐 पोर्टल उघडा',
+    officeSectionTitle: 'जर्मन सरकारी कार्यालये',
+    liveMedicalLocator: 'वैद्यकीय लोकेटर',
+    gpsMedicalDesc: 'जवळची रुग्णालये आणि औषधालये शोधा.'
+  },
+  gu: {
+    appName: 'પ્રवासी સારથી: જર્મની',
+    editionTag: 'જર્મની ગાઈડ',
+    tagline: 'જર્મનીમાં ભારતીય પરિવારો અને વ્યાવસાયિકો માટે વિશ્વાસુ સાથી',
+    lostHelpBtn: '🚨 રસ્તો ભૂલી ગયા?',
+    selectLangTitle: 'તમારી માતૃભાષા પસંદ કરો',
+    policeAmbulance: 'પોલીસ / એમ્બ્યુલન્સ:',
+    nonEmergencyDoc: 'ડૉક્ટર ઓન-કૉલ:',
+    currencyCalc: 'કરન્સી કેલ્ક્યુલેટર',
+    tabs: {
+      journey: '૧. પહેલો મહિનો રોડમેપ',
+      offices: '૨. સરકારી ઓફિસ',
+      regulations: '૩. જર્મન નિયમો',
+      essentials: '૪. હોસ્પિટલ',
+      desiRadar: '૫. કરિયાણા અને ખોરાક',
+      community: '૬. મંદિરો અને બગીચા',
+      chat: '૭. કમ્યુનિટી ચેટ',
+      about: '૮. અમારા વિશે'
+    },
+    roadmapHeading: 'જર્મનીમાં પ્રથમ ૩૦ દિવસનો માસ્ટર રોડમેપ',
+    roadmapSub: 'સિમ કાર્ડ, ડી-ટિકિટથી લઈને અપાર્ટમેન્ટ અને ટેક્સ આઈડી સુધી.',
+    regulationsHeading: 'જર્મન નિયમો અને કાયદાઓ',
+    regulationsSub: 'જર્મનીમાં રહેતી વખતે પાળવાના મહત્વપૂર્ણ નિયમો.',
+    simpleBriefHeading: 'સરળ ભાષામાં:',
+    actionPlanHeading: 'કાર્ય યોજના:',
+    markCompleteBtn: 'પૂર્ણ તરીકે ચિહ્નિત કરો',
+    completedBtn: 'પૂર્ણ થયું ✓',
+    youAreAsking: 'તમે શું પૂછી રહ્યા છો:',
+    showToLocal: 'સ્થાનિક વ્યક્તિને બતાવો:',
+    tapToAnswer: '👇 જવાબ પસંદ કરો:',
+    localAnswered: 'સ્થાનિક વ્યક્તિએ આ જવાબ પસંદ કર્યો:',
+    substitutesTitle: 'જર્મન સુપરમાર્કેટ વિકલ્પો',
+    substitutesSub: 'પનીર અને લોટના સ્થાનિક વિકલ્પો:',
+    safeAlternative: 'સુરક્ષિત વિકલ્પ',
+    restaurantsTitle: 'ભારતીય રેસ્ટોરન્ટ્સ',
+    communityTitle: 'ભારતીય પરિવારો અને મંદિરો',
+    homeAddressLabel: 'ઘરનું સરનામું:',
+    callFamilyBtn: 'કૉલ કરો',
+    navigateHome: '📍 ગૂગલ મેપ પર ઘરનો રસ્તો',
+    openGoogleMaps: '📍 ગૂગલ મેપ પર ખોલો',
+    openPortal: '🌐 પોર્ટલ ખોલો',
+    officeSectionTitle: 'જર્મન સરકારી કાર્યાલયો',
+    liveMedicalLocator: 'મેડિકल લોકેટર',
+    gpsMedicalDesc: 'નજીકની હોસ્પિટલો અને ફાર્મસી શોધો.'
+  },
+  pa: {
+    appName: 'ਪ੍ਰਵਾਸੀ ਸਾਰਥੀ: ਜਰਮਨੀ',
+    editionTag: 'ਜਰਮਨੀ ਗਾਈਡ',
+    tagline: 'ਜਰਮਨੀ ਵਿੱਚ ਭਾਰਤੀ ਪਰਿਵਾਰਾਂ ਅਤੇ ਪੇਸ਼ੇਵਰਾਂ ਲਈ ਭਰੋਸੇਯੋਗ ਸਾਥੀ',
+    lostHelpBtn: '🚨 ਰਸਤਾ ਭੁੱਲ ਗਏ?',
+    selectLangTitle: 'ਆਪਣੀ ਮਾਂ ਬੋਲੀ ਚੁਣੋ',
+    policeAmbulance: 'ਪੁਲਿਸ / ਐਂਬੂਲੈਂਸ:',
+    nonEmergencyDoc: 'ਡਾਕਟਰ ਆਨ-ਕਾਲ:',
+    currencyCalc: 'ਕਰੰਸੀ ਕੈਲਕੁਲੇਟਰ',
+    tabs: {
+      journey: '੧. ਪਹਿਲਾ ਮਹੀਨਾ ਰੋਡਮੈਪ',
+      offices: '੨. ਸਰਕਾਰੀ ਦਫ਼ਤਰ',
+      regulations: '੩. ਜਰਮਨ ਨਿਯਮ',
+      essentials: '੪. ਹਸਪਤਾਲ',
+      desiRadar: '੫. ਕਰਿਆਨਾ ਅਤੇ ਭੋਜਨ',
+      community: '੬. ਮੰਦਿਰ ਅਤੇ ਪਾਰਕ',
+      chat: '੭. ਕਮਿਊਨਿਟੀ ਚੈਟ',
+      about: '੮. ਸਾਡੇ ਬਾਰੇ'
+    },
+    roadmapHeading: 'ਜਰਮਨੀ ਵਿੱਚ ਪਹਿਲੇ 30 ਦਿਨਾਂ ਦਾ ਮਾਸਟਰ ਰੋਡਮੈਪ',
+    roadmapSub: 'ਸਿਮ ਕਾਰਡ, ਡੀ-ਟਿਕਟ ਤੋਂ ਲੈ ਕੇ ਅਪਾਰਟਮੈਂਟ ਅਤੇ ਟੈਕਸ ਆਈਡੀ ਤੱਕ।',
+    regulationsHeading: 'ਜਰਮਨ ਨਿਯਮ ਅਤੇ ਕਾਨੂੰਨ',
+    regulationsSub: 'ਜਰਮਨੀ ਵਿੱਚ ਰਹਿੰਦਿਆਂ ਪਾਲਣਯੋਗ ਮਹੱਤਵਪੂਰਨ ਕਾਨੂੰਨੀ ਨਿਯਮ।',
+    simpleBriefHeading: 'ਸੌਖੇ ਸ਼ਬਦਾਂ ਵਿੱਚ:',
+    actionPlanHeading: 'ਐਕਸ਼ਨ ਪਲਾਨ:',
+    markCompleteBtn: 'ਪੂਰਾ ਹੋ ਗਿਆ ਚਿੰਨ੍ਹਿਤ ਕਰੋ',
+    completedBtn: 'ਮੁਕੰਮਲ ✓',
+    youAreAsking: 'ਤੁਸੀਂ ਕੀ ਪੁੱਛ ਰਹੇ ਹੋ:',
+    showToLocal: 'ਸਥਾਨਕ ਵਿਅਕਤੀ ਨੂੰ ਦਿਖਾਓ:',
+    tapToAnswer: '👇 ਜਵਾਬ ਚੁਣੋ:',
+    localAnswered: 'ਸਥਾਨਕ ਵਿਅਕਤੀ ਨੇ ਇਹ ਜਵਾਬ ਚੁਣਿਆ:',
+    substitutesTitle: 'ਜਰਮਨ ਸੁਪਰਮਾਰਕੀਟ ਵਿਕਲਪ',
+    substitutesSub: 'ਪਨੀਰ ਅਤੇ ਆਟੇ ਦੇ ਸਥਾਨਕ ਬਦਲ:',
+    safeAlternative: 'ਸੁਰੱਖਿਅਤ ਵਿਕਲਪ',
+    restaurantsTitle: 'ਭਾਰਤੀ ਰੈਸਟੋਰੈਂਟ',
+    communityTitle: 'ਭਾਰਤੀ ਪਰਿਵਾਰ ਅਤੇ ਮੰਦਿਰ',
+    homeAddressLabel: 'ਘਰ ਦਾ ਪਤਾ:',
+    callFamilyBtn: 'ਹੁਣੇ ਕਾਲ ਕਰੋ',
+    navigateHome: '📍 ਗੂਗਲ ਮੈਪਸ ਉੱਤੇ ਘਰ ਦਾ ਰਸਤਾ',
+    openGoogleMaps: '📍 ਗੂਗਲ ਮੈਪਸ ਉੱਤੇ ਖੋਲ੍ਹੋ',
+    openPortal: '🌐 ਪੋਰਟਲ ਖੋਲ੍ਹੋ',
+    officeSectionTitle: 'ਜਰਮਨ ਸਰਕਾਰੀ ਦਫ਼ਤਰ',
+    liveMedicalLocator: 'ਮੈਡੀਕਲ ਲੋਕੇਟਰ',
+    gpsMedicalDesc: 'ਨੇੜਲੇ ਹਸਪਤਾਲ ਅਤੇ ਫਾਰਮਸੀ ਲੱਭੋ।'
+  },
+  kn: {
+    appName: 'ಪ್ರವಾಸಿ ಸಾರಥಿ: ಜರ್ಮನಿ',
+    editionTag: 'ಜರ್ಮನಿ ಗೈಡ್',
+    tagline: 'ಜರ್ಮರಿಯಲ್ಲಿ ಭಾರತೀಯ ಕುಟುಂಬಗಳು ಮತ್ತು ವೃತ್ತಿಪರರಿಗೆ ವಿಶ್ವಾಸಾರ್ಹ ಸಂಗಾತಿ',
+    lostHelpBtn: '🚨 ದಾರಿ ತಪ್ಪಿದೆಯೇ?',
+    selectLangTitle: 'ನಿಮ್ಮ ಮಾತೃಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ',
+    policeAmbulance: 'ಪೊಲೀಸ್ / ಆಂಬುಲೆನ್ಸ್:',
+    nonEmergencyDoc: 'ವೈದ್ಯರು ಆನ್-ಕాల్:',
+    currencyCalc: 'ಕರೆನ್ಸಿ ಕ್ಯಾಲ್ಕುಲೇಟರ್',
+    tabs: {
+      journey: '೧. ಮೊದಲ 30 ದಿನಗಳು',
+      offices: '೨. ಸರ್ಕಾರಿ ಕಚೇರಿಗಳು',
+      regulations: '೩. ಜರ್ಮನ್ ನಿಯಮಗಳು',
+      essentials: '೪. ಆಸ್ಪತ್ರೆಗಳು',
+      desiRadar: '೫. ಕಿರಾಣಿ & ಆಹಾರ',
+      community: '೬. ದೇವಾಲಯಗಳು & ಪಾರ್ಕ್',
+      chat: '೭. ಕಮ್ಯೂನಿಟಿ ಚಾಟ್',
+      about: '೮. ನಮ್ಮ ಬಗ್ಗೆ'
+    },
+    roadmapHeading: 'ಜರ್ಮರಿಯಲ್ಲಿ ಮೊದಲ 30 ದಿನಗಳ ರೋಡ್‌ಮ್ಯಾಪ್',
+    roadmapSub: 'ಸಿಮ್ ಕಾರ್ಡ್, ಡಿ-ಟಿಕೆಟ್‌ನಿಂದ ಅಪಾರ್ಟ್‌ಮೆಂಟ್ ಮತ್ತು ಟ್ಯಾಕ್ಸ್ ಐಡಿ ವರೆಗೆ.',
+    regulationsHeading: 'ಜರ್ಮನ್ ನಿಯಮಗಳು ಮತ್ತು ಕಾನೂನುಗಳು',
+    regulationsSub: 'ಜರ್ಮರಿಯಲ್ಲಿ ವಾಸಿಸುವಾಗ ತಿಳಿದಿರಬೇಕಾದ ಪ್ರಮುಖ ಕಾನೂನುಗಳು.',
+    simpleBriefHeading: 'ಸರಳ ಭಾಷೆಯಲ್ಲಿ:',
+    actionPlanHeading: 'ಕ್ರಿಯಾ ಯೋಜನೆ:',
+    markCompleteBtn: 'ಪೂರ್ಣಗೊಂಡಿದೆ ಎಂದು ಗುರುತಿಸಿ',
+    completedBtn: 'ಪೂರ್ಣಗೊಂಡಿದೆ ✓',
+    youAreAsking: 'ನೀವು ಕೇಳುತ್ತಿರುವುದು:',
+    showToLocal: 'ಸ್ಥಳೀಯ ವ್ಯಕ್ತಿಗೆ ತೋರಿಸಿ:',
+    tapToAnswer: '👇 ಉತ್ತರವನ್ನು ಆಯ್ಕೆಮಾಡಿ:',
+    localAnswered: 'ಸ್ಥಳೀಯ ವ್ಯಕ್ತಿ ಈ ಉತ್ತರವನ್ನು ಆಯ್ಕೆ ಮಾಡಿದ್ದಾರೆ:',
+    substitutesTitle: 'ಜರ್ಮನ್ ಸೂಪರ್‌ಮಾರ್ಕೆಟ್ ಪರ್ಯಾಯಗಳು',
+    substitutesSub: 'ಪನ್ನೀರ್ ಮತ್ತು ಹಿಟ್ಟಿನ ಸ್ಥಳೀಯ ಪರ್ಯಾಯಗಳು:',
+    safeAlternative: 'ಸುರಕ್ಷಿತ ಪರ್ಯಾಯ',
+    restaurantsTitle: 'ಭಾರತೀಯ ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು',
+    communityTitle: 'ಭಾರತೀಯ ಕುಟುಂಬಗಳು & ದೇವಾಲಯಗಳು',
+    homeAddressLabel: 'ಮನೆ ವಿಳಾಸ:',
+    callFamilyBtn: 'ಈಗ ಕರೆ ಮಾಡಿ',
+    navigateHome: '📍 ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್‌ನಲ್ಲಿ ಮನೆಗೆ ದಾರಿ',
+    openGoogleMaps: '📍 ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ',
+    openPortal: '🌐 ಪೋರ್ಟಲ್ ತೆರೆಯಿರಿ',
+    officeSectionTitle: 'ಜರ್ಮನ್ ಸರ್ಕಾರಿ ಕಚೇರಿಗಳು',
+    liveMedicalLocator: 'ವೈದ್ಯಕೀಯ ಲೊಕೇಟರ್',
+    gpsMedicalDesc: 'ಹತ್ತಿರದ ಆಸ್ಪತ್ರೆಗಳನ್ನು ಹುಡುಕಿ.'
+  },
+  ml: {
+    appName: 'പ്രവാസി സാരഥി: ജർമ്മനി',
+    editionTag: 'ജർമ്മനി ഗൈഡ്',
+    tagline: 'ജർമ്മനിയിലെ ഇന്ത്യൻ കുടുംബങ്ങൾക്കും പ്രൊഫഷണലുകൾക്കുമുള്ള വിശ്വസ്ത കൂട്ടുകാരൻ',
+    lostHelpBtn: '🚨 വഴി തെറ്റിയോ?',
+    selectLangTitle: 'നിങ്ങളുടെ മാതൃഭാഷ തിരഞ്ഞെടുക്കുക',
+    policeAmbulance: 'പോലീസ് / ആംബുലൻസ്:',
+    nonEmergencyDoc: 'ഡോക്ടർ ഓൺ-കോൾ:',
+    currencyCalc: 'കറൻസി കാൽക്കുലേറ്റർ',
+    tabs: {
+      journey: '1. ആദ്യ 30 ദിവസ റോഡ്‌മാപ്പ്',
+      offices: '2. സർക്കാർ ഓഫീസുകൾ',
+      regulations: '3. ജർമ്മൻ നിയമങ്ങൾ',
+      essentials: '4. ആശുപത്രികൾ',
+      desiRadar: '5. പലചരക്ക് & ഭക്ഷണം',
+      community: '6. ക്ഷേത്രങ്ങളും പാർക്കുകളും',
+      chat: '7. കമ്മ്യൂണിറ്റി ചാറ്റ്',
+      about: '8. ഞങ്ങളെക്കുറിച്ച്'
+    },
+    roadmapHeading: 'ജർമ്മനിയിലെ ആദ്യ 30 ദിവസത്തെ മാസ്റ്റർ റോഡ്‌മാപ്പ്',
+    roadmapSub: 'സിം കാർഡ്, ഡി-ടിക്കറ്റ് മുതൽ അപ്പാർട്ട്മെന്റും ടാക്സ് ഐഡിയും വരെ.',
+    regulationsHeading: 'ജർമ്മൻ നിയമങ്ങളും ചട്ടങ്ങളും',
+    regulationsSub: 'ജർമ്മനിയിൽ ജീവിക്കുമ്പോൾ പാലിക്കേണ്ട പ്രധാന നിയമങ്ങൾ.',
+    simpleBriefHeading: 'ലളിതമായ ഭാഷയിൽ:',
+    actionPlanHeading: 'കർമ്മപദ്ധതി:',
+    markCompleteBtn: 'പൂർത്തിയായി എന്ന് അടയാളപ്പെടുത്തുക',
+    completedBtn: 'പൂർത്തിയായി ✓',
+    youAreAsking: 'നിങ്ങൾ ചോദിക്കുന്നത്:',
+    showToLocal: 'പ്രാദേശിക വ്യക്തിക്ക് കാണിക്കുക:',
+    tapToAnswer: '👇 മറുപടി തിരഞ്ഞെടുക്കുക:',
+    localAnswered: 'പ്രാദേശിക വ്യക്തി ഈ ഉത്തരം തിരഞ്ഞെടുത്തിരിക്കുന്നു:',
+    substitutesTitle: 'ജർമ്മൻ സൂപ്പർമാർക്കറ്റ് പകരക്കാർ',
+    substitutesSub: 'പനീറും പൊടിയും കണ്ടെത്താനുള്ള വഴികൾ:',
+    safeAlternative: 'സുരക്ഷിതമായ പകരക്കാരൻ',
+    restaurantsTitle: 'ഇന്ത്യൻ റെസ്റ്റോറന്റുകൾ',
+    communityTitle: 'ഇന്ത്യൻ കുടുംബങ്ങളും ക്ഷേത്രങ്ങളും',
+    homeAddressLabel: 'വീട്ടു വിലാസം:',
+    callFamilyBtn: 'ഇപ്പോൾ വിളിക്കുക',
+    navigateHome: '📍 ഗൂഗിൾ മാപ്പിൽ വീട്ടിലേക്കുള്ള വഴി',
+    openGoogleMaps: '📍 ഗൂഗിൾ മാപ്പിൽ തുറക്കുക',
+    openPortal: '🌐 പോർട്ടൽ തുറക്കുക',
+    officeSectionTitle: 'ജർമ്മൻ സർക്കാർ ഓഫീസുകൾ',
+    liveMedicalLocator: 'മെഡിക്കൽ ലൊക്കേറ്റർ',
+    gpsMedicalDesc: 'അടുത്തുള്ള ആശുപത്രികളും ഫാർമസികളും കണ്ടെത്തുക.'
   }
 };
 
-// Fallback generator for other languages to English base if needed
-['ta', 'te', 'bn', 'mr', 'gu', 'pa', 'kn', 'ml'].forEach(code => {
-  if (!UI_TEXT[code]) UI_TEXT[code] = UI_TEXT.en;
-});
-
 // ============================================================================
-// 4. GERMANY 30-DAY RELOCATION ROADMAP TASKS (WITH D-TICKET & DB NAVIGATOR)
-// ============================================================================
-const GERMANY_ROADMAP_TASKS = [
-  {
-    id: 'sim_connectivity',
-    dayTarget: 'Day 0 (Pre-arrival / Landing)',
-    urgency: 'Critical',
-    category: 'Connectivity',
-    title: 'Instant SIM Card & Mobile Data (eSIM)',
-    whyImportant: 'You need active internet immediately upon landing at Frankfurt, Munich, or Berlin airport for transit apps, maps, and booking rides.',
-    brief: {
-      hi: 'लैंड करते ही इंटरनेट चालू रखने के लिए एयरलाइन में बैठने से पहले डिजिटल eSIM (Airalo/Holafly) या एयरपोर्ट पर Lebara/Lycamobile सिम खरीदें।',
-      en: 'Activate an instant eSIM (Airalo, Holafly) before boarding or buy a prepaid SIM (Telekom, Vodafone, O2, Lebara) upon arrival.'
-    },
-    steps: [
-      'Download a European travel eSIM before departure, or',
-      'Purchase a prepaid physical SIM card at airport kiosks (bring your Indian Passport for verification).'
-    ]
-  },
-  {
-    id: 'transportation_dticket',
-    dayTarget: 'Day 1–3',
-    urgency: 'High',
-    category: 'Daily Living & Transit',
-    title: 'Deutschlandticket (D-Ticket) & DB Navigator',
-    whyImportant: 'The €49/month Deutschlandticket grants unlimited regional and city transit (U-Bahn, buses, trams, regional trains) across all of Germany. DB Navigator is mandatory for live schedules.',
-    brief: {
-      hi: 'पूरे जर्मनी में असीमित यात्रा के लिए Deutschlandticket (€49/month) लें और लाइव ट्रेनों के लिए DB Navigator ऐप डाउनलोड करें।',
-      en: 'Get the monthly Deutschlandticket for nationwide transit and download DB Navigator for live train tracking.'
-    },
-    steps: [
-      'Download the DB Navigator app for live train routing and ticket bookings.',
-      'Subscribe to the Deutschlandticket digitally via RMV, MVV, BVG, or DB app for seamless travel.'
-    ]
-  },
-  {
-    id: 'apartment_renting',
-    dayTarget: 'Day 1–14',
-    urgency: 'Critical',
-    category: 'Housing',
-    title: 'Finding Accommodation & Landlord Certificate',
-    whyImportant: 'Without a permanent rental agreement and the landlord confirmation form (Wohnungsgeberbestätigung), you cannot register your address.',
-    brief: {
-      hi: 'फ्लैट ढूंढना (ImmoScout24) और मकान मालिक से Wohnungsgeberbestätigung फॉर्म लेना अनिवार्य है।',
-      en: 'Secure temporary/permanent housing and obtain the mandatory landlord move-in certificate.'
-    },
-    steps: [
-      'Search via ImmoScout24, WG-Gesucht, or temporary furnished apartments (Homelike, Wunderflats).',
-      'Ensure the landlord signs the official Wohnungsgeberbestätigung form.'
-    ]
-  },
-  {
-    id: 'anmeldung',
-    dayTarget: 'Day 7–14',
-    urgency: 'Critical',
-    category: 'Legal Registration',
-    title: 'Anmeldung (Address Registration at Bürgeramt)',
-    whyImportant: 'By German law, you must register your address within 14 days of moving in. Required to get your Tax ID and open bank accounts.',
-    brief: {
-      hi: '14 दिन के अंदर स्थानीय नगर निगम (Bürgeramt) में जाकर एड्रेस रजिस्ट्रेशन कराना अनिवार्य है।',
-      en: 'Book an appointment at the local Bürgeramt within 14 days of moving in.'
-    },
-    steps: [
-      'Book your appointment online via your city\'s Bürgeramt portal.',
-      'Carry your Passport, Visa, and signed Landlord Form.'
-    ]
-  },
-  {
-    id: 'health_insurance',
-    dayTarget: 'Day 1–7',
-    urgency: 'Critical',
-    category: 'Healthcare',
-    title: 'Health Insurance (Krankenkasse) & Family Cover',
-    whyImportant: 'Health insurance is legally mandatory in Germany from day one. Public funds like TK or AOK allow free family co-insurance for spouses and children.',
-    brief: {
-      hi: 'सार्वजनिक स्वास्थ्य बीमा (TK, AOK) में पंजीकरण करें। पति/पत्नी और बच्चे मुफ्त में जुड़ जाते हैं।',
-      en: 'Enroll in statutory health insurance (TK, AOK, Barmer). Eligible spouses and children are covered at zero extra cost.'
-    },
-    steps: [
-      'Submit your employment contract or university admission to Techniker Krankenkasse (TK) or AOK.',
-      'Apply for family co-insurance (Familienversicherung) with marriage and birth certificates.'
-    ]
-  },
-  {
-    id: 'bank_account',
-    dayTarget: 'Day 5–10',
-    urgency: 'High',
-    category: 'Finance',
-    title: 'German IBAN Bank Account (N26 / C24 / Sparkasse)',
-    whyImportant: 'Your employer requires a German/EU IBAN to credit your salary. Landlords and utility providers also require direct SEPA debit.',
-    brief: {
-      hi: 'सैलरी और मकान किराए के लिए जर्मन IBAN खाता खोलें (N26, C24 या स्पार्कसे)।',
-      en: 'Open a local German bank account for salary credits, rent, and utility deductions.'
-    },
-    steps: [
-      'Download a digital bank app (N26, C24, Bunq) for instant video-KYC using your passport.',
-      'Traditional banks (Sparkasse, Commerzbank) require your Anmeldung certificate.'
-    ]
-  },
-  {
-    id: 'tax_id',
-    dayTarget: 'Day 14–21',
-    urgency: 'High',
-    category: 'Tax & Payroll',
-    title: 'Tax ID (Steuerliche Identifikationsnummer)',
-    whyImportant: 'Generated automatically by the Federal Central Tax Office after your Anmeldung and mailed to your home. Give it to HR to avoid emergency tax brackets.',
-    brief: {
-      hi: 'पंजीकरण के 2-3 हफ्ते बाद पोस्ट से टैक्स आईडी घर आती है। इसे अपनी कंपनी के HR को दें।',
-      en: 'Received via post 2-3 weeks after address registration. Hand it to employer HR.'
-    },
-    steps: [
-      'Wait for the official letter from BZSt to arrive in your postbox.',
-      'Provide it to your company payroll department.'
-    ]
-  },
-  {
-    id: 'gez_broadcasting',
-    dayTarget: 'Day 20–30',
-    urgency: 'Medium',
-    category: 'Housing Formalities',
-    title: 'GEZ / Rundfunkbeitrag (Broadcasting Fee)',
-    whyImportant: 'Every German household must pay a monthly public broadcasting fee (~€18.36/month), regardless of whether you own a TV.',
-    brief: {
-      hi: 'हर जर्मन घर के लिए अनिवार्य टीवी/रेडियो लाइसेंस फीस (~€18.36 प्रति माह) का भुगतान ऑनलाइन करें।',
-      en: 'Mandatory monthly household broadcasting contribution.'
-    },
-    steps: [
-      'Wait for the registration letter or register online at rundfunkbeitrag.de.',
-      'Set up quarterly SEPA direct debit.'
-    ]
-  }
-];
-
-// ============================================================================
-// 5. GERMAN RULES & REGULATIONS DATABASE
-// ============================================================================
-const GERMAN_REGULATIONS = [
-  {
-    id: 'reg_ruhezeit',
-    title: 'Quiet Hours (Ruhezeit)',
-    icon: '🌙',
-    summary: 'Strict noise restrictions apply across all German residential neighborhoods.',
-    details: 'Night rest (Nachtruhe) is from 10:00 PM to 6:00 AM. Sunday and public holidays are all-day quiet days (Sonn- und Feiertagsruhe). Avoid vacuuming, loud music, or operating washing machines during these hours to avoid police complaints from neighbors.'
-  },
-  {
-    id: 'reg_muelltrennung',
-    title: 'Waste Separation (Mülltrennung)',
-    icon: '♻️',
-    summary: 'Strict garbage segregation is mandatory in every apartment building.',
-    details: 'Trash must be sorted into Bio (organic waste), Papier (paper/cardboard), Gelbe Tonne (plastics/packaging), and Restmüll (general residual waste). Glass and old clothes must be taken to public recycling containers. Incorrect sorting can result in heavy landlord fines.'
-  },
-  {
-    id: 'reg_pfand',
-    title: 'Bottle Deposit System (Pfand)',
-    icon: '🍾',
-    summary: 'Returnable plastic bottles and glass beer bottles carry a deposit fee.',
-    details: 'When buying bottled drinks, you pay a €0.08 to €0.25 Pfand fee per bottle. Keep them safe and return them to automated machines (Pfandautomat) inside supermarkets like Rewe, Aldi, or Lidl to get your cash deposit back via a printed store voucher.'
-  },
-  {
-    id: 'reg_schufa',
-    title: 'Credit Score & Privacy (SCHUFA)',
-    icon: '📊',
-    summary: 'Financial reputation tracking is central to renting apartments or signing contracts.',
-    details: 'SCHUFA is Germany’s primary credit agency. Landlords, telecom operators, and banks check your SCHUFA score before approving housing contracts or postpaid SIM cards. Always pay bills on time to maintain a clean record.'
-  }
-];
-
-// ============================================================================
-// 6. CITY-SPECIFIC DIRECTORY (GROCERIES, RESTAURANTS, TEMPLES, PARKS)
+// 4. CITY-SPECIFIC DIRECTORY (GROCERIES, RESTAURANTS, TEMPLES, PARKS)
 // ============================================================================
 const CITY_SPECIFIC_DIRECTORY = {
   'Frankfurt am Main': {
@@ -469,12 +603,6 @@ const GERMAN_HOSPITALS = [
   { name: 'Universitätsklinikum (University Hospital & 24/7 ER)', address: 'Major University Hospitals in Frankfurt, Munich, Berlin, Heidelberg', phone: '112', type: '24/7 Adult & Trauma ER', status: '24/7 Open' },
   { name: 'Kinderklinik (Pediatric Hospital & Fever Care)', address: 'Dedicated children hospitals in all major German cities', phone: '116 117', type: 'Children Fever & Emergency Care', status: '24/7 Children ER' },
   { name: 'Notdienst Apotheke (Sunday & Night Pharmacy)', address: 'Rotating duty pharmacies in every district', phone: '0800 00 22 833', type: 'Open 24/7 & Sundays for Urgent Prescriptions', status: '24/7 Duty' }
-];
-
-const GROCERY_SUBSTITUTES = [
-  { item: 'Paneer (पनीर)', substitute: 'Schichtkäse (10%/20% Fett) / Türkischer Schnittkäse', stores: 'Rewe, Edeka, Lidl, Turkish markets', note: 'Schichtkäse has the identical mild taste. For frying, Turkish Börek cheese works.' },
-  { item: 'Chakki Atta (रोटी का आटा)', substitute: 'Weizenmehl Type 1050 + Vollkornmehl (50:50 mix)', stores: 'Aldi, Lidl, Rewe, DM Bio', note: 'Mix Type 1050 with whole wheat flour for soft Rotis.' },
-  { item: 'Dahi / Curd (दही)', substitute: 'Stichfester Joghurt (3.5% / 10% Fett)', stores: 'Rewe, Aldi, Lidl, Carrefour', note: 'Look for "stichfest" (set curd) on the bucket, not "cremig gerührt".' }
 ];
 
 // ============================================================================
