@@ -2,7 +2,8 @@ import React, { useState, useMemo, useEffect } from 'react';
 import {
   Compass, Circle, ShoppingBag, Users, MapPin, Check, Phone, X, Globe,
   PlusCircle, Stethoscope, Clock, Building2, Navigation, MessageCircle,
-  ShieldAlert, Info, Scale, Star
+  ShieldAlert, Info, Scale, Star,
+  Languages, Mic, Volume2, Copy, ArrowRightLeft, Mail, Linkedin
 } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 
@@ -53,15 +54,16 @@ const EN = {
   policeAmbulance: 'Police / Ambulance:',
   nonEmergencyDoc: 'Doctor on call:',
   currencyCalc: 'Currency calculator (₹ ↔ €)',
-  tabs: {
+    tabs: {
     journey: '1. First 30 days',
     offices: '2. Govt offices',
     regulations: '3. German rules',
     essentials: '4. Hospitals & pharmacy',
     desiRadar: '5. Groceries & food',
     community: '6. Temples & parks',
-    chat: '7. Community chat',
-    about: '8. About us'
+    talk: '7. Talk (translate to German)',
+    chat: '8. Community chat',
+    about: '9. About us'
   },
   roadmapHeading: 'Your 30-day master roadmap for Germany',
   roadmapSub: 'From SIM card and apartment to Anmeldung, Deutschlandticket and tax ID.',
@@ -125,7 +127,25 @@ const EN = {
     'Show this card to a person nearby. It explains in German that you are lost and need help.',
   urgCritical: 'Critical',
   urgImportant: 'Important',
-  dayRange: 'Day {a}–{b}'
+    dayRange: 'Day {a}–{b}',
+
+  // --- new keys ---
+  moreOnMaps: 'More on Google Maps:',
+  mosquesTitle: '🕌 Mosques in {city}',
+  churchesTitle: '⛪ Churches in {city}',
+  talkHeading: 'Talk: translate to German',
+  talkSub: 'Type or speak in your language. Show the German result to a local or play it aloud.',
+  talkPh: 'Write in any language…',
+  talkBtn: 'Translate to German',
+  talkSpeak: 'Speak',
+  talkListening: 'Listening…',
+  talkClear: 'Clear',
+  talkPlay: 'Play German',
+  talkCopy: 'Copy',
+  talkPhrases: 'Useful phrases (tap to hear)',
+  talkHistory: 'Recent translations',
+  talkError: 'Translation failed. Check your internet and try again.',
+  talkNoMic: 'Voice input is not supported in this browser (try Chrome).'
 };
 
 // ----------------------------------------------------------------------------
@@ -914,6 +934,72 @@ const CITY_SPECIFIC_DIRECTORY = {
   }
 };
 
+const EXTRA_PLACES = {
+  'Frankfurt am Main': {
+    mosques: [{ name: 'Noor Moschee', address: 'Hühnerweg 22, 60435 Frankfurt', rating: 4.7, note: 'Welcoming community mosque, open for prayers and events.' }],
+    churches: [{ name: 'Kaiserdom St. Bartholomäus', address: 'Domplatz 14, 60311 Frankfurt', rating: 4.7, note: 'Historic cathedral in the old town.' }],
+    parks: [{ name: 'Grüneburgpark', address: 'Siesmayerstraße, 60323 Frankfurt', rating: 4.7, note: 'Large park, good for picnics and children.' }]
+  },
+  'Munich (München)': {
+    mosques: [{ name: 'Islamisches Zentrum München', address: 'Wallnerstraße 1, 80939 München', rating: 4.6, note: 'Large community centre with prayer hall.' }],
+    churches: [{ name: 'Frauenkirche', address: 'Frauenplatz 1, 80331 München', rating: 4.7, note: 'Munich landmark church.' }],
+    parks: [{ name: 'Nymphenburg Palace Park', address: 'Schloß Nymphenburg, 80638 München', rating: 4.8, note: 'Huge gardens, canals and lakes.' }]
+  },
+  'Berlin Central': {
+    restaurants: [{ name: 'Chutnify', address: 'Sredzkistraße 43, 10435 Berlin', rating: 4.5, note: 'Popular South Indian street food.' }],
+    mosques: [
+      { name: 'Şehitlik Mosque', address: 'Columbiadamm 128, 10965 Berlin', rating: 4.7, note: 'One of Berlin’s largest mosques.' },
+      { name: 'Khadija Mosque', address: 'Tiniusstraße 5, 13089 Berlin', rating: 4.6, note: 'Ahmadiyya community mosque in Heinersdorf.' }
+    ],
+    churches: [
+      { name: 'Berliner Dom', address: 'Am Lustgarten, 10178 Berlin', rating: 4.7, note: 'Iconic cathedral on Museum Island.' },
+      { name: 'St. Hedwig’s Cathedral', address: 'Bebelplatz, 10117 Berlin', rating: 4.6, note: 'Catholic cathedral in Mitte.' }
+    ],
+    parks: [{ name: 'Tempelhofer Feld', address: 'Tempelhofer Damm, 12101 Berlin', rating: 4.8, note: 'Former airport turned giant open park.' }]
+  },
+  'Cologne (Köln)': {
+    mosques: [{ name: 'DITIB Central Mosque', address: 'Venloer Str. 160, 50823 Köln', rating: 4.6, note: 'Landmark mosque in Ehrenfeld.' }],
+    churches: [{ name: 'Kölner Dom', address: 'Domkloster 4, 50667 Köln', rating: 4.8, note: 'World-famous cathedral.' }],
+    parks: [{ name: 'Rheinpark', address: 'Kennedy-Ufer, 50679 Köln', rating: 4.6, note: 'Riverside park with skyline views.' }]
+  },
+  'Hamburg Central': {
+    churches: [{ name: 'Hauptkirche St. Michaelis', address: 'Englische Planke 1, 20459 Hamburg', rating: 4.8, note: 'The “Michel”, climb the tower for views.' }],
+    parks: [{ name: 'Planten un Blomen', address: 'Marseiller Str., 20355 Hamburg', rating: 4.8, note: 'Central garden park, free entry.' }]
+  }
+};
+
+const mergeDir = (base = {}, extra = {}) => {
+  const out = {};
+  new Set([...Object.keys(base), ...Object.keys(extra)]).forEach((k) => {
+    out[k] = [...(base[k] || []), ...(extra[k] || [])];
+  });
+  return out;
+};
+
+// Quick Google Maps searches shown under every section
+const MAP_CHIPS = {
+  groceries: ['Indian grocery store', 'Asia Markt', 'Indian vegetables', 'Halal grocery'],
+  restaurants: ['Indian restaurant', 'Vegetarian Indian restaurant', 'South Indian restaurant', 'Halal Indian restaurant'],
+  temples: ['Hindu temple', 'Gurudwara', 'Jain temple', 'Buddhist temple'],
+  mosques: ['Moschee', 'Mosque'],
+  churches: ['Kirche', 'Church', 'Malayalam church', 'Catholic church'],
+  parks: ['Park', 'Spielplatz playground', 'Botanical garden']
+};
+
+function MapChips({ queries, city, t }) {
+  return (
+    <div className="flex flex-wrap gap-2 pt-2">
+      <span className="text-xs text-slate-500 self-center">{t.moreOnMaps}</span>
+      {queries.map((q) => (
+        <a key={q} href={mapsUrl(`${q} ${city}`)} target="_blank" rel="noreferrer"
+           className="bg-white border border-slate-200 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-1.5">
+          <Navigation className="w-3 h-3 text-slate-400" />{q}
+        </a>
+      ))}
+    </div>
+  );
+}
+
 const GERMAN_OFFICES = [
   {
     id: 'ger_buergeramt',
@@ -1071,203 +1157,63 @@ const GERMANY_ROADMAP_TASKS = [
 // ---------------------------------------------------------------------------
 const GERMAN_REGULATIONS = [
   {
-    id: "waste",
-    icon: "♻️",
-    title: {
-      en: "Waste sorting & Pfand",
-      hi: "कचरा छंटाई और Pfand",
-      ta: "குப்பை பிரித்தல் & Pfand",
-      te: "చెత్త వేరుచేయడం & Pfand",
-      bn: "বর্জ্য আলাদা করা ও Pfand",
-      mr: "कचरा वर्गीकरण आणि Pfand",
-      gu: "કચરાનું વર્ગીકરણ અને Pfand",
-      pa: "ਕੂੜਾ ਛਾਂਟੀ ਅਤੇ Pfand",
-      kn: "ಕಸ ವಿಂಗಡಣೆ & Pfand",
-      ml: "മാലിന്യം തരംതിരിക്കലും Pfand-ഉം"
-    },
+    id: 'waste',
+    icon: '♻️',
+    title: { en: 'Waste sorting & Pfand', hi: 'कचरा छंटाई और Pfand' },
     summary: {
-      en: "Sort waste into the right bins and return bottles for your deposit.",
-      hi: "कचरा सही डिब्बों में डालें और बोतलें लौटाकर जमा राशि वापस लें।",
-      ta: "குப்பையைச் சரியான தொட்டிகளில் போடுங்கள்; பாட்டில்களைத் திருப்பிக் கொடுத்து வைப்புத் தொகையைப் பெறுங்கள்.",
-      te: "చెత్తను సరైన డబ్బాల్లో వేయండి; సీసాలను తిరిగి ఇచ్చి డిపాజిట్ తిరిగి పొందండి.",
-      bn: "বর্জ্য সঠিক বিনে ফেলুন এবং বোতল ফেরত দিয়ে জমানো টাকা ফেরত নিন।",
-      mr: "कचरा योग्य डब्यांत टाका आणि बाटल्या परत करून ठेव रक्कम परत मिळवा.",
-      gu: "કચરો સાચા ડબ્બામાં નાખો અને બોટલો પરત કરીને ડિપોઝિટ પાછી મેળવો.",
-      pa: "ਕੂੜਾ ਸਹੀ ਡੱਬਿਆਂ ਵਿੱਚ ਪਾਓ ਅਤੇ ਬੋਤਲਾਂ ਮੋੜ ਕੇ ਜਮ੍ਹਾਂ ਰਕਮ ਵਾਪਸ ਲਓ।",
-      kn: "ಕಸವನ್ನು ಸರಿಯಾದ ಡಬ್ಬಗಳಲ್ಲಿ ಹಾಕಿ; ಬಾಟಲಿಗಳನ್ನು ಹಿಂತಿರುಗಿಸಿ ಠೇವಣಿ ಮರಳಿ ಪಡೆಯಿರಿ.",
-      ml: "മാലിന്യം ശരിയായ ബിന്നുകളിൽ ഇടുക; കുപ്പികൾ തിരികെ നൽകി ഡെപ്പോസിറ്റ് വീണ്ടെടുക്കുക."
+      en: 'Sort waste into the right bins and return bottles for your deposit.',
+      hi: 'कचरा सही डिब्बों में डालें और बोतलें लौटाकर जमा राशि वापस लें।'
     },
     details: {
-      en: "Germany separates paper, packaging, organic and residual waste, and colours or labels differ by city. Bottles and cans with the Pfand logo carry a small deposit that you get back from machines in supermarkets.",
-      hi: "जर्मनी में कागज़, पैकेजिंग, जैविक और बाकी कचरा अलग-अलग डाला जाता है, और डिब्बों के रंग या लेबल शहर के हिसाब से बदलते हैं। Pfand लोगो वाली बोतलों और कैन पर थोड़ी जमा राशि होती है, जो सुपरमार्केट की मशीनों में लौटाने पर वापस मिलती है।",
-      ta: "ஜெர்மனியில் காகிதம், பேக்கேஜிங், இயற்கைக் கழிவு, மற்ற குப்பை தனித்தனியாகப் பிரிக்கப்படுகின்றன; தொட்டிகளின் நிறம் அல்லது லேபிள் நகரத்துக்கு நகரம் மாறும். Pfand சின்னம் உள்ள பாட்டில்கள், கேன்களுக்குச் சிறிய வைப்புத் தொகை உண்டு; சூப்பர் மார்க்கெட் இயந்திரங்களில் திருப்பிக் கொடுத்தால் அது திரும்பக் கிடைக்கும்.",
-      te: "జర్మనీలో కాగితం, ప్యాకేజింగ్, సేంద్రియ, మిగతా చెత్తను వేర్వేరుగా వేస్తారు; డబ్బాల రంగులు లేదా లేబుళ్లు నగరాన్ని బట్టి మారుతాయి. Pfand లోగో ఉన్న సీసాలు, క్యాన్లపై చిన్న డిపాజిట్ ఉంటుంది; సూపర్ మార్కెట్ మెషీన్లలో తిరిగి ఇస్తే అది వాపసు వస్తుంది.",
-      bn: "জার্মানিতে কাগজ, প্যাকেজিং, জৈব ও অন্যান্য বর্জ্য আলাদা করে ফেলা হয়, আর বিনের রং বা লেবেল শহরভেদে আলাদা। Pfand লোগো থাকা বোতল ও ক্যানে সামান্য জমা টাকা থাকে, সুপারমার্কেটের মেশিনে ফেরত দিলে তা ফেরত পাওয়া যায়।",
-      mr: "जर्मनीत कागद, पॅकेजिंग, सेंद्रिय आणि उर्वरित कचरा वेगवेगळा टाकला जातो, आणि डब्यांचे रंग किंवा लेबल शहरानुसार बदलतात. Pfand लोगो असलेल्या बाटल्या व कॅनवर थोडी ठेव रक्कम असते, ती सुपरमार्केटमधील मशीनमध्ये परत केल्यावर मिळते.",
-      gu: "જર્મનીમાં કાગળ, પેકેજિંગ, જૈવિક અને બાકીનો કચરો અલગ અલગ નાખવામાં આવે છે, અને ડબ્બાના રંગ કે લેબલ શહેર પ્રમાણે બદલાય છે. Pfand લોગોવાળી બોટલ અને કેન પર નાની ડિપોઝિટ હોય છે, જે સુપરમાર્કેટના મશીનમાં પરત કરતાં પાછી મળે છે.",
-      pa: "ਜਰਮਨੀ ਵਿੱਚ ਕਾਗਜ਼, ਪੈਕੇਜਿੰਗ, ਜੈਵਿਕ ਅਤੇ ਬਾਕੀ ਕੂੜਾ ਵੱਖ-ਵੱਖ ਪਾਇਆ ਜਾਂਦਾ ਹੈ, ਅਤੇ ਡੱਬਿਆਂ ਦੇ ਰੰਗ ਜਾਂ ਲੇਬਲ ਸ਼ਹਿਰ ਅਨੁਸਾਰ ਬਦਲਦੇ ਹਨ। Pfand ਲੋਗੋ ਵਾਲੀਆਂ ਬੋਤਲਾਂ ਤੇ ਕੈਨਾਂ ਉੱਤੇ ਥੋੜ੍ਹੀ ਜਮ੍ਹਾਂ ਰਕਮ ਹੁੰਦੀ ਹੈ, ਜੋ ਸੁਪਰਮਾਰਕੀਟ ਦੀਆਂ ਮਸ਼ੀਨਾਂ ਵਿੱਚ ਮੋੜਨ ਤੇ ਵਾਪਸ ਮਿਲਦੀ ਹੈ।",
-      kn: "ಜರ್ಮನಿಯಲ್ಲಿ ಕಾಗದ, ಪ್ಯಾಕೇಜಿಂಗ್, ಸಾವಯವ ಮತ್ತು ಉಳಿದ ಕಸವನ್ನು ಬೇರೆ ಬೇರೆಯಾಗಿ ಹಾಕಲಾಗುತ್ತದೆ; ಡಬ್ಬಗಳ ಬಣ್ಣ ಅಥವಾ ಲೇಬಲ್ ನಗರಕ್ಕೆ ತಕ್ಕಂತೆ ಬದಲಾಗುತ್ತದೆ. Pfand ಲೋಗೋ ಇರುವ ಬಾಟಲಿ ಮತ್ತು ಕ್ಯಾನ್‌ಗಳ ಮೇಲೆ ಸಣ್ಣ ಠೇವಣಿ ಇರುತ್ತದೆ; ಸೂಪರ್‌ಮಾರ್ಕೆಟ್ ಯಂತ್ರಗಳಲ್ಲಿ ಹಿಂತಿರುಗಿಸಿದರೆ ಅದು ಮರಳಿ ಸಿಗುತ್ತದೆ.",
-      ml: "ജർമ്മനിയിൽ പേപ്പർ, പാക്കേജിംഗ്, ജൈവം, ബാക്കി മാലിന്യം എന്നിവ വെവ്വേറെയാണ് ഇടുന്നത്; ബിന്നുകളുടെ നിറമോ ലേബലോ നഗരം അനുസരിച്ച് മാറും. Pfand ലോഗോയുള്ള കുപ്പികൾക്കും ക്യാനുകൾക്കും ചെറിയ ഡെപ്പോസിറ്റ് ഉണ്ട്; സൂപ്പർമാർക്കറ്റ് മെഷീനുകളിൽ തിരികെ നൽകിയാൽ അത് തിരികെ ലഭിക്കും."
+      en: 'Germany separates paper, packaging, organic and residual waste, and colours or labels differ by city. Bottles and cans with the Pfand logo carry a small deposit that you get back from machines in supermarkets.'
     }
   },
   {
-    id: "quiet",
-    icon: "🤫",
-    title: {
-      en: "Quiet hours (Ruhezeiten)",
-      hi: "शांति के घंटे (Ruhezeiten)",
-      ta: "அமைதி நேரம் (Ruhezeiten)",
-      te: "నిశ్శబ్ద వేళలు (Ruhezeiten)",
-      bn: "নীরব সময় (Ruhezeiten)",
-      mr: "शांतता वेळ (Ruhezeiten)",
-      gu: "શાંતિનો સમય (Ruhezeiten)",
-      pa: "ਸ਼ਾਂਤੀ ਦਾ ਸਮਾਂ (Ruhezeiten)",
-      kn: "ಮೌನ ಸಮಯ (Ruhezeiten)",
-      ml: "നിശബ്ദ സമയം (Ruhezeiten)"
-    },
+    id: 'quiet',
+    icon: '🤫',
+    title: { en: 'Quiet hours (Ruhezeiten)', hi: 'शांति के घंटे (Ruhezeiten)' },
     summary: {
-      en: "No loud noise at night and all day on Sundays.",
-      hi: "रात में और रविवार को पूरे दिन तेज़ आवाज़ न करें।",
-      ta: "இரவிலும் ஞாயிறு முழுவதும் அதிக சத்தம் கூடாது.",
-      te: "రాత్రి, ఆదివారం రోజంతా పెద్ద శబ్దం చేయకండి.",
-      bn: "রাতে এবং রবিবার সারা দিন উচ্চ শব্দ করবেন না।",
-      mr: "रात्री आणि रविवारी दिवसभर मोठा आवाज करू नका.",
-      gu: "રાત્રે અને રવિવારે આખો દિવસ મોટો અવાજ ન કરો.",
-      pa: "ਰਾਤ ਨੂੰ ਅਤੇ ਐਤਵਾਰ ਨੂੰ ਸਾਰਾ ਦਿਨ ਉੱਚੀ ਆਵਾਜ਼ ਨਾ ਕਰੋ।",
-      kn: "ರಾತ್ರಿ ಮತ್ತು ಭಾನುವಾರ ಇಡೀ ದಿನ ಜೋರಾಗಿ ಶಬ್ದ ಮಾಡಬೇಡಿ.",
-      ml: "രാത്രിയിലും ഞായറാഴ്ച മുഴുവനും ഉച്ചത്തിൽ ശബ്ദമുണ്ടാക്കരുത്."
+      en: 'No loud noise at night and all day on Sundays.',
+      hi: 'रात में और रविवार को पूरे दिन तेज़ आवाज़ न करें।'
     },
     details: {
-      en: "Quiet hours are typically at night and all day on Sundays and public holidays; exact times depend on your city and rental contract. Avoid drilling, vacuuming or loud music then.",
-      hi: "शांति के घंटे आमतौर पर रात में और रविवार व सार्वजनिक छुट्टियों में पूरे दिन होते हैं; सही समय शहर और किराये के अनुबंध पर निर्भर करता है। उस समय ड्रिलिंग, वैक्यूम या तेज़ संगीत से बचें।",
-      ta: "அமைதி நேரம் பொதுவாக இரவிலும், ஞாயிறு மற்றும் பொது விடுமுறை நாட்களில் முழுநாளும் இருக்கும்; சரியான நேரம் நகரம் மற்றும் வாடகை ஒப்பந்தத்தைப் பொறுத்தது. அந்நேரத்தில் துளையிடுதல், வெற்றிட சுத்தம் செய்தல், உரத்த இசையைத் தவிர்க்கவும்.",
-      te: "నిశ్శబ్ద వేళలు సాధారణంగా రాత్రి, అలాగే ఆదివారాలు, ప్రభుత్వ సెలవు రోజుల్లో రోజంతా ఉంటాయి; ఖచ్చితమైన సమయాలు నగరం, అద్దె ఒప్పందాన్ని బట్టి మారుతాయి. ఆ సమయంలో డ్రిల్లింగ్, వాక్యూమ్, పెద్ద సంగీతం మానండి.",
-      bn: "নীরব সময় সাধারণত রাতে এবং রবিবার ও সরকারি ছুটির দিনে সারা দিন থাকে; সঠিক সময় শহর ও ভাড়ার চুক্তির ওপর নির্ভর করে। তখন ড্রিল, ভ্যাকুয়াম বা জোরে গান বাজানো এড়িয়ে চলুন।",
-      mr: "शांतता वेळ साधारणपणे रात्री, तसेच रविवार व सार्वजनिक सुट्टीच्या दिवशी पूर्ण दिवस असते; नेमकी वेळ शहर आणि भाडेकरारावर अवलंबून असते. त्या वेळी ड्रिलिंग, व्हॅक्यूम किंवा मोठे संगीत टाळा.",
-      gu: "શાંતિનો સમય સામાન્ય રીતે રાત્રે, તેમજ રવિવાર અને જાહેર રજાઓમાં આખો દિવસ હોય છે; ચોક્કસ સમય શહેર અને ભાડા કરાર પર આધાર રાખે છે. તે સમયે ડ્રિલિંગ, વેક્યૂમ કે મોટું સંગીત ટાળો.",
-      pa: "ਸ਼ਾਂਤੀ ਦਾ ਸਮਾਂ ਆਮ ਤੌਰ ਤੇ ਰਾਤ ਨੂੰ, ਅਤੇ ਐਤਵਾਰ ਤੇ ਸਰਕਾਰੀ ਛੁੱਟੀਆਂ ਵਿੱਚ ਸਾਰਾ ਦਿਨ ਹੁੰਦਾ ਹੈ; ਸਹੀ ਸਮਾਂ ਸ਼ਹਿਰ ਅਤੇ ਕਿਰਾਏ ਦੇ ਇਕਰਾਰਨਾਮੇ ਤੇ ਨਿਰਭਰ ਕਰਦਾ ਹੈ। ਉਸ ਵੇਲੇ ਡ੍ਰਿਲਿੰਗ, ਵੈਕਿਊਮ ਜਾਂ ਉੱਚਾ ਸੰਗੀਤ ਨਾ ਕਰੋ।",
-      kn: "ಮೌನ ಸಮಯ ಸಾಮಾನ್ಯವಾಗಿ ರಾತ್ರಿ, ಹಾಗೂ ಭಾನುವಾರ ಮತ್ತು ಸಾರ್ವಜನಿಕ ರಜಾದಿನಗಳಲ್ಲಿ ಇಡೀ ದಿನ ಇರುತ್ತದೆ; ನಿಖರ ಸಮಯ ನಗರ ಮತ್ತು ಬಾಡಿಗೆ ಒಪ್ಪಂದವನ್ನು ಅವಲಂಬಿಸಿರುತ್ತದೆ. ಆ ಸಮಯದಲ್ಲಿ ಡ್ರಿಲ್ಲಿಂಗ್, ವ್ಯಾಕ್ಯೂಮ್ ಅಥವಾ ಜೋರಾದ ಸಂಗೀತ ತಪ್ಪಿಸಿ.",
-      ml: "നിശബ്ദ സമയം സാധാരണയായി രാത്രിയിലും, ഞായറാഴ്ചകളിലും പൊതു അവധി ദിവസങ്ങളിലും ദിവസം മുഴുവനും ആയിരിക്കും; കൃത്യമായ സമയം നഗരത്തെയും വാടക കരാറിനെയും ആശ്രയിച്ചിരിക്കുന്നു. ആ സമയത്ത് ഡ്രില്ലിംഗ്, വാക്വം, ഉച്ചത്തിലുള്ള സംഗീതം എന്നിവ ഒഴിവാക്കുക."
+      en: 'Quiet hours are typically at night and all day on Sundays and public holidays; exact times depend on your city and rental contract. Avoid drilling, vacuuming or loud music then.'
     }
   },
   {
-    id: "rundfunk",
-    icon: "📺",
-    title: {
-      en: "Broadcasting fee (Rundfunkbeitrag)",
-      hi: "ब्रॉडकास्टिंग शुल्क (Rundfunkbeitrag)",
-      ta: "ஒளிபரப்புக் கட்டணம் (Rundfunkbeitrag)",
-      te: "ప్రసార రుసుము (Rundfunkbeitrag)",
-      bn: "সম্প্রচার ফি (Rundfunkbeitrag)",
-      mr: "प्रसारण शुल्क (Rundfunkbeitrag)",
-      gu: "પ્રસારણ ફી (Rundfunkbeitrag)",
-      pa: "ਪ੍ਰਸਾਰਣ ਫੀਸ (Rundfunkbeitrag)",
-      kn: "ಪ್ರಸಾರ ಶುಲ್ಕ (Rundfunkbeitrag)",
-      ml: "പ്രക്ഷേപണ ഫീസ് (Rundfunkbeitrag)"
-    },
+    id: 'rundfunk',
+    icon: '📺',
+    title: { en: 'Broadcasting fee (Rundfunkbeitrag)', hi: 'ब्रॉडकास्टिंग शुल्क (Rundfunkbeitrag)' },
     summary: {
-      en: "Every household pays a monthly broadcasting fee.",
-      hi: "हर घर को मासिक ब्रॉडकास्टिंग शुल्क देना होता है।",
-      ta: "ஒவ்வொரு வீடும் மாதாந்திர ஒளிபரப்புக் கட்டணம் செலுத்த வேண்டும்.",
-      te: "ప్రతి ఇల్లు నెలవారీ ప్రసార రుసుము చెల్లించాలి.",
-      bn: "প্রতিটি পরিবারকে মাসিক সম্প্রচার ফি দিতে হয়।",
-      mr: "प्रत्येक घराला मासिक प्रसारण शुल्क भरावे लागते.",
-      gu: "દરેક ઘરે માસિક પ્રસારણ ફી ચૂકવવી પડે છે.",
-      pa: "ਹਰ ਘਰ ਨੂੰ ਮਹੀਨਾਵਾਰ ਪ੍ਰਸਾਰਣ ਫੀਸ ਦੇਣੀ ਪੈਂਦੀ ਹੈ।",
-      kn: "ಪ್ರತಿ ಮನೆಯೂ ಮಾಸಿಕ ಪ್ರಸಾರ ಶುಲ್ಕ ಪಾವತಿಸಬೇಕು.",
-      ml: "ഓരോ വീടും പ്രതിമാസ പ്രക്ഷേപണ ഫീസ് അടയ്ക്കണം."
+      en: 'Every household pays a monthly broadcasting fee.',
+      hi: 'हर घर को मासिक ब्रॉडकास्टिंग शुल्क देना होता है।'
     },
     details: {
-      en: "After Anmeldung you will receive a letter from the Beitragsservice. One payment per household; check the current amount at rundfunkbeitrag.de.",
-      hi: "Anmeldung के बाद आपको Beitragsservice से एक पत्र मिलेगा। हर घर के लिए एक ही भुगतान होता है; मौजूदा राशि rundfunkbeitrag.de पर देखें।",
-      ta: "Anmeldung-க்குப் பிறகு Beitragsservice-இடமிருந்து ஒரு கடிதம் வரும். ஒரு வீட்டுக்கு ஒரு கட்டணம் மட்டுமே; தற்போதைய தொகையை rundfunkbeitrag.de-ல் பாருங்கள்.",
-      te: "Anmeldung తర్వాత Beitragsservice నుండి మీకు ఒక లేఖ వస్తుంది. ఒక ఇంటికి ఒకే చెల్లింపు; ప్రస్తుత మొత్తాన్ని rundfunkbeitrag.de లో చూడండి.",
-      bn: "Anmeldung-এর পর Beitragsservice থেকে আপনি একটি চিঠি পাবেন। প্রতি পরিবারের জন্য একটি পেমেন্ট; বর্তমান পরিমাণ rundfunkbeitrag.de-তে দেখুন।",
-      mr: "Anmeldung नंतर तुम्हाला Beitragsservice कडून पत्र मिळेल. प्रत्येक घरासाठी एकच भरणा; सध्याची रक्कम rundfunkbeitrag.de वर पाहा.",
-      gu: "Anmeldung પછી તમને Beitragsservice તરફથી પત્ર મળશે. દરેક ઘર માટે એક જ ચુકવણી; હાલની રકમ rundfunkbeitrag.de પર જુઓ.",
-      pa: "Anmeldung ਤੋਂ ਬਾਅਦ ਤੁਹਾਨੂੰ Beitragsservice ਵੱਲੋਂ ਇੱਕ ਚਿੱਠੀ ਮਿਲੇਗੀ। ਹਰ ਘਰ ਲਈ ਇੱਕੋ ਭੁਗਤਾਨ; ਮੌਜੂਦਾ ਰਕਮ rundfunkbeitrag.de ਤੇ ਵੇਖੋ।",
-      kn: "Anmeldung ನಂತರ Beitragsservice ನಿಂದ ನಿಮಗೆ ಪತ್ರ ಬರುತ್ತದೆ. ಪ್ರತಿ ಮನೆಗೆ ಒಂದೇ ಪಾವತಿ; ಪ್ರಸ್ತುತ ಮೊತ್ತವನ್ನು rundfunkbeitrag.de ನಲ್ಲಿ ನೋಡಿ.",
-      ml: "Anmeldung കഴിഞ്ഞാൽ Beitragsservice-ൽ നിന്ന് നിങ്ങൾക്ക് ഒരു കത്ത് ലഭിക്കും. ഒരു വീടിന് ഒരു പേയ്മെന്റ് മാത്രം; നിലവിലെ തുക rundfunkbeitrag.de-ൽ നോക്കുക."
+      en: 'After Anmeldung you will receive a letter from the Beitragsservice. One payment per household; check the current amount at rundfunkbeitrag.de.'
     }
   },
   {
-    id: "insurance",
-    icon: "🏥",
-    title: {
-      en: "Mandatory health insurance",
-      hi: "अनिवार्य स्वास्थ्य बीमा",
-      ta: "கட்டாய மருத்துவக் காப்பீடு",
-      te: "తప్పనిసరి ఆరోగ్య బీమా",
-      bn: "বাধ্যতামূলক স্বাস্থ্য বিমা",
-      mr: "अनिवार्य आरोग्य विमा",
-      gu: "ફરજિયાત આરોગ્ય વીમો",
-      pa: "ਲਾਜ਼ਮੀ ਸਿਹਤ ਬੀਮਾ",
-      kn: "ಕಡ್ಡಾಯ ಆರೋಗ್ಯ ವಿಮೆ",
-      ml: "നിർബന്ധിത ആരോഗ്യ ഇൻഷുറൻസ്"
-    },
+    id: 'insurance',
+    icon: '🏥',
+    title: { en: 'Mandatory health insurance', hi: 'अनिवार्य स्वास्थ्य बीमा' },
     summary: {
-      en: "You must always be insured while living in Germany.",
-      hi: "जर्मनी में रहते हुए आपका बीमा हमेशा होना चाहिए।",
-      ta: "ஜெர்மனியில் வாழும் வரை எப்போதும் காப்பீடு இருக்க வேண்டும்.",
-      te: "జర్మనీలో ఉన్నంతకాలం మీకు ఎల్లప్పుడూ బీమా ఉండాలి.",
-      bn: "জার্মানিতে থাকাকালীন সবসময় বিমা থাকতে হবে।",
-      mr: "जर्मनीत वास्तव्यात नेहमी विमा असणे आवश्यक आहे.",
-      gu: "જર્મનીમાં રહેતી વખતે હંમેશા વીમો હોવો જરૂરી છે.",
-      pa: "ਜਰਮਨੀ ਵਿੱਚ ਰਹਿੰਦਿਆਂ ਹਮੇਸ਼ਾ ਬੀਮਾ ਹੋਣਾ ਜ਼ਰੂਰੀ ਹੈ।",
-      kn: "ಜರ್ಮನಿಯಲ್ಲಿ ವಾಸಿಸುವಾಗ ಯಾವಾಗಲೂ ವಿಮೆ ಇರಬೇಕು.",
-      ml: "ജർമ്മനിയിൽ താമസിക്കുമ്പോൾ എപ്പോഴും ഇൻഷുറൻസ് ഉണ്ടായിരിക്കണം."
+      en: 'You must always be insured while living in Germany.',
+      hi: 'जर्मनी में रहते हुए आपका बीमा हमेशा होना चाहिए।'
     },
     details: {
-      en: "Public insurers (TK, AOK, Barmer) and private insurers are options. Your employer or university can guide you, and gaps in cover can lead to back-payments.",
-      hi: "सरकारी (TK, AOK, Barmer) और निजी बीमाकर्ता विकल्प हैं। आपका नियोक्ता या विश्वविद्यालय मार्गदर्शन कर सकता है, और बीमा में अंतराल होने पर पिछला भुगतान देना पड़ सकता है।",
-      ta: "அரசு (TK, AOK, Barmer) மற்றும் தனியார் காப்பீட்டு நிறுவனங்கள் தேர்வுகளாகும். உங்கள் நிறுவனம் அல்லது பல்கலைக்கழகம் வழிகாட்டும்; காப்பீட்டில் இடைவெளி இருந்தால் பின்தேதியிட்ட கட்டணம் செலுத்த நேரிடலாம்.",
-      te: "ప్రభుత్వ (TK, AOK, Barmer) మరియు ప్రైవేట్ బీమా సంస్థలు ఎంపికలు. మీ యజమాని లేదా విశ్వవిద్యాలయం మార్గనిర్దేశం చేయగలదు; బీమాలో అంతరాలు ఉంటే వెనుకటి చెల్లింపులు చేయాల్సి రావచ్చు.",
-      bn: "সরকারি (TK, AOK, Barmer) ও বেসরকারি বিমা কোম্পানি বিকল্প। আপনার নিয়োগকর্তা বা বিশ্ববিদ্যালয় পথ দেখাতে পারে, আর বিমায় ফাঁক থাকলে বকেয়া টাকা দিতে হতে পারে।",
-      mr: "सरकारी (TK, AOK, Barmer) आणि खाजगी विमा कंपन्या हे पर्याय आहेत. तुमचा नियोक्ता किंवा विद्यापीठ मार्गदर्शन करू शकते, आणि विम्यात खंड पडल्यास मागील रक्कम भरावी लागू शकते.",
-      gu: "સરકારી (TK, AOK, Barmer) અને ખાનગી વીમા કંપનીઓ વિકલ્પ છે. તમારા નોકરીદાતા કે યુનિવર્સિટી માર્ગદર્શન આપી શકે, અને વીમામાં ખાલી સમય રહે તો પાછલી રકમ ભરવી પડી શકે.",
-      pa: "ਸਰਕਾਰੀ (TK, AOK, Barmer) ਅਤੇ ਪ੍ਰਾਈਵੇਟ ਬੀਮਾ ਕੰਪਨੀਆਂ ਵਿਕਲਪ ਹਨ। ਤੁਹਾਡਾ ਮਾਲਕ ਜਾਂ ਯੂਨੀਵਰਸਿਟੀ ਸਲਾਹ ਦੇ ਸਕਦੀ ਹੈ, ਅਤੇ ਬੀਮੇ ਵਿੱਚ ਵਕਫ਼ਾ ਪਵੇ ਤਾਂ ਪਿਛਲੀ ਰਕਮ ਭਰਨੀ ਪੈ ਸਕਦੀ ਹੈ।",
-      kn: "ಸರ್ಕಾರಿ (TK, AOK, Barmer) ಮತ್ತು ಖಾಸಗಿ ವಿಮಾ ಕಂಪನಿಗಳು ಆಯ್ಕೆಗಳು. ನಿಮ್ಮ ಉದ್ಯೋಗದಾತ ಅಥವಾ ವಿಶ್ವವಿದ್ಯಾಲಯ ಮಾರ್ಗದರ್ಶನ ನೀಡಬಹುದು; ವಿಮೆಯಲ್ಲಿ ಅಂತರವಿದ್ದರೆ ಹಿಂದಿನ ಮೊತ್ತ ಪಾವತಿಸಬೇಕಾಗಬಹುದು.",
-      ml: "പൊതു (TK, AOK, Barmer), സ്വകാര്യ ഇൻഷുറർമാർ എന്നിവ ഓപ്ഷനുകളാണ്. നിങ്ങളുടെ തൊഴിലുടമയോ സർവകലാശാലയോ മാർഗനിർദേശം നൽകും; ഇൻഷുറൻസിൽ ഇടവേള വന്നാൽ കുടിശ്ശിക അടയ്ക്കേണ്ടി വന്നേക്കാം."
+      en: 'Public insurers (TK, AOK, Barmer) and private insurers are options. Your employer or university can guide you, and gaps in cover can lead to back-payments.'
     }
   },
   {
-    id: "traffic",
-    icon: "🚦",
-    title: {
-      en: "Traffic rules",
-      hi: "ट्रैफिक नियम",
-      ta: "போக்குவரத்து விதிகள்",
-      te: "ట్రాఫిక్ నియమాలు",
-      bn: "ট্রাফিক নিয়ম",
-      mr: "वाहतूक नियम",
-      gu: "ટ્રાફિક નિયમો",
-      pa: "ਟ੍ਰੈਫਿਕ ਨਿਯਮ",
-      kn: "ಸಂಚಾರ ನಿಯಮಗಳು",
-      ml: "ട്രാഫിക് നിയമങ്ങൾ"
-    },
+    id: 'traffic',
+    icon: '🚦',
+    title: { en: 'Traffic rules', hi: 'ट्रैफिक नियम' },
     summary: {
-      en: "Wait for the green pedestrian light, especially around children.",
-      hi: "पैदल यात्री की हरी बत्ती का इंतज़ार करें, खासकर बच्चों के पास।",
-      ta: "பாதசாரிகளுக்கான பச்சை விளக்கு வரும் வரை காத்திருங்கள், குறிப்பாக குழந்தைகள் அருகில் இருக்கும்போது.",
-      te: "పాదచారుల ఆకుపచ్చ లైట్ వచ్చే వరకు ఆగండి, ముఖ్యంగా పిల్లలు ఉన్నప్పుడు.",
-      bn: "পথচারীদের সবুজ বাতির জন্য অপেক্ষা করুন, বিশেষ করে শিশুদের কাছে থাকলে।",
-      mr: "पादचाऱ्यांसाठी हिरवा दिवा लागेपर्यंत थांबा, विशेषतः मुले आसपास असताना.",
-      gu: "રાહદારીની લીલી લાઇટની રાહ જુઓ, ખાસ કરીને બાળકો આસપાસ હોય ત્યારે.",
-      pa: "ਪੈਦਲ ਯਾਤਰੀਆਂ ਦੀ ਹਰੀ ਬੱਤੀ ਦੀ ਉਡੀਕ ਕਰੋ, ਖਾਸ ਕਰਕੇ ਬੱਚਿਆਂ ਦੇ ਨੇੜੇ।",
-      kn: "ಪಾದಚಾರಿಗಳ ಹಸಿರು ದೀಪಕ್ಕಾಗಿ ಕಾಯಿರಿ, ವಿಶೇಷವಾಗಿ ಮಕ್ಕಳ ಬಳಿ.",
-      ml: "കാൽനടയാത്രക്കാരുടെ പച്ച ലൈറ്റിനായി കാത്തിരിക്കുക, പ്രത്യേകിച്ച് കുട്ടികൾ അടുത്തുള്ളപ്പോൾ."
+      en: 'Wait for the green pedestrian light, especially around children.',
+      hi: 'पैदल यात्री की हरी बत्ती का इंतज़ार करें, खासकर बच्चों के पास।'
     },
     details: {
-      en: "Crossing on red can be fined and sets a poor example for children. Cyclists should use bike lanes where available and have working lights after dark.",
-      hi: "लाल बत्ती पर सड़क पार करने पर जुर्माना लग सकता है और यह बच्चों के सामने बुरा उदाहरण बनता है। साइकिल चालकों को जहाँ उपलब्ध हो वहाँ बाइक लेन का उपयोग करना चाहिए और अँधेरे के बाद चालू लाइट रखनी चाहिए।",
-      ta: "சிவப்பு விளக்கில் சாலையைக் கடந்தால் அபராதம் விதிக்கப்படலாம்; குழந்தைகளுக்கும் தவறான முன்மாதிரியாகும். சைக்கிள் ஓட்டுபவர்கள் இருக்கும் இடங்களில் சைக்கிள் பாதையைப் பயன்படுத்த வேண்டும்; இருட்டிய பிறகு வேலை செய்யும் விளக்குகள் இருக்க வேண்டும்.",
-      te: "ఎరుపు లైట్ వద్ద రోడ్డు దాటితే జరిమానా పడవచ్చు; పిల్లలకు చెడు ఉదాహరణ అవుతుంది. సైక్లిస్టులు అందుబాటులో ఉన్న చోట బైక్ లేన్లను వాడాలి; చీకటి పడ్డాక పనిచేసే లైట్లు ఉండాలి.",
-      bn: "লাল বাতিতে রাস্তা পার হলে জরিমানা হতে পারে এবং শিশুদের সামনে এটি খারাপ দৃষ্টান্ত। সাইকেল চালকদের যেখানে আছে সেখানে বাইক লেন ব্যবহার করা উচিত এবং অন্ধকারের পর কার্যকর বাতি রাখা উচিত।",
-      mr: "लाल दिव्यावर रस्ता ओलांडल्यास दंड होऊ शकतो आणि मुलांसमोर हे वाईट उदाहरण ठरते. सायकलस्वारांनी उपलब्ध असेल तिथे बाइक लेन वापरावी आणि अंधार पडल्यावर चालू दिवे ठेवावेत.",
-      gu: "લાલ લાઇટે રસ્તો ઓળંગવા પર દંડ થઈ શકે છે અને બાળકો સામે તે ખરાબ ઉદાહરણ બને છે. સાયકલ ચલાવનારાએ જ્યાં ઉપલબ્ધ હોય ત્યાં બાઇક લેન વાપરવી અને અંધારા પછી ચાલુ લાઇટ રાખવી.",
-      pa: "ਲਾਲ ਬੱਤੀ ਤੇ ਸੜਕ ਪਾਰ ਕਰਨ ਤੇ ਜੁਰਮਾਨਾ ਲੱਗ ਸਕਦਾ ਹੈ ਅਤੇ ਬੱਚਿਆਂ ਸਾਹਮਣੇ ਇਹ ਮਾੜੀ ਮਿਸਾਲ ਬਣਦੀ ਹੈ। ਸਾਈਕਲ ਚਾਲਕਾਂ ਨੂੰ ਜਿੱਥੇ ਹੋਵੇ ਉੱਥੇ ਬਾਈਕ ਲੇਨ ਵਰਤਣੀ ਚਾਹੀਦੀ ਹੈ ਅਤੇ ਹਨੇਰੇ ਤੋਂ ਬਾਅਦ ਚਾਲੂ ਲਾਈਟਾਂ ਰੱਖਣੀਆਂ ਚਾਹੀਦੀਆਂ ਹਨ।",
-      kn: "ಕೆಂಪು ದೀಪದಲ್ಲಿ ರಸ್ತೆ ದಾಟಿದರೆ ದಂಡ ವಿಧಿಸಬಹುದು ಮತ್ತು ಮಕ್ಕಳಿಗೆ ಕೆಟ್ಟ ಮಾದರಿಯಾಗುತ್ತದೆ. ಸೈಕಲ್ ಸವಾರರು ಲಭ್ಯವಿರುವ ಕಡೆ ಬೈಕ್ ಲೇನ್ ಬಳಸಬೇಕು ಮತ್ತು ಕತ್ತಲೆಯ ನಂತರ ಕೆಲಸ ಮಾಡುವ ದೀಪಗಳಿರಬೇಕು.",
-      ml: "ചുവപ്പ് ലൈറ്റിൽ റോഡ് മുറിച്ചുകടന്നാൽ പിഴ ചുമത്തിയേക്കാം, കുട്ടികൾക്ക് മോശം മാതൃകയുമാകും. സൈക്കിൾ യാത്രക്കാർ ലഭ്യമായിടത്ത് ബൈക്ക് ലെയ്ൻ ഉപയോഗിക്കണം, ഇരുട്ടിയ ശേഷം പ്രവർത്തിക്കുന്ന ലൈറ്റുകളും വേണം."
+      en: 'Crossing on red can be fined and sets a poor example for children. Cyclists should use bike lanes where available and have working lights after dark.'
     }
   }
 ];
@@ -1331,6 +1277,310 @@ function PlaceCard({ place, nf, t, tone = 'amber', city }) {
       <a href={mapsUrl(`${place.name} ${place.address} ${city}`)} target="_blank" rel="noreferrer" className="text-xs font-medium text-indigo-700 hover:underline inline-flex items-center gap-1.5">
         <Navigation className="w-3.5 h-3.5" />{t.openGoogleMaps}
       </a>
+    </div>
+  );
+}
+
+const SRC_LANGS = [
+  { code: 'auto', label: 'Auto-detect', speech: 'en-IN' },
+  { code: 'hi', label: 'हिन्दी', speech: 'hi-IN' }, { code: 'ta', label: 'தமிழ்', speech: 'ta-IN' },
+  { code: 'te', label: 'తెలుగు', speech: 'te-IN' }, { code: 'bn', label: 'বাংলা', speech: 'bn-IN' },
+  { code: 'mr', label: 'मराठी', speech: 'mr-IN' }, { code: 'gu', label: 'ગુજરાતી', speech: 'gu-IN' },
+  { code: 'pa', label: 'ਪੰਜਾਬੀ', speech: 'pa-IN' }, { code: 'kn', label: 'ಕನ್ನಡ', speech: 'kn-IN' },
+  { code: 'ml', label: 'മലയാളം', speech: 'ml-IN' }, { code: 'ur', label: 'اردو', speech: 'ur-IN' },
+  { code: 'en', label: 'English', speech: 'en-IN' }
+];
+
+const PHRASES = [
+  { en: 'Where is the nearest pharmacy?', de: 'Wo ist die nächste Apotheke?' },
+  { en: 'I need a doctor.', de: 'Ich brauche einen Arzt.' },
+  { en: 'Is this vegetarian?', de: 'Ist das vegetarisch?' },
+  { en: 'Does this contain meat or pork?', de: 'Enthält das Fleisch oder Schweinefleisch?' },
+  { en: 'One ticket to the main station, please.', de: 'Eine Fahrkarte zum Hauptbahnhof, bitte.' },
+  { en: 'I have an appointment at the Bürgeramt.', de: 'Ich habe einen Termin beim Bürgeramt.' },
+  { en: 'Can you speak English, please?', de: 'Sprechen Sie bitte Englisch?' },
+  { en: 'Please speak slowly.', de: 'Bitte sprechen Sie langsam.' },
+  { en: 'How much does it cost?', de: 'Wie viel kostet das?' },
+  { en: 'I am lost. Please help me.', de: 'Ich habe mich verlaufen. Bitte helfen Sie mir.' }
+];
+
+const speakGerman = (text) => {
+  if (!text || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'de-DE';
+  u.rate = 0.9;
+  window.speechSynthesis.speak(u);
+};
+
+function TalkModule({ t, defaultSrc }) {
+  const [src, setSrc] = useState('auto');
+  const [text, setText] = useState('');
+  const [out, setOut] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState('');
+  const [listening, setListening] = useState(false);
+  const [history, setHistory] = useState(() => {
+    try { return JSON.parse(lsGet('pravasi_talk_history', '[]')); } catch (e) { return []; }
+  });
+
+  const translate = async (input = text, from = src) => {
+    const q = input.trim();
+    if (!q) return;
+    setBusy(true); setErr('');
+    try {
+      // Unofficial Google endpoint, fine for a prototype. For production use the
+      // Cloud Translation API through your own backend/Supabase Edge Function.
+      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=de&dt=t&q=${encodeURIComponent(q)}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const de = data[0].map((x) => x[0]).join('');
+      setOut(de);
+      const next = [{ q, de }, ...history.filter((h) => h.q !== q)].slice(0, 10);
+      setHistory(next);
+      lsSet('pravasi_talk_history', JSON.stringify(next));
+    } catch (e) {
+      setErr(t.talkError);
+    } finally { setBusy(false); }
+  };
+
+  const listen = () => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { setErr(t.talkNoMic); return; }
+    const r = new SR();
+    r.lang = (SRC_LANGS.find((l) => l.code === src) || SRC_LANGS[0]).speech;
+    r.onstart = () => setListening(true);
+    r.onend = () => setListening(false);
+    r.onerror = () => setListening(false);
+    r.onresult = (e) => { const s = e.results[0][0].transcript; setText(s); translate(s); };
+    r.start();
+  };
+
+  const copy = () => { try { navigator.clipboard.writeText(out); } catch (e) {} };
+
+  return (
+    <div className="space-y-6 animate-in fade-in duration-500">
+      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-2 h-full bg-emerald-500"></div>
+        <div className="pl-2">
+          <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2"><Languages className="w-6 h-6" />{t.talkHeading}</h2>
+          <p className="text-sm text-slate-500 mt-1">{t.talkSub}</p>
+        </div>
+      </div>
+
+      <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+        <div className="flex flex-wrap items-center gap-3">
+          <select value={src} onChange={(e) => setSrc(e.target.value)} className="border border-slate-200 rounded-xl px-3 py-2 text-sm font-medium">
+            {SRC_LANGS.map((l) => <option key={l.code} value={l.code}>{l.label}</option>)}
+          </select>
+          <ArrowRightLeft className="w-4 h-4 text-slate-400" />
+          <span className="bg-slate-900 text-white rounded-xl px-3 py-2 text-sm font-semibold">🇩🇪 Deutsch</span>
+        </div>
+
+        <textarea rows={4} value={text} onChange={(e) => setText(e.target.value)} placeholder={t.talkPh} dir="auto"
+          className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none resize-none" />
+
+        <div className="flex flex-wrap gap-3">
+          <button onClick={() => translate()} disabled={busy || !text.trim()} className="bg-slate-900 text-white px-5 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-40">
+            {busy ? '…' : t.talkBtn}
+          </button>
+          <button onClick={listen} className={`px-4 py-2.5 rounded-xl text-sm font-semibold border flex items-center gap-2 ${listening ? 'bg-rose-50 border-rose-200 text-rose-700' : 'bg-white border-slate-200 text-slate-700'}`}>
+            <Mic className="w-4 h-4" />{listening ? t.talkListening : t.talkSpeak}
+          </button>
+          <button onClick={() => { setText(''); setOut(''); setErr(''); }} className="px-4 py-2.5 rounded-xl text-sm border border-slate-200 text-slate-600">{t.talkClear}</button>
+        </div>
+
+        {err && <p className="text-sm text-rose-600">{err}</p>}
+
+        {out && (
+          <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 space-y-3" lang="de">
+            <p className="text-xl sm:text-2xl font-semibold text-slate-900 leading-relaxed">{out}</p>
+            <div className="flex gap-3">
+              <button onClick={() => speakGerman(out)} className="bg-white border border-emerald-200 px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2"><Volume2 className="w-4 h-4" />{t.talkPlay}</button>
+              <button onClick={copy} className="bg-white border border-emerald-200 px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2"><Copy className="w-4 h-4" />{t.talkCopy}</button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3">
+        <h3 className="font-bold text-slate-900">{t.talkPhrases}</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {PHRASES.map((p) => (
+            <button key={p.en} onClick={() => { setText(p.en); setOut(p.de); speakGerman(p.de); }} className="text-left bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-2xl p-4">
+              <span className="block text-sm text-slate-600">{p.en}</span>
+              <span className="block text-sm font-semibold text-slate-900 mt-1" lang="de">{p.de}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {history.length > 0 && (
+        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-2">
+          <h3 className="font-bold text-slate-900">{t.talkHistory}</h3>
+          {history.map((h, i) => (
+            <button key={i} onClick={() => { setText(h.q); setOut(h.de); }} className="w-full text-left text-sm border-b border-slate-100 py-2">
+              <span className="text-slate-500">{h.q}</span> → <span className="font-semibold" lang="de">{h.de}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ✏️ EDIT YOUR DETAILS HERE
+const CONTACT = {
+  name: 'Ankit',
+  role: 'Founder, Pravasi Sarthi',
+  email: '1122ankitverma@gmail.com',
+  linkedin: 'https://www.linkedin.com/in/analyst-ankit-verma/',
+  phone: '',   // optional, e.g. '+49 123 4567890' (leave '' to hide)
+  website: ''  // optional, e.g. 'https://yourapp.com' (leave '' to hide)
+};
+
+const ABOUT = {
+  whyTitle: {
+    en: 'Why we built this', hi: 'हमने इसे क्यों बनाया', ta: 'இதை ஏன் உருவாக்கினோம்',
+    te: 'దీన్ని ఎందుకు రూపొందించాము', bn: 'কেন বানিয়েছি', mr: 'आम्ही हे का बनवले',
+    gu: 'અમે આ કેમ બનાવ્યું', pa: 'ਅਸੀਂ ਇਹ ਕਿਉਂ ਬਣਾਇਆ', kn: 'ಇದನ್ನು ಏಕೆ ರಚಿಸಿದ್ದೇವೆ',
+    ml: 'ഇത് എന്തിന് ഉണ്ടാക്കി'
+  },
+  why: {
+    en: 'Moving to Germany is exciting, but the first weeks are confusing: new language, new paperwork, unfamiliar food and rules. We built Pravasi Sarthi so that no Indian family, student or professional has to figure it all out alone. Everything is explained in your own mother tongue, step by step.',
+    hi: 'जर्मनी आना रोमांचक है, लेकिन शुरुआती हफ्ते उलझन भरे होते हैं: नई भाषा, नए कागज़ात, अनजाना खाना और नियम। हमने प्रवासी सारथी इसलिए बनाया ताकि कोई भी भारतीय परिवार, छात्र या पेशेवर यह सब अकेले न समझे। हर चीज़ आपकी अपनी मातृभाषा में, कदम-दर-कदम समझाई गई है।',
+    ta: 'ஜெர்மனிக்கு வருவது உற்சாகமானது, ஆனால் முதல் வாரங்கள் குழப்பமானவை: புதிய மொழி, புதிய ஆவணங்கள், பழக்கமில்லாத உணவு, விதிகள். எந்த இந்தியக் குடும்பமும், மாணவரும், தொழில்முறையாளரும் இதையெல்லாம் தனியாகச் சமாளிக்கக் கூடாது என்பதற்காகவே பிரவாசி சாரதியை உருவாக்கினோம். எல்லாம் உங்கள் தாய்மொழியில், படிப்படியாக விளக்கப்பட்டுள்ளது.',
+    te: 'జర్మనీకి రావడం ఉత్సాహకరం, కానీ మొదటి వారాలు గందరగోళంగా ఉంటాయి: కొత్త భాష, కొత్త పత్రాలు, తెలియని ఆహారం, నియమాలు. ఏ భారతీయ కుటుంబం, విద్యార్థి, ఉద్యోగి ఇవన్నీ ఒంటరిగా తెలుసుకోవాల్సిన అవసరం లేకుండా ప్రవాసి సార్థిని రూపొందించాము. ప్రతిదీ మీ మాతృభాషలో, దశలవారీగా వివరించబడింది.',
+    bn: 'জার্মানিতে আসা উত্তেজনার, কিন্তু প্রথম সপ্তাহগুলো বিভ্রান্তিকর: নতুন ভাষা, নতুন কাগজপত্র, অচেনা খাবার ও নিয়ম। কোনো ভারতীয় পরিবার, ছাত্র বা পেশাদারকে যেন সব একা বুঝতে না হয়, তাই আমরা প্রবাসী সারথি বানিয়েছি। সবকিছু আপনার মাতৃভাষায়, ধাপে ধাপে বোঝানো হয়েছে।',
+    mr: 'जर्मनीत येणे रोमांचक आहे, पण सुरुवातीचे आठवडे गोंधळाचे असतात: नवी भाषा, नवी कागदपत्रे, अनोळखी जेवण आणि नियम. कोणत्याही भारतीय कुटुंबाला, विद्यार्थ्याला किंवा व्यावसायिकाला हे सर्व एकट्याने समजून घ्यावे लागू नये म्हणून आम्ही प्रवासी सारथी बनवले. सर्व काही तुमच्या मातृभाषेत, टप्प्याटप्प्याने समजावले आहे.',
+    gu: 'જર્મની આવવું રોમાંચક છે, પણ શરૂઆતના અઠવાડિયા ગૂંચવણભર્યા હોય છે: નવી ભાષા, નવા કાગળો, અજાણ્યું ભોજન અને નિયમો. કોઈ ભારતીય પરિવાર, વિદ્યાર્થી કે વ્યાવસાયિકને આ બધું એકલા સમજવું ન પડે તે માટે અમે પ્રવાસી સારથી બનાવ્યું. બધું તમારી માતૃભાષામાં, પગલે પગલે સમજાવ્યું છે.',
+    pa: 'ਜਰਮਨੀ ਆਉਣਾ ਰੋਮਾਂਚਕ ਹੈ, ਪਰ ਸ਼ੁਰੂਆਤੀ ਹਫ਼ਤੇ ਉਲਝਣ ਭਰੇ ਹੁੰਦੇ ਹਨ: ਨਵੀਂ ਭਾਸ਼ਾ, ਨਵੇਂ ਕਾਗਜ਼ਾਤ, ਅਣਜਾਣ ਖਾਣਾ ਅਤੇ ਨਿਯਮ। ਕੋਈ ਵੀ ਭਾਰਤੀ ਪਰਿਵਾਰ, ਵਿਦਿਆਰਥੀ ਜਾਂ ਪੇਸ਼ੇਵਰ ਇਹ ਸਭ ਇਕੱਲਾ ਨਾ ਸਮਝੇ, ਇਸ ਲਈ ਅਸੀਂ ਪ੍ਰਵਾਸੀ ਸਾਰਥੀ ਬਣਾਇਆ। ਸਭ ਕੁਝ ਤੁਹਾਡੀ ਮਾਂ ਬੋਲੀ ਵਿੱਚ, ਕਦਮ-ਦਰ-ਕਦਮ ਸਮਝਾਇਆ ਗਿਆ ਹੈ।',
+    kn: 'ಜರ್ಮನಿಗೆ ಬರುವುದು ರೋಮಾಂಚಕ, ಆದರೆ ಮೊದಲ ವಾರಗಳು ಗೊಂದಲಮಯ: ಹೊಸ ಭಾಷೆ, ಹೊಸ ದಾಖಲೆಗಳು, ಅಪರಿಚಿತ ಆಹಾರ ಮತ್ತು ನಿಯಮಗಳು. ಯಾವುದೇ ಭಾರತೀಯ ಕುಟುಂಬ, ವಿದ್ಯಾರ್ಥಿ ಅಥವಾ ವೃತ್ತಿಪರರು ಇದನ್ನೆಲ್ಲ ಒಂಟಿಯಾಗಿ ಅರ್ಥಮಾಡಿಕೊಳ್ಳಬಾರದೆಂದು ಪ್ರವಾಸಿ ಸಾರಥಿಯನ್ನು ರಚಿಸಿದ್ದೇವೆ. ಎಲ್ಲವೂ ನಿಮ್ಮ ಮಾತೃಭಾಷೆಯಲ್ಲಿ, ಹಂತ ಹಂತವಾಗಿ ವಿವರಿಸಲಾಗಿದೆ.',
+    ml: 'ജർമ്മനിയിലേക്ക് വരുന്നത് ആവേശകരമാണ്, പക്ഷേ ആദ്യ ആഴ്ചകൾ ആശയക്കുഴപ്പം നിറഞ്ഞതാണ്: പുതിയ ഭാഷ, പുതിയ രേഖകൾ, അപരിചിതമായ ഭക്ഷണവും നിയമങ്ങളും. ഒരു ഇന്ത്യൻ കുടുംബത്തിനോ വിദ്യാർത്ഥിക്കോ പ്രൊഫഷണലിനോ ഇതെല്ലാം ഒറ്റയ്ക്ക് മനസ്സിലാക്കേണ്ടി വരരുത് എന്നതിനാലാണ് പ്രവാസി സാരഥി ഉണ്ടാക്കിയത്. എല്ലാം നിങ്ങളുടെ മാതൃഭാഷയിൽ, ഘട്ടം ഘട്ടമായി വിശദീകരിച്ചിരിക്കുന്നു.'
+  },
+  helpsTitle: {
+    en: 'How it helps you', hi: 'यह आपकी कैसे मदद करता है', ta: 'இது உங்களுக்கு எப்படி உதவுகிறது',
+    te: 'ఇది మీకు ఎలా సహాయపడుతుంది', bn: 'এটি আপনাকে কীভাবে সাহায্য করে', mr: 'हे तुम्हाला कशी मदत करते',
+    gu: 'તે તમને કેવી રીતે મદદ કરે છે', pa: 'ਇਹ ਤੁਹਾਡੀ ਕਿਵੇਂ ਮਦਦ ਕਰਦਾ ਹੈ', kn: 'ಇದು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ',
+    ml: 'ഇത് നിങ്ങളെ എങ്ങനെ സഹായിക്കുന്നു'
+  },
+  helps: [
+    {
+      en: 'A 30-day roadmap: Anmeldung, health insurance, tax ID and more, step by step.',
+      hi: '30 दिन का रोडमैप: Anmeldung, स्वास्थ्य बीमा, टैक्स आईडी और बहुत कुछ, कदम-दर-कदम।',
+      ta: '30 நாள் திட்டம்: Anmeldung, மருத்துவக் காப்பீடு, வரி எண் மற்றும் பல, படிப்படியாக.',
+      te: '30 రోజుల రోడ్‌మ్యాప్: Anmeldung, ఆరోగ్య బీమా, టాక్స్ ఐడి మరియు మరిన్ని, దశలవారీగా.',
+      bn: '৩০ দিনের রোডম্যাপ: Anmeldung, স্বাস্থ্য বিমা, ট্যাক্স আইডি ও আরও অনেক কিছু, ধাপে ধাপে।',
+      mr: '३० दिवसांचा रोडमॅप: Anmeldung, आरोग्य विमा, टॅक्स आयडी आणि बरेच काही, टप्प्याटप्प्याने.',
+      gu: '૩૦ દિવસનો રોડમેપ: Anmeldung, આરોગ્ય વીમો, ટેક્સ આઈડી અને વધુ, પગલે પગલે.',
+      pa: '30 ਦਿਨਾਂ ਦਾ ਰੋਡਮੈਪ: Anmeldung, ਸਿਹਤ ਬੀਮਾ, ਟੈਕਸ ਆਈਡੀ ਅਤੇ ਹੋਰ, ਕਦਮ-ਦਰ-ਕਦਮ।',
+      kn: '30 ದಿನಗಳ ರೋಡ್‌ಮ್ಯಾಪ್: Anmeldung, ಆರೋಗ್ಯ ವಿಮೆ, ತೆರಿಗೆ ಐಡಿ ಮತ್ತು ಇನ್ನಷ್ಟು, ಹಂತ ಹಂತವಾಗಿ.',
+      ml: '30 ദിവസത്തെ റോഡ്‌മാപ്പ്: Anmeldung, ആരോഗ്യ ഇൻഷുറൻസ്, ടാക്സ് ഐഡി തുടങ്ങിയവ, ഘട്ടം ഘട്ടമായി.'
+    },
+    {
+      en: 'Indian groceries, restaurants, temples, mosques, churches and family parks in your city.',
+      hi: 'आपके शहर में भारतीय किराना, रेस्टोरेंट, मंदिर, मस्जिद, चर्च और फैमिली पार्क।',
+      ta: 'உங்கள் நகரில் இந்திய மளிகைக் கடைகள், உணவகங்கள், கோயில்கள், மசூதிகள், தேவாலயங்கள், பூங்காக்கள்.',
+      te: 'మీ నగరంలో భారతీయ కిరాణా, రెస్టారెంట్లు, ఆలయాలు, మసీదులు, చర్చిలు, కుటుంబ పార్కులు.',
+      bn: 'আপনার শহরে ভারতীয় মুদি দোকান, রেস্তোরাঁ, মন্দির, মসজিদ, গির্জা ও ফ্যামিলি পার্ক।',
+      mr: 'तुमच्या शहरातील भारतीय किराणा, रेस्टॉरंट, मंदिरे, मशिदी, चर्च आणि फॅमिली पार्क.',
+      gu: 'તમારા શહેરમાં ભારતીય કરિયાણું, રેસ્ટોરન્ટ, મંદિરો, મસ્જિદો, ચર્ચ અને ફેમિલી પાર્ક.',
+      pa: 'ਤੁਹਾਡੇ ਸ਼ਹਿਰ ਵਿੱਚ ਭਾਰਤੀ ਕਰਿਆਨਾ, ਰੈਸਟੋਰੈਂਟ, ਮੰਦਿਰ, ਮਸਜਿਦਾਂ, ਚਰਚ ਅਤੇ ਫੈਮਿਲੀ ਪਾਰਕ।',
+      kn: 'ನಿಮ್ಮ ನಗರದ ಭಾರತೀಯ ಕಿರಾಣಿ, ರೆಸ್ಟೋರೆಂಟ್, ದೇವಾಲಯ, ಮಸೀದಿ, ಚರ್ಚ್ ಮತ್ತು ಕುಟುಂಬ ಪಾರ್ಕ್‌ಗಳು.',
+      ml: 'നിങ്ങളുടെ നഗരത്തിലെ ഇന്ത്യൻ പലചരക്ക് കടകൾ, റെസ്റ്റോറന്റുകൾ, ക്ഷേത്രങ്ങൾ, മസ്ജിദുകൾ, ചർച്ചുകൾ, ഫാമിലി പാർക്കുകൾ.'
+    },
+    {
+      en: 'A Talk tool that turns your language into German, with voice input and spoken output.',
+      hi: 'Talk टूल जो आपकी भाषा को जर्मन में बदलता है, आवाज़ से बोलने और सुनने की सुविधा के साथ।',
+      ta: 'உங்கள் மொழியை ஜெர்மனாக மாற்றும் Talk கருவி, குரல் உள்ளீடு மற்றும் ஒலி வெளியீட்டுடன்.',
+      te: 'మీ భాషను జర్మన్‌గా మార్చే Talk సాధనం, వాయిస్ ఇన్‌పుట్ మరియు ఆడియో అవుట్‌పుట్‌తో.',
+      bn: 'Talk টুল, যা আপনার ভাষাকে জার্মানে অনুবাদ করে, ভয়েস ইনপুট ও শোনার সুবিধাসহ।',
+      mr: 'Talk टूल जे तुमची भाषा जर्मनमध्ये बदलते, आवाजाने बोलणे आणि ऐकण्याच्या सुविधेसह.',
+      gu: 'Talk ટૂલ જે તમારી ભાષાને જર્મનમાં ફેરવે છે, અવાજથી બોલવા અને સાંભળવાની સુવિધા સાથે.',
+      pa: 'Talk ਟੂਲ ਜੋ ਤੁਹਾਡੀ ਭਾਸ਼ਾ ਨੂੰ ਜਰਮਨ ਵਿੱਚ ਬਦਲਦਾ ਹੈ, ਆਵਾਜ਼ ਨਾਲ ਬੋਲਣ ਤੇ ਸੁਣਨ ਦੀ ਸਹੂਲਤ ਨਾਲ।',
+      kn: 'ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಜರ್ಮನ್‌ಗೆ ಅನುವಾದಿಸುವ Talk ಸಾಧನ, ಧ್ವನಿ ಇನ್‌ಪುಟ್ ಮತ್ತು ಆಡಿಯೋ ಔಟ್‌ಪುಟ್‌ನೊಂದಿಗೆ.',
+      ml: 'നിങ്ങളുടെ ഭാഷയെ ജർമ്മനിലേക്ക് മാറ്റുന്ന Talk ടൂൾ, വോയ്സ് ഇൻപുട്ടും ഓഡിയോ ഔട്ട്പുട്ടും സഹിതം.'
+    },
+    {
+      en: 'A "Lost?" help card, hospital and night-pharmacy finder, and a community board to ask questions.',
+      hi: '"रास्ता भटक गए?" मदद कार्ड, अस्पताल और रात की फार्मेसी खोजक, और सवाल पूछने के लिए कम्युनिटी बोर्ड।',
+      ta: '"வழி தவறிவிட்டதா?" உதவி அட்டை, மருத்துவமனை மற்றும் இரவு மருந்தகம் தேடல், கேள்விகளுக்கான சமூகப் பலகை.',
+      te: '"దారి తప్పారా?" సహాయ కార్డ్, ఆసుపత్రి మరియు రాత్రి ఫార్మసీ శోధన, ప్రశ్నలు అడగడానికి కమ్యూనిటీ బోర్డు.',
+      bn: '"রাস্তা হারিয়েছেন?" সাহায্য কার্ড, হাসপাতাল ও রাতের ফার্মেসি খোঁজা, প্রশ্ন করার জন্য কমিউনিটি বোর্ড।',
+      mr: '"रस्ता चुकलात?" मदत कार्ड, रुग्णालय व रात्रीचे औषधालय शोधक, आणि प्रश्न विचारण्यासाठी कम्युनिटी बोर्ड.',
+      gu: '"રસ્તો ભૂલી ગયા?" મદદ કાર્ડ, હોસ્પિટલ અને રાતની ફાર્મસી શોધ, અને પ્રશ્નો પૂછવા કમ્યુનિટી બોર્ડ.',
+      pa: '"ਰਸਤਾ ਭੁੱਲ ਗਏ?" ਮਦਦ ਕਾਰਡ, ਹਸਪਤਾਲ ਅਤੇ ਰਾਤ ਦੀ ਫਾਰਮੇਸੀ ਖੋਜ, ਅਤੇ ਸਵਾਲ ਪੁੱਛਣ ਲਈ ਕਮਿਊਨਿਟੀ ਬੋਰਡ।',
+      kn: '"ದಾರಿ ತಪ್ಪಿದೆಯೇ?" ಸಹಾಯ ಕಾರ್ಡ್, ಆಸ್ಪತ್ರೆ ಮತ್ತು ರಾತ್ರಿ ಫಾರ್ಮಸಿ ಹುಡುಕಾಟ, ಪ್ರಶ್ನೆ ಕೇಳಲು ಕಮ್ಯೂನಿಟಿ ಬೋರ್ಡ್.',
+      ml: '"വഴി തെറ്റിയോ?" സഹായ കാർഡ്, ആശുപത്രിയും രാത്രി ഫാർമസിയും കണ്ടെത്തൽ, ചോദ്യങ്ങൾക്കായി കമ്മ്യൂണിറ്റി ബോർഡ്.'
+    }
+  ],
+  contactTitle: {
+    en: 'Contact', hi: 'संपर्क करें', ta: 'தொடர்புக்கு', te: 'సంప్రదించండి', bn: 'যোগাযোগ',
+    mr: 'संपर्क', gu: 'સંપર્ક', pa: 'ਸੰਪਰਕ', kn: 'ಸಂಪರ್ಕಿಸಿ', ml: 'ബന്ധപ്പെടുക'
+  },
+  disclaimer: {
+    en: 'This app gives general guidance only, not legal or medical advice. Rules, prices and addresses change, so always confirm with the official office or website.',
+    hi: 'यह ऐप केवल सामान्य मार्गदर्शन देता है, कानूनी या चिकित्सा सलाह नहीं। नियम, कीमतें और पते बदलते रहते हैं, इसलिए हमेशा आधिकारिक कार्यालय या वेबसाइट से पुष्टि करें।'
+  }
+};
+
+function AboutTab({ t, lang }) {
+  const P = (obj) => pickLang(obj, lang);
+  return (
+    <div className="space-y-6 animate-in fade-in duration-500">
+      <div className="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm space-y-4 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-2 h-full bg-amber-500"></div>
+        <div className="pl-2 space-y-3">
+          <h2 className="text-2xl font-bold text-slate-900">{t.appName}</h2>
+          <h3 className="text-sm font-bold text-amber-700 uppercase tracking-wider">{P(ABOUT.whyTitle)}</h3>
+          <p className="text-slate-700 leading-relaxed">{P(ABOUT.why)}</p>
+        </div>
+      </div>
+
+      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+        <h3 className="font-bold text-lg text-slate-900">{P(ABOUT.helpsTitle)}</h3>
+        <div className="space-y-3">
+          {ABOUT.helps.map((h, i) => (
+            <div key={i} className="flex items-start gap-3 text-sm text-slate-700">
+              <span className="w-6 h-6 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0 text-xs font-bold">✓</span>
+              <span className="leading-relaxed">{P(h)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+        <h3 className="font-bold text-lg text-slate-900">{P(ABOUT.contactTitle)}</h3>
+        <div>
+          <p className="font-semibold text-slate-900">{CONTACT.name}</p>
+          <p className="text-sm text-slate-500">{CONTACT.role}</p>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          {CONTACT.email && (
+            <a href={`mailto:${CONTACT.email}`} className="bg-slate-900 text-white px-4 py-2.5 rounded-xl text-sm font-medium inline-flex items-center gap-2">
+              <Mail className="w-4 h-4" />{CONTACT.email}
+            </a>
+          )}
+          {CONTACT.linkedin && (
+            <a href={CONTACT.linkedin} target="_blank" rel="noreferrer" className="bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-medium inline-flex items-center gap-2">
+              <Linkedin className="w-4 h-4" />LinkedIn
+            </a>
+          )}
+          {CONTACT.phone && (
+            <a href={`tel:${CONTACT.phone.replace(/\s/g, '')}`} className="bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-medium inline-flex items-center gap-2">
+              <Phone className="w-4 h-4" />{CONTACT.phone}
+            </a>
+          )}
+          {CONTACT.website && (
+            <a href={CONTACT.website} target="_blank" rel="noreferrer" className="bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-medium inline-flex items-center gap-2">
+              <Globe className="w-4 h-4" />Website
+            </a>
+          )}
+        </div>
+      </div>
+
+      <p className="text-xs text-slate-500 leading-relaxed px-2">{P(ABOUT.disclaimer)}</p>
     </div>
   );
 }
@@ -1475,7 +1725,10 @@ export default function App() {
   };
 
   // ---------- derived data ----------
-  const cityDir = CITY_SPECIFIC_DIRECTORY[selectedCity] || null;
+const cityDir = useMemo(() => {
+  const merged = mergeDir(CITY_SPECIFIC_DIRECTORY[selectedCity], EXTRA_PLACES[selectedCity]);
+  return Object.values(merged).some((a) => a.length) ? merged : null;
+}, [selectedCity]);
   const cityRestaurants = [
     ...(cityDir ? cityDir.restaurants : []),
     ...customRestaurants.filter((r) => r.city === selectedCity)
@@ -1488,7 +1741,8 @@ export default function App() {
     { id: 'desiRadar', label: t.tabs.desiRadar, icon: ShoppingBag },
     { id: 'community', label: t.tabs.community, icon: Users },
     { id: 'chat', label: t.tabs.chat, icon: MessageCircle },
-    { id: 'about', label: t.tabs.about, icon: Info }
+    { id: 'about', label: t.tabs.about, icon: Info },
+    { id: 'talk', label: t.tabs.talk, icon: Languages }
   ];
   const doneCount = Object.values(completedTasks).filter(Boolean).length;
   const stripColon = (s) => s.replace(/[:：]\s*$/, '');
@@ -1821,33 +2075,30 @@ export default function App() {
         )}
 
         {/* TAB 6: COMMUNITY */}
-        {activeTab === 'community' && (
-          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="bg-white border border-slate-100 shadow-sm p-6 sm:p-8 rounded-3xl relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-1.5 h-full bg-indigo-400 rounded-l-3xl"></div>
-              <div className="pl-2 mb-6">
-                <h3 className="font-bold text-slate-800 text-lg">{fmt(t.templesTitle, { city: selectedCity })}</h3>
-                <p className="text-sm text-slate-500 mt-1.5">{t.templesSub}</p>
-              </div>
-              {cityDir ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-2">
-                  {cityDir.temples.map((p, i) => <PlaceCard key={i} place={p} nf={nf} t={t} city={selectedCity} />)}
-                </div>
-              ) : <div className="pl-2"><NoCityData queries={['Hindu temple', 'Gurudwara']} /></div>}
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-slate-900">{fmt(t.parksTitle, { city: selectedCity })}</h3>
-              {cityDir ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {cityDir.parks.map((p, i) => <PlaceCard key={i} place={p} nf={nf} t={t} tone="emerald" city={selectedCity} />)}
-                </div>
-              ) : <NoCityData queries={['Park']} />}
-            </div>
+ {activeTab === 'community' && (
+  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    {[
+      ['temples', fmt(t.templesTitle, { city: selectedCity }), 'amber'],
+      ['mosques', fmt(t.mosquesTitle, { city: selectedCity }), 'emerald'],
+      ['churches', fmt(t.churchesTitle, { city: selectedCity }), 'amber'],
+      ['parks', fmt(t.parksTitle, { city: selectedCity }), 'emerald']
+    ].map(([key, title, tone]) => (
+      <div key={key} className="space-y-4">
+        <h3 className="text-xl font-bold text-slate-900">{title}</h3>
+        {cityDir?.[key]?.length ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {cityDir[key].map((p, i) => <PlaceCard key={i} place={p} nf={nf} t={t} tone={tone} city={selectedCity} />)}
           </div>
-        )}
+        ) : <NoCityData queries={MAP_CHIPS[key]} />}
+        <MapChips queries={MAP_CHIPS[key]} city={selectedCity} t={t} />
+      </div>
+    ))}
+  </div>
+)}
+        {/* TAB 7: TALK */}
+        {activeTab === 'talk' && <TalkModule t={t} />}
 
-        {/* TAB 7: CHAT */}
+        {/* TAB 8: CHAT */}
         {activeTab === 'chat' && (
           <div className="bg-white rounded-3xl border border-slate-200 shadow-sm h-[700px] flex flex-col overflow-hidden animate-in fade-in duration-500">
             <div className="bg-slate-50 border-b border-slate-200 p-4 flex justify-between items-center shrink-0">
@@ -1889,15 +2140,8 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 8: ABOUT */}
-        {activeTab === 'about' && (
-          <div className="space-y-6 animate-in fade-in duration-500">
-            <div className="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm space-y-6">
-              <h2 className="text-2xl font-bold text-slate-900">{t.aboutHeading}</h2>
-              <p className="text-slate-600 leading-relaxed">{t.aboutBody}</p>
-            </div>
-          </div>
-        )}
+        {/* TAB 9: ABOUT */}
+       {activeTab === 'about' && <AboutTab t={t} lang={selectedLang} />}
       </main>
 
       {/* ADD RESTAURANT MODAL */}
