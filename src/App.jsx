@@ -960,9 +960,11 @@ const EXTRA_PLACES = {
   }
 };
 
+const DIR_KEYS = ['groceries', 'restaurants', 'temples', 'mosques', 'churches', 'parks'];
+
 const mergeDir = (base = {}, extra = {}) => {
   const out = {};
-  new Set([...Object.keys(base), ...Object.keys(extra)]).forEach((k) => {
+  DIR_KEYS.forEach((k) => {
     out[k] = [...(base[k] || []), ...(extra[k] || [])];
   });
   return out;
@@ -1693,7 +1695,7 @@ export default function App() {
   }, [selectedCity]);
 
   const cityRestaurants = [
-    ...(cityDir ? cityDir.restaurants : []),
+      ...(cityDir?.restaurants || []),
     ...customRestaurants.filter((r) => r.city === selectedCity)
   ];
 
@@ -2007,7 +2009,7 @@ export default function App() {
 
             <div className="space-y-4">
               <h3 className="text-xl font-bold text-slate-900">{fmt(t.groceryTitle, { city: selectedCity })}</h3>
-              {cityDir ? (
+              {cityDir ?.groceries?.length ?  (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {cityDir.groceries.map((s, i) => <PlaceCard key={i} place={s} nf={nf} t={t} />)}
                 </div>
@@ -2021,6 +2023,7 @@ export default function App() {
                   {cityRestaurants.map((r, i) => <PlaceCard key={i} place={r} nf={nf} t={t} />)}
                 </div>
               ) : <NoCityData queries={['Indian restaurant']} />}
+              <MapChips queries={MAP_CHIPS.restaurants} city={selectedCity} />
             </div>
 
             <div className="space-y-6 pt-6">
