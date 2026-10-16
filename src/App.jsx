@@ -3,7 +3,7 @@ import {
   Compass, Circle, ShoppingBag, Users, MapPin, Check, Phone, X, Globe,
   PlusCircle, Stethoscope, Clock, Building2, Navigation, MessageCircle,
   ShieldAlert, Info, Scale, Star,
-  Languages, Mic, Volume2, Copy, ArrowRightLeft, Mail, Linkedin
+  Languages, Mic, Volume2, Copy, ArrowRightLeft, Mail
 } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 
