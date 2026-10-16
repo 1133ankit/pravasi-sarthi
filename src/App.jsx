@@ -1503,6 +1503,12 @@ const ABOUT = {
   }
 };
 
+const Linkedin = (props) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4V21H3V9.75zM9.75 9.75h3.83v1.54h.05c.53-1 1.84-2.06 3.79-2.06 4.05 0 4.8 2.66 4.8 6.12V21h-4v-4.85c0-1.16-.02-2.65-1.62-2.65-1.62 0-1.87 1.26-1.87 2.57V21h-4V9.75z"/>
+  </svg>
+);
+
 function AboutTab({ t, lang }) {
   const P = (obj) => pickLang(obj, lang);
   return (
