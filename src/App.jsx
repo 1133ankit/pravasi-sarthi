@@ -39,6 +39,7 @@ import {
   Mail,
   Heart
 } from 'lucide-react';
+import { Analytics } from "@vercel/analytics/next"
 
 import { createClient } from '@supabase/supabase-js';
 
