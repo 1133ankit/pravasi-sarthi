@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
   Compass, Circle, ShoppingBag, Users, MapPin, Check, Phone, X, Globe,
   PlusCircle, Stethoscope, Clock, Building2, Navigation, MessageCircle,
@@ -6,7 +6,6 @@ import {
   Languages, Mic, Volume2, Copy, ArrowRightLeft, Mail, Linkedin
 } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
-
 
 // ============================================================================
 // i18n.js — languages, translations, and helpers
@@ -26,11 +25,9 @@ const INDIAN_LANGUAGES = [
   { code: 'en', name: 'English', label: 'English', greeting: 'Namaste', locale: 'en-IN' }
 ];
 
-// Replace {placeholders}: fmt('Hello {city}', { city: 'Berlin' })
 const fmt = (str = '', vars = {}) =>
   str.replace(/\{(\w+)\}/g, (_, k) => (vars[k] !== undefined ? vars[k] : ''));
 
-// Pick a first-visit language from the browser settings
 const detectLang = () => {
   try {
     const list = navigator.languages || [navigator.language || ''];
@@ -54,7 +51,7 @@ const EN = {
   policeAmbulance: 'Police / Ambulance:',
   nonEmergencyDoc: 'Doctor on call:',
   currencyCalc: 'Currency calculator (₹ ↔ €)',
-    tabs: {
+  tabs: {
     journey: '1. First 30 days',
     offices: '2. Govt offices',
     regulations: '3. German rules',
@@ -85,7 +82,6 @@ const EN = {
   liveMedicalLocator: 'Live medical locator',
   gpsMedicalDesc: 'Find the nearest ER, 24/7 doctor (Hausarzt) and Sunday-open pharmacy (Notdienst).',
 
-  // --- newly localised UI text ---
   progress: 'Progress',
   roadmapBadge: 'Germany master roadmap',
   regulationsBadge: 'Legal awareness',
@@ -127,9 +123,8 @@ const EN = {
     'Show this card to a person nearby. It explains in German that you are lost and need help.',
   urgCritical: 'Critical',
   urgImportant: 'Important',
-    dayRange: 'Day {a}–{b}',
+  dayRange: 'Day {a}–{b}',
 
-  // --- new keys ---
   moreOnMaps: 'More on Google Maps:',
   mosquesTitle: '🕌 Mosques in {city}',
   churchesTitle: '⛪ Churches in {city}',
@@ -149,7 +144,7 @@ const EN = {
 };
 
 // ----------------------------------------------------------------------------
-// Core translations (existing keys, typos fixed)
+// Core translations
 // ----------------------------------------------------------------------------
 const CORE = {
   hi: {
@@ -162,14 +157,15 @@ const CORE = {
     nonEmergencyDoc: 'डॉक्टर ऑन-कॉल:',
     currencyCalc: 'करेंसी कैलकुलेटर (रुपये ↔ यूरो)',
     tabs: {
-      journey: '१. पहला महीना (रोडमैप)',
+      journey: '१. पहला महीना',
       offices: '२. सरकारी ऑफिस',
       regulations: '३. जर्मन नियम व कानून',
-      essentials: '४. अस्पताल व 24/7 फार्मेसी',
+      essentials: '४. अस्पताल व फार्मेसी',
       desiRadar: '५. किराना व रेस्टोरेंट',
       community: '६. मंदिर व पार्क',
-      chat: '७. कम्युनिटी चैट',
-      about: '८. हमारे बारे में'
+      talk: '७. टॉक (जर्मन अनुवाद)',
+      chat: '८. कम्युनिटी चैट',
+      about: '९. हमारे बारे में'
     },
     roadmapHeading: 'जर्मनी में पहले ३० दिन का मास्टर रोडमैप',
     roadmapSub: 'सिम कार्ड से लेकर अपार्टमेंट, Anmeldung, Deutschlandticket और टैक्स आईडी तक की पूरी प्रक्रिया।',
@@ -207,8 +203,9 @@ const CORE = {
       essentials: '4. மருத்துவமனைகள்',
       desiRadar: '5. மளிகை & உணவு',
       community: '6. கோயில்கள் & பூங்காக்கள்',
-      chat: '7. சமூக அரட்டை',
-      about: '8. எங்களைப் பற்றி'
+      talk: '7. பேச்சு (ஜெர்மன் மொழிபெயர்ப்பு)',
+      chat: '8. சமூக அரட்டை',
+      about: '9. எங்களைப் பற்றி'
     },
     roadmapHeading: 'ஜெர்மனிக்கான 30 நாள் மாஸ்டர் திட்டம்',
     roadmapSub: 'சிம் கார்டு, வீடு முதல் Anmeldung, Deutschlandticket மற்றும் வரி எண் வரை.',
@@ -246,8 +243,9 @@ const CORE = {
       essentials: '4. ఆసుపత్రులు',
       desiRadar: '5. కిరాణా & ఆహారం',
       community: '6. ఆలయాలు & పార్కులు',
-      chat: '7. కమ్యూనిటీ చాట్',
-      about: '8. మా గురించి'
+      talk: '7. టాక్ (జర్మన్ అనువాదం)',
+      chat: '8. కమ్యూనిటీ చాట్',
+      about: '9. మా గురించి'
     },
     roadmapHeading: 'జర్మనీలో మొదటి 30 రోజుల రోడ్‌మ్యాప్',
     roadmapSub: 'సిమ్ కార్డ్, ఇల్లు నుండి Anmeldung, Deutschlandticket మరియు టాక్స్ ఐడి వరకు.',
@@ -285,8 +283,9 @@ const CORE = {
       essentials: '৪. হাসপাতাল',
       desiRadar: '৫. গ্রোসারি ও খাবার',
       community: '৬. মন্দির ও পার্ক',
-      chat: '৭. কমিউনিটি চ্যাট',
-      about: '৮. আমাদের সম্পর্কে'
+      talk: '৭. টক (জার্মান অনুবাদ)',
+      chat: '৮. কমিউনিটি চ্যাট',
+      about: '৯. আমাদের সম্পর্কে'
     },
     roadmapHeading: 'জার্মানিতে প্রথম ৩০ দিনের মাস্টার রোডম্যাপ',
     roadmapSub: 'সিম কার্ড, বাসা থেকে শুরু করে Anmeldung, Deutschlandticket ও ট্যাক্স আইডি।',
@@ -296,7 +295,10 @@ const CORE = {
     actionPlanHeading: 'কর্মপরিকল্পনা:',
     markCompleteBtn: 'সম্পন্ন বলে চিহ্নিত করুন',
     completedBtn: 'সম্পন্ন হয়েছে ✓',
+    youAreAsking: 'আপনি যা জিজ্ঞাসা করছেন:',
     showToLocal: 'স্থানীয় ব্যক্তিকে দেখান:',
+    tapToAnswer: '👇 উত্তর চয়ন করুন:',
+    localAnswered: 'স্থানীয় ব্যক্তি এই উত্তরটি বেছে নিয়েছেন:',
     substitutesTitle: 'জার্মান সুপারমার্কেটের বিকল্প',
     safeAlternative: 'নিরাপদ বিকল্প',
     homeAddressLabel: 'বাড়ির ঠিকানা',
@@ -316,7 +318,7 @@ const CORE = {
     selectLangTitle: 'तुमची मातृभाषा निवडा',
     policeAmbulance: 'पोलिस / रुग्णवाहिका:',
     nonEmergencyDoc: 'डॉक्टर ऑन-कॉल:',
-    currencyCalc: 'चलन गणक (₹ ↔ €)',
+    currencyCalc: 'चलम गणक (₹ ↔ €)',
     tabs: {
       journey: '१. पहिला महिना',
       offices: '२. सरकारी कार्यालये',
@@ -324,8 +326,9 @@ const CORE = {
       essentials: '४. रुग्णालये',
       desiRadar: '५. किराणा व अन्न',
       community: '६. मंदिरे व उद्याने',
-      chat: '७. कम्युनिटी चॅट',
-      about: '८. आमच्याबद्दल'
+      talk: '७. टक (जर्मन भाषांतर)',
+      chat: '८. कम्युनिटी चॅट',
+      about: '९. आमच्याबद्दल'
     },
     roadmapHeading: 'जर्मनीतील पहिल्या ३० दिवसांचा मास्टर रोडमॅप',
     roadmapSub: 'सिम कार्ड, घरापासून Anmeldung, Deutschlandticket आणि टॅक्स आयडीपर्यंत सर्व काही.',
@@ -348,7 +351,7 @@ const CORE = {
     gpsMedicalDesc: 'जवळचे रुग्णालय, २४/७ डॉक्टर आणि रविवारी उघडे औषधालय शोधा.'
   },
   gu: {
-    appName: 'પ્રવાસી સારથી: જર્મની',
+    appName: 'પ્રवासी સારથી: જર્મની',
     editionTag: 'જર્મની ગાઈડ',
     tagline: 'જર્મનીમાં ભારતીય પરિવારો અને વ્યાવસાયિકો માટે વિશ્વાસુ સાથી',
     lostHelpBtn: '🚨 રસ્તો ભૂલી ગયા?',
@@ -363,8 +366,9 @@ const CORE = {
       essentials: '૪. હોસ્પિટલ',
       desiRadar: '૫. કરિયાણા અને ખોરાક',
       community: '૬. મંદિરો અને બગીચા',
-      chat: '૭. કમ્યુનિટી ચેટ',
-      about: '૮. અમારા વિશે'
+      talk: '૭. ટૉક (જર્મન ભાષાંતર)',
+      chat: '૮. કમ્યુનિટી ચેટ',
+      about: '૯. અમારા વિશે'
     },
     roadmapHeading: 'જર્મનીમાં પ્રથમ ૩૦ દિવસનો માસ્ટર રોડમેપ',
     roadmapSub: 'સિમ કાર્ડ, ઘરથી લઈને Anmeldung, Deutschlandticket અને ટેક્સ આઈડી સુધી.',
@@ -380,10 +384,10 @@ const CORE = {
     homeAddressLabel: 'ઘરનું સરનામું',
     callFamilyBtn: 'પરિવારને કૉલ કરો',
     navigateHome: '📍 ગૂગલ મેપ પર ઘરનો રસ્તો',
-    openGoogleMaps: '📍 ગૂગલ મેપ પર ખોલો',
+    openGoogleMaps: '📍 ગૂગल મેપ પર ખોલો',
     openPortal: '🌐 સત્તાવાર પોર્ટલ ખોલો',
     officeSectionTitle: 'જર્મન સરકારી કાર્યાલયો',
-    liveMedicalLocator: 'મેડિકલ લોકેટર',
+    liveMedicalLocator: 'મેડિકल લોકેટર',
     gpsMedicalDesc: 'નજીકની હોસ્પિટલ, ૨૪/૭ ડૉક્ટર અને રવિવારે ખુલ્લી ફાર્મસી શોધો.'
   },
   pa: {
@@ -402,8 +406,9 @@ const CORE = {
       essentials: '੪. ਹਸਪਤਾਲ',
       desiRadar: '੫. ਕਰਿਆਨਾ ਅਤੇ ਭੋਜਨ',
       community: '੬. ਮੰਦਿਰ ਅਤੇ ਪਾਰਕ',
-      chat: '੭. ਕਮਿਊਨਿਟੀ ਚੈਟ',
-      about: '੮. ਸਾਡੇ ਬਾਰੇ'
+      talk: '੭. ਟਾਕ (ਜਰਮਨ ਅਨੁਵਾਦ)',
+      chat: '੮. ਕਮਿਊਨਿਟੀ ਚੈਟ',
+      about: '੯. ਸਾਡੇ ਬਾਰੇ'
     },
     roadmapHeading: 'ਜਰਮਨੀ ਵਿੱਚ ਪਹਿਲੇ 30 ਦਿਨਾਂ ਦਾ ਮਾਸਟਰ ਰੋਡਮੈਪ',
     roadmapSub: 'ਸਿਮ ਕਾਰਡ, ਘਰ ਤੋਂ ਲੈ ਕੇ Anmeldung, Deutschlandticket ਅਤੇ ਟੈਕਸ ਆਈਡੀ ਤੱਕ।',
@@ -432,7 +437,7 @@ const CORE = {
     lostHelpBtn: '🚨 ದಾರಿ ತಪ್ಪಿದೆಯೇ?',
     selectLangTitle: 'ನಿಮ್ಮ ಮಾತೃಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ',
     policeAmbulance: 'ಪೊಲೀಸ್ / ಆಂಬುಲೆನ್ಸ್:',
-    nonEmergencyDoc: 'ವೈದ್ಯರು ಆನ್-ಕಾಲ್:',
+    nonEmergencyDoc: 'ವೈದ್ಯರು ಆನ್-ಕాల్:',
     currencyCalc: 'ಕರೆನ್ಸಿ ಕ್ಯಾಲ್ಕುಲೇಟರ್ (₹ ↔ €)',
     tabs: {
       journey: '೧. ಮೊದಲ 30 ದಿನಗಳು',
@@ -441,8 +446,9 @@ const CORE = {
       essentials: '೪. ಆಸ್ಪತ್ರೆಗಳು',
       desiRadar: '೫. ಕಿರಾಣಿ & ಆಹಾರ',
       community: '೬. ದೇವಾಲಯ & ಪಾರ್ಕ್',
-      chat: '೭. ಕಮ್ಯೂನಿಟಿ ಚಾಟ್',
-      about: '೮. ನಮ್ಮ ಬಗ್ಗೆ'
+      talk: '೭. ಟಾಕ್ (ಜರ್ಮನ್ ಅನುವಾದ)',
+      chat: '೮. ಕಮ್ಯೂನಿಟಿ ಚಾಟ್',
+      about: '೯. ನಮ್ಮ ಬಗ್ಗೆ'
     },
     roadmapHeading: 'ಜರ್ಮನಿಯಲ್ಲಿ ಮೊದಲ 30 ದಿನಗಳ ರೋಡ್‌ಮ್ಯಾಪ್',
     roadmapSub: 'ಸಿಮ್ ಕಾರ್ಡ್, ಮನೆಯಿಂದ Anmeldung, Deutschlandticket ಮತ್ತು ಟ್ಯಾಕ್ಸ್ ಐಡಿ ವರೆಗೆ.',
@@ -480,8 +486,9 @@ const CORE = {
       essentials: '4. ആശുപത്രികൾ',
       desiRadar: '5. പലചരക്ക് & ഭക്ഷണം',
       community: '6. ക്ഷേത്രങ്ങളും പാർക്കുകളും',
-      chat: '7. കമ്മ്യൂണിറ്റി ചാറ്റ്',
-      about: '8. ഞങ്ങളെക്കുറിച്ച്'
+      talk: '7. ടോക്ക് (ജർമ്മൻ വിവർത്തനം)',
+      chat: '8. കമ്മ്യൂണിറ്റി ചാറ്റ്',
+      about: '9. ഞങ്ങളെക്കുറിച്ച്'
     },
     roadmapHeading: 'ജർമ്മനിയിലെ ആദ്യ 30 ദിവസത്തെ മാസ്റ്റർ റോഡ്‌മാപ്പ്',
     roadmapSub: 'സിം കാർഡ്, വീട് മുതൽ Anmeldung, Deutschlandticket, ടാക്സ് ഐഡി വരെ.',
@@ -505,10 +512,6 @@ const CORE = {
   }
 };
 
-// ----------------------------------------------------------------------------
-// Extra translations (new keys). Long texts exist for Hindi + English only;
-// other languages fall back to English for those few keys.
-// ----------------------------------------------------------------------------
 const EXTRA = {
   hi: {
     progress: 'प्रगति',
@@ -828,9 +831,6 @@ const EXTRA = {
   }
 };
 
-// ----------------------------------------------------------------------------
-// Public helper: always returns a complete dictionary (missing keys -> English)
-// ----------------------------------------------------------------------------
 function getText(code) {
   const core = CORE[code] || {};
   const extra = EXTRA[code] || {};
@@ -842,21 +842,14 @@ function getText(code) {
   };
 }
 
-// Pick the right language from a { en, hi, ta, … } object
 const pickLang = (obj, code) => (obj ? obj[code] || obj.en || '' : '');
-
-// ============================================================================
-// data.js — static content for the Germany edition
-// Text that needs translating uses { en, hi, ta, … } objects; the app falls back
-// to English for any language that is missing (see pickLang in i18n.js).
-// ============================================================================
 
 const GERMANY_CONFIG = {
   name: 'Germany (Deutschland)',
   flag: '🇩🇪',
   currency: 'EUR',
   symbol: '€',
-  rateToInr: 106.58, // TODO: fetch a live rate; this value goes stale
+  rateToInr: 106.58,
   emergencyPhone: '112',
   medicalOnCall: '116 117',
   officialLang: 'German (Deutsch)',
@@ -868,7 +861,6 @@ const GERMANY_CONFIG = {
     { name: 'Baden-Württemberg', cities: ['Stuttgart', 'Mannheim', 'Karlsruhe', 'Heidelberg'] },
     { name: 'Hamburg', cities: ['Hamburg Central', 'Altona', 'Harburg', 'Wandsbek'] }
   ],
-  // This card is for the German-speaking person who helps, so it stays in German
   lostCardText: {
     heading: 'NOTFALL / BITTE HELFEN SIE MIR!',
     body: 'Entschuldigung, ich spreche kein Deutsch. Ich habe mich verlaufen und brauche Hilfe, um meine Familie zu kontaktieren. Bitte rufen Sie diese Telefonnummer an oder helfen Sie mir zur unten stehenden Adresse.',
@@ -976,7 +968,6 @@ const mergeDir = (base = {}, extra = {}) => {
   return out;
 };
 
-// Quick Google Maps searches shown under every section
 const MAP_CHIPS = {
   groceries: ['Indian grocery store', 'Asia Markt', 'Indian vegetables', 'Halal grocery'],
   restaurants: ['Indian restaurant', 'Vegetarian Indian restaurant', 'South Indian restaurant', 'Halal Indian restaurant'],
@@ -986,10 +977,10 @@ const MAP_CHIPS = {
   parks: ['Park', 'Spielplatz playground', 'Botanical garden']
 };
 
-function MapChips({ queries, city, t }) {
+function MapChips({ queries, city }) {
   return (
     <div className="flex flex-wrap gap-2 pt-2">
-      <span className="text-xs text-slate-500 self-center">{t.moreOnMaps}</span>
+      <span className="text-xs text-slate-500 self-center">More on Google Maps:</span>
       {queries.map((q) => (
         <a key={q} href={mapsUrl(`${q} ${city}`)} target="_blank" rel="noreferrer"
            className="bg-white border border-slate-200 px-3 py-1.5 rounded-full text-xs font-medium text-slate-700 hover:bg-slate-50 inline-flex items-center gap-1.5">
@@ -1029,9 +1020,6 @@ const GERMAN_HOSPITALS = [
   { name: 'Notdienst Apotheke (Sunday & Night Pharmacy)', address: 'Rotating duty pharmacies in every district', phone: '0800 00 22 833', type: 'Open nights & Sundays for urgent prescriptions', status: '24/7 Duty' }
 ];
 
-// ---------------------------------------------------------------------------
-// 30-day roadmap. `brief` is the translated plain-language summary.
-// ---------------------------------------------------------------------------
 const GERMANY_ROADMAP_TASKS = [
   {
     id: 'sim_connectivity',
@@ -1152,9 +1140,6 @@ const GERMANY_ROADMAP_TASKS = [
   }
 ];
 
-// ---------------------------------------------------------------------------
-// Regulations (titles + one-line summaries translated for Hindi; English otherwise)
-// ---------------------------------------------------------------------------
 const GERMAN_REGULATIONS = [
   {
     id: 'waste',
@@ -1225,13 +1210,10 @@ const GROCERY_SUBSTITUTES = [
   { item: 'Ghee', substitute: 'Butterschmalz', note: 'Sold in jars near the butter and oils in most supermarkets.' }
 ];
 
-// NOTE: this is a publishable key, so it is fine in the browser, but make sure
-// Row Level Security is ON for public_posts_germany (allow only select + insert).
 const supabaseUrl = 'https://auidzdcvivgcndeyhfgd.supabase.co';
 const supabaseKey = 'sb_publishable_JmnBDLOHFbCQuV3p_ojRkA_yS9-Uqhi';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// ---------- small helpers ----------
 const lsGet = (key, fallback) => {
   try {
     const v = localStorage.getItem(key);
@@ -1257,8 +1239,7 @@ const FONT_STACK =
 
 const TEXT_SIZE_PX = { normal: 16, large: 18, xl: 20 };
 
-// Reusable card for shops, restaurants, temples and parks
-function PlaceCard({ place, nf, t, tone = 'amber', city }) {
+function PlaceCard({ place, nf, t, tone = 'amber' }) {
   const badge = tone === 'emerald' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800';
   const star = tone === 'emerald' ? 'fill-emerald-500 text-emerald-500' : 'fill-amber-500 text-amber-500';
   const rating = Number(place.rating);
@@ -1274,7 +1255,7 @@ function PlaceCard({ place, nf, t, tone = 'amber', city }) {
       </div>
       <p className="text-xs text-slate-500 flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 shrink-0" />{place.address}</p>
       {place.note && <p className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100">{place.note}</p>}
-      <a href={mapsUrl(`${place.name} ${place.address} ${city}`)} target="_blank" rel="noreferrer" className="text-xs font-medium text-indigo-700 hover:underline inline-flex items-center gap-1.5">
+      <a href={mapsUrl(`${place.name} ${place.address}`)} target="_blank" rel="noreferrer" className="text-xs font-medium text-indigo-700 hover:underline inline-flex items-center gap-1.5">
         <Navigation className="w-3.5 h-3.5" />{t.openGoogleMaps}
       </a>
     </div>
@@ -1313,7 +1294,7 @@ const speakGerman = (text) => {
   window.speechSynthesis.speak(u);
 };
 
-function TalkModule({ t, defaultSrc }) {
+function TalkModule({ t }) {
   const [src, setSrc] = useState('auto');
   const [text, setText] = useState('');
   const [out, setOut] = useState('');
@@ -1329,8 +1310,6 @@ function TalkModule({ t, defaultSrc }) {
     if (!q) return;
     setBusy(true); setErr('');
     try {
-      // Unofficial Google endpoint, fine for a prototype. For production use the
-      // Cloud Translation API through your own backend/Supabase Edge Function.
       const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=de&dt=t&q=${encodeURIComponent(q)}`;
       const res = await fetch(url);
       if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -1430,14 +1409,13 @@ function TalkModule({ t, defaultSrc }) {
   );
 }
 
-// ✏️ EDIT YOUR DETAILS HERE
 const CONTACT = {
   name: 'Ankit',
   role: 'Founder, Pravasi Sarthi',
   email: '1122ankitverma@gmail.com',
   linkedin: 'https://www.linkedin.com/in/analyst-ankit-verma/',
-  phone: '',   // optional, e.g. '+49 123 4567890' (leave '' to hide)
-  website: ''  // optional, e.g. 'https://yourapp.com' (leave '' to hide)
+  phone: '',
+  website: ''
 };
 
 const ABOUT = {
@@ -1461,7 +1439,7 @@ const ABOUT = {
   },
   helpsTitle: {
     en: 'How it helps you', hi: 'यह आपकी कैसे मदद करता है', ta: 'இது உங்களுக்கு எப்படி உதவுகிறது',
-    te: 'ఇది మీకు ఎలా సహాయపడుతుంది', bn: 'এটি আপনাকে কীভাবে সাহায্য করে', mr: 'हे तुम्हाला कशी मदत करते',
+    te: 'దీనికి మీకు ఎలా సహాయపడుతుంది', bn: 'এটি আপনাকে কীভাবে সাহায্য করে', mr: 'हे तुम्हाला कशी मदत करते',
     gu: 'તે તમને કેવી રીતે મદદ કરે છે', pa: 'ਇਹ ਤੁਹਾਡੀ ਕਿਵੇਂ ਮਦਦ ਕਰਦਾ ਹੈ', kn: 'ಇದು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ',
     ml: 'ഇത് നിങ്ങളെ എങ്ങനെ സഹായിക്കുന്നു'
   },
@@ -1496,7 +1474,7 @@ const ABOUT = {
       ta: 'உங்கள் மொழியை ஜெர்மனாக மாற்றும் Talk கருவி, குரல் உள்ளீடு மற்றும் ஒலி வெளியீட்டுடன்.',
       te: 'మీ భాషను జర్మన్‌గా మార్చే Talk సాధనం, వాయిస్ ఇన్‌పుట్ మరియు ఆడియో అవుట్‌పుట్‌తో.',
       bn: 'Talk টুল, যা আপনার ভাষাকে জার্মানে অনুবাদ করে, ভয়েস ইনপুট ও শোনার সুবিধাসহ।',
-      mr: 'Talk टूल जे तुमची भाषा जर्मनमध्ये बदलते, आवाजाने बोलणे आणि ऐकण्याच्या सुविधेसह.',
+      mr: 'Talk टूल जो तुमची भाषा जर्मनमध्ये बदलते, आवाजाने बोलणे आणि ऐकण्याच्या सुविधेसह.',
       gu: 'Talk ટૂલ જે તમારી ભાષાને જર્મનમાં ફેરવે છે, અવાજથી બોલવા અને સાંભળવાની સુવિધા સાથે.',
       pa: 'Talk ਟੂਲ ਜੋ ਤੁਹਾਡੀ ਭਾਸ਼ਾ ਨੂੰ ਜਰਮਨ ਵਿੱਚ ਬਦਲਦਾ ਹੈ, ਆਵਾਜ਼ ਨਾਲ ਬੋਲਣ ਤੇ ਸੁਣਨ ਦੀ ਸਹੂਲਤ ਨਾਲ।',
       kn: 'ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಜರ್ಮನ್‌ಗೆ ಅನುವಾದಿಸುವ Talk ಸಾಧನ, ಧ್ವನಿ ಇನ್‌ಪುಟ್ ಮತ್ತು ಆಡಿಯೋ ಔಟ್‌ಪುಟ್‌ನೊಂದಿಗೆ.',
@@ -1508,7 +1486,7 @@ const ABOUT = {
       ta: '"வழி தவறிவிட்டதா?" உதவி அட்டை, மருத்துவமனை மற்றும் இரவு மருந்தகம் தேடல், கேள்விகளுக்கான சமூகப் பலகை.',
       te: '"దారి తప్పారా?" సహాయ కార్డ్, ఆసుపత్రి మరియు రాత్రి ఫార్మసీ శోధన, ప్రశ్నలు అడగడానికి కమ్యూనిటీ బోర్డు.',
       bn: '"রাস্তা হারিয়েছেন?" সাহায্য কার্ড, হাসপাতাল ও রাতের ফার্মেসি খোঁজা, প্রশ্ন করার জন্য কমিউনিটি বোর্ড।',
-      mr: '"रस्ता चुकलात?" मदत कार्ड, रुग्णालय व रात्रीचे औषधालय शोधक, आणि प्रश्न विचारण्यासाठी कम्युनिटी बोर्ड.',
+      mr: '"रस्ता चुकलात?" मदत कार्ड, रुग्णालय व रात्रीचे औषधालय शोधक, आणि प्रश्न विचारण्यासाठी कम्युनिटी बोर्ड।',
       gu: '"રસ્તો ભૂલી ગયા?" મદદ કાર્ડ, હોસ્પિટલ અને રાતની ફાર્મસી શોધ, અને પ્રશ્નો પૂછવા કમ્યુનિટી બોર્ડ.',
       pa: '"ਰਸਤਾ ਭੁੱਲ ਗਏ?" ਮਦਦ ਕਾਰਡ, ਹਸਪਤਾਲ ਅਤੇ ਰਾਤ ਦੀ ਫਾਰਮੇਸੀ ਖੋਜ, ਅਤੇ ਸਵਾਲ ਪੁੱਛਣ ਲਈ ਕਮਿਊਨਿਟੀ ਬੋਰਡ।',
       kn: '"ದಾರಿ ತಪ್ಪಿದೆಯೇ?" ಸಹಾಯ ಕಾರ್ಡ್, ಆಸ್ಪತ್ರೆ ಮತ್ತು ರಾತ್ರಿ ಫಾರ್ಮಸಿ ಹುಡುಕಾಟ, ಪ್ರಶ್ನೆ ಕೇಳಲು ಕಮ್ಯೂನಿಟಿ ಬೋರ್ಡ್.',
@@ -1567,16 +1545,6 @@ function AboutTab({ t, lang }) {
               <Linkedin className="w-4 h-4" />LinkedIn
             </a>
           )}
-          {CONTACT.phone && (
-            <a href={`tel:${CONTACT.phone.replace(/\s/g, '')}`} className="bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-medium inline-flex items-center gap-2">
-              <Phone className="w-4 h-4" />{CONTACT.phone}
-            </a>
-          )}
-          {CONTACT.website && (
-            <a href={CONTACT.website} target="_blank" rel="noreferrer" className="bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-medium inline-flex items-center gap-2">
-              <Globe className="w-4 h-4" />Website
-            </a>
-          )}
         </div>
       </div>
 
@@ -1586,7 +1554,6 @@ function AboutTab({ t, lang }) {
 }
 
 export default function App() {
-  // ---------- language ----------
   const [selectedLang, setSelectedLang] = useState(() => {
     const saved = lsGet('pravasi_lang', null);
     return saved && INDIAN_LANGUAGES.some((l) => l.code === saved) ? saved : detectLang();
@@ -1598,42 +1565,34 @@ export default function App() {
   const nf = (n, opts) => new Intl.NumberFormat(currentLangObj.locale, opts).format(n);
   const L = (obj) => pickLang(obj, selectedLang);
 
-  // ---------- location, tabs, text size ----------
   const [selectedState, setSelectedState] = useState(GERMANY_CONFIG.states[0].name);
   const [selectedCity, setSelectedCity] = useState(GERMANY_CONFIG.states[0].cities[0]);
   const [activeTab, setActiveTab] = useState('journey');
   const [textSize, setTextSize] = useState(() => lsGet('pravasi_text_size', 'normal'));
 
-  // ---------- currency ----------
   const [showCurrencyModal, setShowCurrencyModal] = useState(false);
   const [inrAmount, setInrAmount] = useState('100000');
   const [eurAmount, setEurAmount] = useState(String(Math.round(100000 / GERMANY_CONFIG.rateToInr)));
 
-  // ---------- emergency card (saved on device) ----------
   const [showEmergencyCard, setShowEmergencyCard] = useState(false);
   const [familyPhone, setFamilyPhone] = useState(() => lsGet('pravasi_family_phone', ''));
   const [homeAddress, setHomeAddress] = useState(() => lsGet('pravasi_home_address', ''));
 
-  // ---------- roadmap progress (saved on device) ----------
   const [completedTasks, setCompletedTasks] = useState(() => {
     try { return JSON.parse(lsGet('pravasi_tasks', 'null')) || { sim_connectivity: true }; } catch (e) { return { sim_connectivity: true }; }
   });
 
-  // ---------- custom restaurants ----------
   const [customRestaurants, setCustomRestaurants] = useState(() => {
     try { return JSON.parse(lsGet('pravasi_germany_custom_restaurants', '[]')); } catch (e) { return []; }
   });
   const [showAddRestModal, setShowAddRestModal] = useState(false);
   const [newRestForm, setNewRestForm] = useState({ name: '', address: '', rating: '4.5', note: '' });
 
-  // ---------- chat ----------
   const [hasJoinedChat, setHasJoinedChat] = useState(() => !!lsGet('pravasi_chat_name', ''));
   const [chatName, setChatName] = useState(() => lsGet('pravasi_chat_name', ''));
   const [composeText, setComposeText] = useState('');
   const [publicPosts, setPublicPosts] = useState([]);
 
-  // ---------- effects ----------
-  // Language: persist, set <html lang>, load Indic fonts once
   useEffect(() => {
     lsSet('pravasi_lang', selectedLang);
     document.documentElement.lang = selectedLang;
@@ -1648,7 +1607,6 @@ export default function App() {
     document.head.appendChild(link);
   }, []);
 
-  // Text size: scale the root so every rem-based Tailwind class grows
   useEffect(() => {
     document.documentElement.style.fontSize = `${TEXT_SIZE_PX[textSize] || 16}px`;
     lsSet('pravasi_text_size', textSize);
@@ -1683,7 +1641,6 @@ export default function App() {
     return () => { supabase.removeChannel(sub); };
   }, []);
 
-  // ---------- handlers ----------
   const joinChat = (e) => {
     e.preventDefault();
     if (chatName.trim()) {
@@ -1724,15 +1681,16 @@ export default function App() {
     setInrAmount(val === '' ? '' : String(Math.round(Number(val) * GERMANY_CONFIG.rateToInr)));
   };
 
-  // ---------- derived data ----------
-const cityDir = useMemo(() => {
-  const merged = mergeDir(CITY_SPECIFIC_DIRECTORY[selectedCity], EXTRA_PLACES[selectedCity]);
-  return Object.values(merged).some((a) => a.length) ? merged : null;
-}, [selectedCity]);
+  const cityDir = useMemo(() => {
+    const merged = mergeDir(CITY_SPECIFIC_DIRECTORY[selectedCity], EXTRA_PLACES[selectedCity]);
+    return Object.values(merged).some((a) => a.length) ? merged : null;
+  }, [selectedCity]);
+
   const cityRestaurants = [
     ...(cityDir ? cityDir.restaurants : []),
     ...customRestaurants.filter((r) => r.city === selectedCity)
   ];
+
   const tabs = [
     { id: 'journey', label: t.tabs.journey, icon: Compass },
     { id: 'offices', label: t.tabs.offices, icon: Building2 },
@@ -1740,14 +1698,14 @@ const cityDir = useMemo(() => {
     { id: 'essentials', label: t.tabs.essentials, icon: Stethoscope },
     { id: 'desiRadar', label: t.tabs.desiRadar, icon: ShoppingBag },
     { id: 'community', label: t.tabs.community, icon: Users },
+    { id: 'talk', label: t.tabs.talk, icon: Languages },
     { id: 'chat', label: t.tabs.chat, icon: MessageCircle },
-    { id: 'about', label: t.tabs.about, icon: Info },
-    { id: 'talk', label: t.tabs.talk, icon: Languages }
+    { id: 'about', label: t.tabs.about, icon: Info }
   ];
+
   const doneCount = Object.values(completedTasks).filter(Boolean).length;
   const stripColon = (s) => s.replace(/[:：]\s*$/, '');
 
-  // Shown when we have no curated list for the selected city
   const NoCityData = ({ queries }) => (
     <div className="bg-amber-50 border border-amber-100 p-5 rounded-2xl space-y-3 text-sm">
       <p className="text-slate-700">{fmt(t.noCityData, { city: selectedCity })}</p>
@@ -1764,7 +1722,7 @@ const cityDir = useMemo(() => {
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-800 flex flex-col" style={{ fontFamily: FONT_STACK }}>
 
-      {/* 1. TOP BAR */}
+      {/* TOP BAR */}
       <div className="bg-slate-900 text-slate-200 text-xs px-4 sm:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-sm z-40 relative">
         <div className="flex items-center gap-3 flex-wrap font-medium">
           <span className="bg-slate-800 text-slate-100 font-semibold px-2.5 py-1 rounded-md text-[11px] border border-slate-700">
@@ -1811,7 +1769,7 @@ const cityDir = useMemo(() => {
         </div>
       )}
 
-      {/* 2. HEADER */}
+      {/* HEADER */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
@@ -1863,7 +1821,7 @@ const cityDir = useMemo(() => {
         </div>
       </header>
 
-      {/* 3. MAIN */}
+      {/* MAIN CONTENT AREA */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-8 space-y-8">
 
         {/* TAB 1: ROADMAP */}
@@ -1990,7 +1948,7 @@ const cityDir = useMemo(() => {
           </div>
         )}
 
-        {/* TAB 4: HOSPITALS & PHARMACIES */}
+        {/* TAB 4: HOSPITALS & PHARMACY */}
         {activeTab === 'essentials' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-gradient-to-br from-rose-50 to-red-50 border border-rose-200 p-5 sm:p-6 rounded-3xl flex flex-col md:flex-row justify-between md:items-center gap-6 relative overflow-hidden">
@@ -2045,7 +2003,7 @@ const cityDir = useMemo(() => {
               <h3 className="text-xl font-bold text-slate-900">{fmt(t.groceryTitle, { city: selectedCity })}</h3>
               {cityDir ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {cityDir.groceries.map((s, i) => <PlaceCard key={i} place={s} nf={nf} t={t} city={selectedCity} />)}
+                  {cityDir.groceries.map((s, i) => <PlaceCard key={i} place={s} nf={nf} t={t} />)}
                 </div>
               ) : <NoCityData queries={['Indian grocery store', 'Asia Markt']} />}
             </div>
@@ -2054,7 +2012,7 @@ const cityDir = useMemo(() => {
               <h3 className="text-xl font-bold text-slate-900">{fmt(t.restTitle, { city: selectedCity })}</h3>
               {cityRestaurants.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {cityRestaurants.map((r, i) => <PlaceCard key={i} place={r} nf={nf} t={t} city={selectedCity} />)}
+                  {cityRestaurants.map((r, i) => <PlaceCard key={i} place={r} nf={nf} t={t} />)}
                 </div>
               ) : <NoCityData queries={['Indian restaurant']} />}
             </div>
@@ -2075,26 +2033,39 @@ const cityDir = useMemo(() => {
         )}
 
         {/* TAB 6: COMMUNITY */}
- {activeTab === 'community' && (
-  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-    {[
-      ['temples', fmt(t.templesTitle, { city: selectedCity }), 'amber'],
-      ['mosques', fmt(t.mosquesTitle, { city: selectedCity }), 'emerald'],
-      ['churches', fmt(t.churchesTitle, { city: selectedCity }), 'amber'],
-      ['parks', fmt(t.parksTitle, { city: selectedCity }), 'emerald']
-    ].map(([key, title, tone]) => (
-      <div key={key} className="space-y-4">
-        <h3 className="text-xl font-bold text-slate-900">{title}</h3>
-        {cityDir?.[key]?.length ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {cityDir[key].map((p, i) => <PlaceCard key={i} place={p} nf={nf} t={t} tone={tone} city={selectedCity} />)}
+        {activeTab === 'community' && (
+          <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="bg-white border border-slate-100 shadow-sm p-6 sm:p-8 rounded-3xl relative overflow-hidden mb-6">
+              <div className="absolute top-0 left-0 w-1.5 h-full bg-indigo-400 rounded-l-3xl"></div>
+              <div className="pl-2">
+                <h3 className="font-bold text-slate-800 flex items-center gap-2.5 text-lg"><span>🛕</span> {fmt(t.templesTitle, { city: selectedCity })}</h3>
+                <p className="text-sm text-slate-500 mt-1.5">{t.templesSub}</p>
+              </div>
+            </div>
+
+            {['temples', 'mosques', 'churches', 'parks'].map((key) => {
+              const titles = {
+                temples: fmt(t.templesTitle, { city: selectedCity }),
+                mosques: fmt(t.mosquesTitle, { city: selectedCity }),
+                churches: fmt(t.churchesTitle, { city: selectedCity }),
+                parks: fmt(t.parksTitle, { city: selectedCity })
+              };
+              const tone = key === 'parks' || key === 'mosques' ? 'emerald' : 'amber';
+              return (
+                <div key={key} className="space-y-4">
+                  <h3 className="text-xl font-bold text-slate-900">{titles[key]}</h3>
+                  {cityDir?.[key]?.length ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {cityDir[key].map((p, i) => <PlaceCard key={i} place={p} nf={nf} t={t} tone={tone} />)}
+                    </div>
+                  ) : <NoCityData queries={MAP_CHIPS[key]} />}
+                  <MapChips queries={MAP_CHIPS[key]} city={selectedCity} />
+                </div>
+              );
+            })}
           </div>
-        ) : <NoCityData queries={MAP_CHIPS[key]} />}
-        <MapChips queries={MAP_CHIPS[key]} city={selectedCity} t={t} />
-      </div>
-    ))}
-  </div>
-)}
+        )}
+
         {/* TAB 7: TALK */}
         {activeTab === 'talk' && <TalkModule t={t} />}
 
@@ -2123,7 +2094,6 @@ const cityDir = useMemo(() => {
                     publicPosts.map((post) => (
                       <div key={post.id} className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-2">
                         <div className="flex justify-between items-center"><span className="text-sm font-bold text-slate-900">{post.author_name || post.authorName}</span><span className="text-xs text-slate-400">{post.time}</span></div>
-                        {/* user posts can be in any language, so don't force a direction or language */}
                         <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap break-words" dir="auto">{post.text}</p>
                       </div>
                     ))
@@ -2141,7 +2111,7 @@ const cityDir = useMemo(() => {
         )}
 
         {/* TAB 9: ABOUT */}
-       {activeTab === 'about' && <AboutTab t={t} lang={selectedLang} />}
+        {activeTab === 'about' && <AboutTab t={t} lang={selectedLang} />}
       </main>
 
       {/* ADD RESTAURANT MODAL */}
@@ -2172,10 +2142,8 @@ const cityDir = useMemo(() => {
               <button onClick={() => setShowEmergencyCard(false)} aria-label="Close" className="bg-black/10 text-white rounded-full p-2"><X className="w-5 h-5" /></button>
             </div>
             <div className="p-6 sm:p-8 space-y-5">
-              {/* For the user, in their own language */}
               <p className="text-sm text-slate-600 leading-relaxed">{t.emergencyExplain}</p>
 
-              {/* For the German speaker helping them */}
               <div className="bg-slate-50 border-2 border-rose-100 p-5 rounded-2xl text-slate-900 space-y-3" lang="de">
                 <p className="text-[11px] font-bold text-rose-600 uppercase tracking-wider" lang={selectedLang}>{t.showToLocal}</p>
                 <p className="text-lg sm:text-xl font-medium leading-relaxed">"{GERMANY_CONFIG.lostCardText.body}"</p>
@@ -2187,7 +2155,6 @@ const cityDir = useMemo(() => {
                 )}
               </div>
 
-              {/* Editable details, saved on the device */}
               <div className="grid grid-cols-1 gap-3">
                 <div>
                   <label className="text-xs font-semibold text-slate-600 block mb-1">{t.familyPhoneLabel}</label>
