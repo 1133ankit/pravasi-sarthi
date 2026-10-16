@@ -34,7 +34,8 @@ import {
   Info,
   Mail,
   Heart,
-  Scale
+  Scale,
+  Star
 } from 'lucide-react';
 
 import { createClient } from '@supabase/supabase-js';
@@ -60,7 +61,7 @@ const INDIAN_LANGUAGES = [
 ];
 
 // ============================================================================
-// 2. GERMANY CONFIGURATION & STATES
+// 2. GERMANY CONFIGURATION, STATES & CITIES
 // ============================================================================
 const GERMANY_CONFIG = {
   name: 'Germany (Deutschland)',
@@ -72,12 +73,30 @@ const GERMANY_CONFIG = {
   medicalOnCall: '116 117',
   officialLang: 'German (Deutsch)',
   states: [
-    { name: 'Hessen', cities: ['Frankfurt am Main', 'Wiesbaden', 'Kassel'] },
-    { name: 'Bayern', cities: ['Munich (München)', 'Nuremberg', 'Augsburg'] },
-    { name: 'Berlin', cities: ['Berlin Central', 'Charlottenburg', 'Pankow'] },
-    { name: 'Nordrhein-Westfalen', cities: ['Cologne (Köln)', 'Düsseldorf', 'Dortmund'] },
-    { name: 'Baden-Württemberg', cities: ['Stuttgart', 'Mannheim', 'Karlsruhe'] },
-    { name: 'Hamburg', cities: ['Hamburg Central', 'Altona', 'Harburg'] }
+    {
+      name: 'Hessen',
+      cities: ['Frankfurt am Main', 'Wiesbaden', 'Kassel', 'Darmstadt']
+    },
+    {
+      name: 'Bayern (Bavaria)',
+      cities: ['Munich (München)', 'Nuremberg (Nürnberg)', 'Augsburg', 'Regensburg']
+    },
+    {
+      name: 'Berlin',
+      cities: ['Berlin Central', 'Charlottenburg', 'Pankow', 'Spandau']
+    },
+    {
+      name: 'Nordrhein-Westfalen (NRW)',
+      cities: ['Cologne (Köln)', 'Düsseldorf', 'Dortmund', 'Essen']
+    },
+    {
+      name: 'Baden-Württemberg',
+      cities: ['Stuttgart', 'Mannheim', 'Karlsruhe', 'Heidelberg']
+    },
+    {
+      name: 'Hamburg',
+      cities: ['Hamburg Central', 'Altona', 'Harburg', 'Wandsbek']
+    }
   ],
   lostCardText: {
     heading: 'NOTFALL / BITTE HELFEN SIE MIR!',
@@ -100,18 +119,18 @@ const UI_TEXT = {
     nonEmergencyDoc: 'डॉक्टर ऑन-कॉल:',
     currencyCalc: 'करेंसी कैलकुलेटर (रुपये ↔ यूरो)',
     tabs: {
-      journey: '१. पहला महीना (३० दिन रोडमैप)',
-      offices: '२. सरकारी ऑफिस व ऐप्स',
+      journey: '१. पहला महीना (रोडमैप)',
+      offices: '२. सरकारी ऑफिस',
       regulations: '३. जर्मन नियम व कानून',
-      flashcards: '४. स्क्रीन दिखाएं (कार्ड्स)',
-      essentials: '५. अस्पताल व इमरजेंसी',
+      flashcards: '४. स्क्रीन कार्ड्स',
+      essentials: '५. अस्पताल व 24/7 फार्मेसी',
       desiRadar: '६. किराना व रेस्टोरेंट',
-      community: '७. परिवार व मंदिर',
+      community: '७. मंदिर व पार्क',
       chat: '८. कम्युनिटी चैट',
       about: '९. हमारे बारे में'
     },
     roadmapHeading: 'जर्मनी में पहले ३० दिन का मास्टर रोडमैप',
-    roadmapSub: 'सिम कार्ड से लेकर अपार्टमेंट रेंटिंग और टैक्स आईडी तक की पूरी कानूनी प्रक्रिया।',
+    roadmapSub: 'सिम कार्ड से लेकर अपार्टमेंट रेंटिंग, Anmeldung, Deutschlandticket और टैक्स आईडी तक की पूरी कानूनी प्रक्रिया।',
     regulationsHeading: 'जर्मनी के मुख्य नियम और कानून (German Regulations)',
     regulationsSub: 'जर्मनी में रहते समय इन कानूनी नियमों का पालन करना अनिवार्य है।',
     simpleBriefHeading: 'सरल भाषा में समझें:',
@@ -125,7 +144,7 @@ const UI_TEXT = {
     addNewCardBtn: '➕ नया फ्लैशकार्ड बनाएं',
     customCardBadge: 'कस्टम कार्ड',
     templateLabel: '⚡ रेडीमेड टेम्पलेट चुनें:',
-    substitutesTitle: 'जर्मन सुपरमार्केट (Rewe/Aldi) में देसी विकल्प',
+    substitutesTitle: 'जर्मन सुपरमार्केट (Rewe/Aldi/Lidl) में देसी विकल्प',
     substitutesSub: 'पनीर, आटा और दही के स्थानीय विकल्प:',
     safeAlternative: 'सुरक्षित विकल्प',
     restaurantsTitle: 'भारतीय रेस्टोरेंट व किराना स्टोर',
@@ -136,405 +155,67 @@ const UI_TEXT = {
     openGoogleMaps: '📍 गूगल मैप्स पर खोलें',
     openPortal: '🌐 आधिकारिक पोर्टल खोलें',
     officeSectionTitle: 'प्रमुख जर्मन सरकारी कार्यालय',
-    liveMedicalLocator: 'लाइव मेडिकल लोकेटर',
-    gpsMedicalDesc: 'निकटतम आपातकालीन कक्ष, बाल रोग विशेषज्ञ (Kinderarzt) और 24/7 फार्मेसी (Apotheke) खोजें।'
+    liveMedicalLocator: 'लाइव मेडिकल और क्लिनिक लोकेटर',
+    gpsMedicalDesc: 'निकटतम आपातकालीन कक्ष, 24/7 डॉक्टर (Hausarzt) और रविवार को खुली फार्मेसी (Notdienst) खोजें।'
   },
-  ta: {
-    appName: 'பிரவாசி சாரதி: ஜெர்மனி',
-    editionTag: 'ஜெர்மனி வழிகாட்டி',
-    tagline: 'ஜெர்மனியில் உள்ள இந்திய குடும்பங்களுக்கான நம்பகமான தோழன்',
-    lostHelpBtn: '🚨 வழி தவறிவிட்டதா?',
-    selectLangTitle: 'உங்கள் தாய்மொழியைத் தேர்ந்தெடுக்கவும்',
-    policeAmbulance: 'காவல்துறை / அவசர ஊர்தி:',
-    nonEmergencyDoc: 'மருத்துவர் ஆன்-கால்:',
-    currencyCalc: 'நாணய மாற்றி',
+  en: {
+    appName: 'Pravasi Sarthi: Germany',
+    editionTag: 'Germany Edition',
+    tagline: 'Trusted Settlement & Daily Living Guide for Indian Families & Professionals in Germany',
+    lostHelpBtn: '🚨 Lost & Need Help?',
+    selectLangTitle: 'Select Your Mother Tongue',
+    policeAmbulance: 'Police / Ambulance:',
+    nonEmergencyDoc: 'Doctor On-Call:',
+    currencyCalc: 'Currency Calculator (INR ↔ EUR)',
     tabs: {
-      journey: '1. முதல் 30 நாட்கள் திட்டம்',
-      offices: '2. அரசு அலுவலகங்கள்',
-      regulations: '3. ஜெர்மன் சட்டங்கள்',
-      flashcards: '4. திரையைக் காட்டுங்கள்',
-      essentials: '5. மருத்துவமனைகள்',
-      desiRadar: '6. மளிகை & உணவு',
-      community: '7. சமூகம் & கோயில்கள்',
-      chat: '8. சமூகம் அரட்டை',
-      about: '9. எங்களைப் பற்றி'
+      journey: '1. First 30 Days (Roadmap)',
+      offices: '2. Govt Offices',
+      regulations: '3. German Regulations',
+      flashcards: '4. Flashcards',
+      essentials: '5. Hospitals & Pharmacy',
+      desiRadar: '6. Groceries & Food',
+      community: '7. Temples & Parks',
+      chat: '8. Community Chat',
+      about: '9. About Us'
     },
-    roadmapHeading: 'ஜெர்மனிக்கான 30 நாள் மாஸ்டர் திட்டம்',
-    roadmapSub: 'சிம் கார்டு முதல் வீடு வாடகை மற்றும் வரி எண் வரை.',
-    regulationsHeading: 'ஜெர்மன் விதிகள் மற்றும் சட்டங்கள்',
-    regulationsSub: 'ஜெர்மனியில் வாழும்போது தெரிந்து கொள்ள வேண்டிய முக்கிய சட்டங்கள்.',
-    simpleBriefHeading: 'எளிய மொழியில்:',
-    actionPlanHeading: 'செயல் திட்டம்:',
-    markCompleteBtn: 'முடிந்தது என குறிக்கவும்',
-    completedBtn: 'நிறைவு பெற்றது ✓',
-    youAreAsking: 'நீங்கள் கேட்பது:',
-    showToLocal: 'உள்ளூர் நபரிடம் காட்டவும்:',
-    tapToAnswer: '👇 பததைத் தேர்ந்தெடுக்கவும்:',
-    localAnswered: 'உள்ளூர் நபர் தேர்ந்தெடுத்தது:',
-    addNewCardBtn: '➕ புதிய அட்டை உருவாக்கு',
-    customCardBadge: 'தனிப்பயன் அட்டை',
-    templateLabel: '⚡ வார்ப்புருவைத் தேர்ந்தெடுக்கவும்:',
-    substitutesTitle: 'ஜெர்மன் சூப்பர் மார்க்கெட் பொருட்கள்',
-    substitutesSub: 'பன்னீர் மற்றும் மாவுக்கான மாற்றுகள்:',
-    safeAlternative: 'பாதுகாப்பான மாற்று',
-    restaurantsTitle: 'இந்திய உணவகங்கள்',
-    communityTitle: 'இந்திய குடும்பங்கள் & கோயில்கள்',
-    homeAddressLabel: 'வீட்டு முகவரி:',
-    callFamilyBtn: 'அழை',
-    navigateHome: '📍 கூகுள் மேப்ஸில் வீட்டுக்கு செல்ல',
-    openGoogleMaps: '📍 கூகுள் மேப்ஸில் திற',
-    openPortal: '🌐 போர்ட்டலைத் திற',
-    officeSectionTitle: 'ஜெர்மன் அரசு அலுவலகங்கள்',
-    liveMedicalLocator: 'மருத்துவ கண்டறிதல்',
-    gpsMedicalDesc: 'அருகிலுள்ள மருத்துவமனைகள் மற்றும் மருந்தகங்களைக் கண்டறியவும்.'
-  },
-  te: {
-    appName: 'ప్రవాసి సార్థి: జర్మనీ',
-    editionTag: 'జర్మనీ గైడ్',
-    tagline: 'జర్మనీలో భారతీయ కుటుంబాలు మరియు నిపుణుల కోసం నమ్మకమైన సహచరుడు',
-    lostHelpBtn: '🚨 దారి తప్పారా?',
-    selectLangTitle: 'మీ మాతృభాషను ఎంచుకోండి',
-    policeAmbulance: 'పోలీసు / ఆంబులెన్స్:',
-    nonEmergencyDoc: 'డాక్టర్ ఆన్-కాల్:',
-    currencyCalc: 'కరెన్సీ కాలిక్యులేటర్',
-    tabs: {
-      journey: '1. మొదటి 30 రోజులు రోడ్‌మ్యాప్',
-      offices: '2. ప్రభుత్వ కార్యాలయాలు',
-      regulations: '3. జర్మన్ నిబంధనలు',
-      flashcards: '4. స్క్రీన్ చూపించండి',
-      essentials: '5. ఆసుపత్రులు',
-      desiRadar: '6. కిరాణా & ఆహారం',
-      community: '7. ఆలయాలు & సంఘం',
-      chat: '8. కమ్యూనిటీ చాట్',
-      about: '9. మా గురించి'
-    },
-    roadmapHeading: 'జర్మనీలో మొదటి 30 రోజుల రోడ్‌మ్యాప్',
-    roadmapSub: 'సిమ్ కార్డ్ నుండి అపార్ట్‌మెంట్ మరియు టాక్స్ ఐడి వరకు.',
-    regulationsHeading: 'జర్మన్ నిబంధనలు మరియు చట్టాలు',
-    regulationsSub: 'జర్మనీలో అనుసరించాల్సిన ముఖ్యమైన చట్టపరమైన నియమాలు.',
-    simpleBriefHeading: 'సరళమైన భాషలో:',
-    actionPlanHeading: 'చర్య ప్రణాళిక:',
-    markCompleteBtn: 'పూర్తయినట్లు గుర్తించండి',
-    completedBtn: 'పూర్తయింది ✓',
-    youAreAsking: 'మీరు అడుగుతున్నది:',
-    showToLocal: 'స్థానిక వ్యక్తికి చూపించండి:',
-    tapToAnswer: '👇 సమాధానాన్ని ఎంచుకోండి:',
-    localAnswered: 'స్థానిక వ్యక్తి ఎంచుకున్న సమాధానం:',
-    addNewCardBtn: '➕ కొత్త కార్డ్ సృష్టించండి',
-    customCardBadge: 'కస్టమ్ కార్డ్',
-    templateLabel: '⚡ టెంప్లేట్‌ని ఎంచుకోండి:',
-    substitutesTitle: 'జర్మన్ సూపర్ మార్కెట్ ప్రత్యామ్నాయాలు',
-    substitutesSub: 'పన్నీర్ మరియు పిండి కోసం ప్రత్యామ్నాయాలు:',
-    safeAlternative: 'సురక్షితమైన ప్రత్యామ్నాయం',
-    restaurantsTitle: 'భారతీయ రెస్టారెంట్లు',
-    communityTitle: 'భారతీయ కుటుంబాలు & ఆలయాలు',
-    homeAddressLabel: 'ఇంటి చిరునామా:',
-    callFamilyBtn: 'కాల్ చేయండి',
-    navigateHome: '📍 గూగుల్ మ్యాప్స్‌లో ఇంటికి మార్గం',
-    openGoogleMaps: '📍 గూగుల్ మ్యాప్స్‌లో తెరవండి',
-    openPortal: '🌐 పోర్టల్‌ని తెరవండి',
-    officeSectionTitle: 'జర్మన్ ప్రభుత్వ కార్యాలయాలు',
-    liveMedicalLocator: 'లైవ్ మెడికల్ లోకేటర్',
-    gpsMedicalDesc: 'సమీప ఆసుపత్రులు మరియు ఫార్మసీలను కనుగొనండి.'
-  },
-  bn: {
-    appName: 'প্রবাসী সারথি: জার্মানি',
-    editionTag: 'জার্মানি গাইড',
-    tagline: 'জার্মানিতে ভারতীয় পরিবার এবং পেশাদারদের জন্য বিশ্বস্ত সহচর',
-    lostHelpBtn: '🚨 রাস্তা হারিয়েছেন?',
-    selectLangTitle: 'আপনার মাতৃভাষা নির্বাচন করুন',
-    policeAmbulance: 'পুলিশ / অ্যাম্বুলেন্স:',
-    nonEmergencyDoc: 'ডাক্তার অন-কল:',
-    currencyCalc: 'কারেন্সি ক্যালকুলেটর',
-    tabs: {
-      journey: '১. প্রথম ৩০ দিন রোডম্যাপ',
-      offices: '২. সরকারি অফিস',
-      regulations: '৩. জার্মান নিয়মকানুন',
-      flashcards: '৪. স্ক্রিন দেখান',
-      essentials: '৫. হাসপাতাল',
-      desiRadar: '৬. গ্রোসারী ও খাদ্য',
-      community: '৭. মন্দির ও সমাজ',
-      chat: '৮. কমিউনিটি চ্যাট',
-      about: '৯. আমাদের সম্পর্কে'
-    },
-    roadmapHeading: 'জার্মানিতে প্রথম ৩০ দিনের মাস্টার রোডম্যাপ',
-    roadmapSub: 'সিম কার্ড থেকে শুরু করে অ্যাপার্টমেন্ট এবং ট্যাক্স আইডি।',
-    regulationsHeading: 'জার্মান নিয়ম ও আইন',
-    regulationsSub: 'জার্মানিতে বসবাসের জন্য গুরুত্বপূর্ণ আইন ও প্রবিধান।',
-    simpleBriefHeading: 'সহজ কথায়:',
-    actionPlanHeading: 'কর্মপরিকল্পনা:',
-    markCompleteBtn: 'সম্পন্ন বলে চিহ্নিত করুন',
-    completedBtn: 'সম্পন্ন হয়েছে ✓',
-    youAreAsking: 'আপনি যা জিজ্ঞাসা করছেন:',
-    showToLocal: 'স্থানীয় ব্যক্তিকে দেখান:',
-    tapToAnswer: '👇 উত্তর চয়ন করুন:',
-    localAnswered: 'স্থানীয় ব্যক্তি এই উত্তরটি বেছে নিয়েছেন:',
-    addNewCardBtn: '➕ নতুন ফ্ল্যাশকার্ড তৈরি করুন',
-    customCardBadge: 'কাস্টম কার্ড',
-    templateLabel: '⚡ টেমপ্লেট নির্বাচন করুন:',
-    substitutesTitle: 'জার্মান সুপারমার্কেটের বিকল্প',
-    substitutesSub: 'পনির ও আটার স্থানীয় বিকল্প:',
-    safeAlternative: 'নিরাপদ বিকল্প',
-    restaurantsTitle: 'ভারতীয় রেস্তোরাঁ',
-    communityTitle: 'ভারতীয় পরিবার ও মন্দির',
-    homeAddressLabel: 'মূল ঠিকানা:',
-    callFamilyBtn: 'কল করুন',
-    navigateHome: '📍 গুগল ম্যাপে বাড়ির পথ',
-    openGoogleMaps: '📍 গুগল ম্যাপে খুলুন',
-    openPortal: '🌐 পোর্টাল খুলুন',
-    officeSectionTitle: 'জার্মান সরকারি অফিস',
-    liveMedicalLocator: 'মেডিকেল লোকেটর',
-    gpsMedicalDesc: 'নিকটবর্তী হাসপাতাল এবং ফার্মেসি খুঁজুন।'
-  },
-  mr: {
-    appName: 'प्रवासी सारथी: जर्मनी',
-    editionTag: 'जर्मनी विशेष गाइड',
-    tagline: 'जर्मनीतील भारतीय कुटुंबे आणि व्यावसायिकांसाठी विश्वासू सोबती',
-    lostHelpBtn: '🚨 रस्ता चुकलात?',
-    selectLangTitle: 'तुमची मातृभाषा निवडा',
-    policeAmbulance: 'पोलिस / रुग्णवाहिका:',
-    nonEmergencyDoc: 'डॉक्टर ऑन-कॉल:',
-    currencyCalc: 'चलम गणक',
-    tabs: {
-      journey: '१. पहिला महिना रोडमॅप',
-      offices: '२. सरकारी कार्यालये',
-      regulations: '३. जर्मन नियम व कायदे',
-      flashcards: '४. स्क्रीन दाखवा',
-      essentials: '५. रुग्णालये',
-      desiRadar: '६. किराणा व अन्न',
-      community: '७. मंदिरे व समुदाय',
-      chat: '८. कम्युनिटी चॅट',
-      about: '९. आमच्याबद्दल'
-    },
-    roadmapHeading: 'जर्मनीतील पहिल्या ३० दिवसांचा मास्टर रोडमॅप',
-    roadmapSub: 'सिम कार्डपासून अपार्टमेन्ट आणि टॅक्स आयडीपर्यंत सर्व काही.',
-    regulationsHeading: 'जर्मन नियम आणि कायदे',
-    regulationsSub: 'जर्मनीमध्ये राहताना पाळायचे महत्त्वाचे कायदेशीर नियम.',
-    simpleBriefHeading: 'सोप्या भाषेत:',
-    actionPlanHeading: 'कृती आराखडा:',
-    markCompleteBtn: 'पूर्ण म्हणून चिन्हांकित करा',
-    completedBtn: 'पूर्ण झाले ✓',
-    youAreAsking: 'तुम्ही काय विचारत आहात:',
-    showToLocal: 'स्थानिक व्यक्तीला दाखवा:',
-    tapToAnswer: '👇 उत्तर निवडा:',
-    localAnswered: 'स्थानिक व्यक्तीने हे उत्तर निवडले:',
-    addNewCardBtn: '➕ नवीन कार्ड तयार करा',
-    customCardBadge: 'कस्टम कार्ड',
-    templateLabel: '⚡ टेम्पलेट निवडा:',
-    substitutesTitle: 'जर्मन सुपरमार्केटमधील भारतीय पर्याय',
-    substitutesSub: 'पनीर आणि गव्हाच्या पिठाचे पर्याय:',
-    safeAlternative: 'सुरक्षित पर्याय',
-    restaurantsTitle: 'भारतीय रेस्टॉरंट्स',
-    communityTitle: 'भारतीय कुटुंबे व मंदिरे',
-    homeAddressLabel: 'घरचा पत्ता:',
-    callFamilyBtn: 'कॉल करा',
-    navigateHome: '📍 गुगल मॅपवर घराचा मार्ग',
-    openGoogleMaps: '📍 गुगल मॅपवर उघडा',
-    openPortal: '🌐 पोर्टल उघडा',
-    officeSectionTitle: 'जर्मन सरकारी कार्यालये',
-    liveMedicalLocator: 'वैद्यकीय लोकेटर',
-    gpsMedicalDesc: 'जवळची रुग्णालये आणि औषधालये शोधा.'
-  },
-  gu: {
-    appName: 'પ્રवासी સારથી: જર્મની',
-    editionTag: 'જર્મની ગાઈડ',
-    tagline: 'જર્મનીમાં ભારતીય પરિવારો અને વ્યાવસાયિકો માટે વિશ્વાસુ સાથી',
-    lostHelpBtn: '🚨 રસ્તો ભૂલી ગયા?',
-    selectLangTitle: 'તમારી માતૃભાષા પસંદ કરો',
-    policeAmbulance: 'પોલીસ / એમ્બ્યુલન્સ:',
-    nonEmergencyDoc: 'ડૉક્ટર ઓન-કૉલ:',
-    currencyCalc: 'કરન્સી કેલ્ક્યુલેટર',
-    tabs: {
-      journey: '૧. પહેલો મહિનો રોડમેપ',
-      offices: '૨. સરકારી ઓફિસ',
-      regulations: '૩. જર્મન નિયમો',
-      flashcards: '૪. સ્ક્રીન બતાવો',
-      essentials: '૫. હોસ્પિટલ',
-      desiRadar: '૬. કરિયાણા અને ખોરાક',
-      community: '૭. મંદિરો અને સમુદાય',
-      chat: '૮. કમ્યુનિટી ચેટ',
-      about: '૯. અમારા વિશે'
-    },
-    roadmapHeading: 'જર્મનીમાં પ્રથમ ૩૦ દિવસનો માસ્ટર રોડમેપ',
-    roadmapSub: 'સિમ કાર્ડથી લઈને અપાર્ટમેન્ટ અને ટેક્સ આઈડી સુધી.',
-    regulationsHeading: 'જર્મન નિયમો અને કાયદાઓ',
-    regulationsSub: 'જર્મનીમાં રહેતી વખતે પાળવાના મહત્વપૂર્ણ નિયમો.',
-    simpleBriefHeading: 'સરળ ભાષામાં:',
-    actionPlanHeading: 'કાર્ય યોજના:',
-    markCompleteBtn: 'પૂર્ણ તરીકે ચિહ્નિત કરો',
-    completedBtn: 'પૂર્ણ થયું ✓',
-    youAreAsking: 'તમે શું પૂછી રહ્યા છો:',
-    showToLocal: 'સ્થાનિક વ્યક્તિને બતાવો:',
-    tapToAnswer: '👇 જવાબ પસંદ કરો:',
-    localAnswered: 'સ્થાનિક વ્યક્તિએ આ જવાબ પસંદ કર્યો:',
-    addNewCardBtn: '➕ નવું કાર્ડ બનાવો',
-    customCardBadge: 'કસ્ટમ કાર્ડ',
-    templateLabel: '⚡ ટેમ્પલેટ પસંદ કરો:',
-    substitutesTitle: 'જર્મન સુપરમાર્કેટ વિકલ્પો',
-    substitutesSub: 'પનીર અને લોટના સ્થાનિક વિકલ્પો:',
-    safeAlternative: 'સુરક્ષિત વિકલ્પ',
-    restaurantsTitle: 'ભારતીય રેસ્ટોરન્ટ્સ',
-    communityTitle: 'ભારતીય પરિવારો અને મંદિરો',
-    homeAddressLabel: 'ઘરનું સરનામું:',
-    callFamilyBtn: 'કૉલ કરો',
-    navigateHome: '📍 ગૂગલ મેપ પર ઘરનો રસ્તો',
-    openGoogleMaps: '📍 ગૂગલ મેપ પર ખોલો',
-    openPortal: '🌐 પોર્ટલ ખોલો',
-    officeSectionTitle: 'જર્મન સરકારી કાર્યાલયો',
-    liveMedicalLocator: 'મેડિકલ લોકેટર',
-    gpsMedicalDesc: 'નજીકની હોસ્પિટલો અને ફાર્મસી શોધો.'
-  },
-  pa: {
-    appName: 'ਪ੍ਰਵਾਸੀ ਸਾਰਥੀ: ਜਰਮਨੀ',
-    editionTag: 'ਜਰਮਨੀ ਗਾਈਡ',
-    tagline: 'ਜਰਮਨੀ ਵਿੱਚ ਭਾਰਤੀ ਪਰਿਵਾਰਾਂ ਅਤੇ ਪੇਸ਼ੇਵਰਾਂ ਲਈ ਭਰੋਸੇਯੋਗ ਸਾਥੀ',
-    lostHelpBtn: '🚨 ਰਸਤਾ ਭੁੱਲ ਗਏ?',
-    selectLangTitle: 'ਆਪਣੀ ਮਾਂ ਬੋਲੀ ਚੁਣੋ',
-    policeAmbulance: 'ਪੁਲਿਸ / ਐਂਬੂਲੈਂਸ:',
-    nonEmergencyDoc: 'ਡਾਕਟਰ ਆਨ-ਕਾਲ:',
-    currencyCalc: 'ਕਰੰਸੀ ਕੈਲਕੁਲੇਟਰ',
-    tabs: {
-      journey: '੧. ਪਹਿਲਾ ਮਹੀਨਾ ਰੋਡਮੈਪ',
-      offices: '੨. ਸਰਕਾਰੀ ਦਫ਼ਤਰ',
-      regulations: '੩. ਜਰਮਨ ਨਿਯਮ',
-      flashcards: '੪. ਸਕ੍ਰੀਨ ਦਿਖਾਓ',
-      essentials: '੫. ਹਸਪਤਾਲ',
-      desiRadar: '੬. ਕਰਿਆਨਾ ਅਤੇ ਭੋਜਨ',
-      community: '੭. ਮੰਦਿਰ ਅਤੇ ਭਾਈਚਾਰਾ',
-      chat: '੮. ਕਮਿਊਨਿਟੀ ਚੈਟ',
-      about: '੯. ਸਾਡੇ ਬਾਰੇ'
-    },
-    roadmapHeading: 'ਜਰਮਨੀ ਵਿੱਚ ਪਹਿਲੇ 30 ਦਿਨਾਂ ਦਾ ਮਾਸਟਰ ਰੋਡਮੈਪ',
-    roadmapSub: 'ਸਿਮ ਕਾਰਡ ਤੋਂ ਲੈ ਕੇ ਅਪਾਰਟਮੈਂਟ ਅਤੇ ਟੈਕਸ ਆਈਡੀ ਤੱਕ।',
-    regulationsHeading: 'ਜਰਮਨ ਨਿਯਮ ਅਤੇ ਕਾਨੂੰਨ',
-    regulationsSub: 'ਜਰਮਨੀ ਵਿੱਚ ਰਹਿੰਦਿਆਂ ਪਾਲਣਯੋਗ ਮਹੱਤਵਪੂਰਨ ਕਾਨੂੰਨੀ ਨਿਯਮ।',
-    simpleBriefHeading: 'ਸੌਖੇ ਸ਼ਬਦਾਂ ਵਿੱਚ:',
-    actionPlanHeading: 'ਐਕਸ਼ਨ ਪਲਾਨ:',
-    markCompleteBtn: 'ਪੂਰਾ ਹੋ ਗਿਆ ਚਿੰਨ੍ਹਿਤ ਕਰੋ',
-    completedBtn: 'ਮੁਕੰਮਲ ✓',
-    youAreAsking: 'ਤੁਸੀਂ ਕੀ ਪੁੱਛ ਰਹੇ ਹੋ:',
-    showToLocal: 'ਸਥਾਨਕ ਵਿਅਕਤੀ ਨੂੰ ਦਿਖਾਓ:',
-    tapToAnswer: '👇 ਜਵਾਬ ਚੁਣੋ:',
-    localAnswered: 'ਸਥਾਨਕ ਵਿਅਕਤੀ ਨੇ ਇਹ ਜਵਾਬ ਚੁਣਿਆ:',
-    addNewCardBtn: '➕ ਨਵਾਂ ਫਲੈਸ਼ਕਾਰਡ ਬਣਾਓ',
-    customCardBadge: 'ਕਸਟਮ ਕਾਰਡ',
-    templateLabel: '⚡ ਟೆಂਪਲੇਟ ਚੁਣੋ:',
-    substitutesTitle: 'ਜਰਮਨ ਸੁਪਰਮਾਰਕੀਟ ਵਿਕਲਪ',
-    substitutesSub: 'ਪਨੀਰ ਅਤੇ ਆਟੇ ਦੇ ਸਥਾਨਕ ਬਦਲ:',
-    safeAlternative: 'ਸੁਰੱਖਿਅਤ ਵਿਕਲਪ',
-    restaurantsTitle: 'ਭਾਰਤੀ ਰੈਸਟੋਰੈਂਟ',
-    communityTitle: 'ਭਾਰਤੀ ਪਰਿਵਾਰ ਅਤੇ ਮੰਦਿਰ',
-    homeAddressLabel: 'ਘਰ ਦਾ ਪਤਾ:',
-    callFamilyBtn: 'ਹੁਣੇ ਕਾਲ ਕਰੋ',
-    navigateHome: '📍 ਗੂਗਲ ਮੈਪਸ ਉੱਤੇ ਘਰ ਦਾ ਰਸਤਾ',
-    openGoogleMaps: '📍 ਗੂਗਲ ਮੈਪਸ ਉੱਤੇ ਖੋਲ੍ਹੋ',
-    openPortal: '🌐 ਪੋਰਟਲ ਖੋਲ੍ਹੋ',
-    officeSectionTitle: 'ਜਰਮਨ ਸਰਕਾਰੀ ਦਫ਼ਤਰ',
-    liveMedicalLocator: 'ਮੈਡੀਕਲ ਲੋਕੇਟਰ',
-    gpsMedicalDesc: 'ਨੇੜਲੇ ਹਸਪਤਾਲ ਅਤੇ ਫਾਰਮਸੀ ਲੱਭੋ।'
-  },
-  kn: {
-    appName: 'ಪ್ರವಾಸಿ ಸಾರಥಿ: ಜರ್ಮನಿ',
-    editionTag: 'ಜರ್ಮನಿ ಗೈಡ್',
-    tagline: 'ಜರ್ಮರಿಯಲ್ಲಿ ಭಾರತೀಯ ಕುಟುಂಬಗಳು ಮತ್ತು ವೃತ್ತಿಪರರಿಗೆ ವಿಶ್ವಾಸಾರ್ಹ ಸಂಗಾತಿ',
-    lostHelpBtn: '🚨 ದಾರಿ ತಪ್ಪಿದೆಯೇ?',
-    selectLangTitle: 'ನಿಮ್ಮ ಮಾತೃಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ',
-    policeAmbulance: 'ಪೊಲೀಸ್ / ಆಂಬುಲೆನ್ಸ್:',
-    nonEmergencyDoc: 'ವೈದ್ಯರು ಆನ್-ಕాల్:',
-    currencyCalc: 'ಕರೆನ್ಸಿ ಕ್ಯಾಲ್ಕುಲೇಟರ್',
-    tabs: {
-      journey: '೧. ಮೊದಲ 30 ದಿನಗಳು',
-      offices: '೨. ಸರ್ಕಾರಿ ಕಚೇರಿಗಳು',
-      regulations: '೩. ಜರ್ಮನ್ ನಿಯಮಗಳು',
-      flashcards: '೪. ಪರದೆಯನ್ನು ತೋರಿಸಿ',
-      essentials: '೫. ಆಸ್ಪತ್ರೆಗಳು',
-      desiRadar: '೬. ಕಿರಾಣಿ & ಆಹಾರ',
-      community: '೭. ದೇವಾಲಯಗಳು',
-      chat: '೮. ಕಮ್ಯೂನಿಟಿ ಚಾಟ್',
-      about: '೯. ನಮ್ಮ ಬಗ್ಗೆ'
-    },
-    roadmapHeading: 'ಜರ್ಮರಿಯಲ್ಲಿ ಮೊದಲ 30 ದಿನಗಳ ರೋಡ್‌ಮ್ಯಾಪ್',
-    roadmapSub: 'ಸಿಮ್ ಕಾರ್ಡ್‌ನಿಂದ ಹಿಡಿದು ಅಮೆರಿಕನ್ / ಜರ್ಮನ್ ಅಪಾರ್ಟ್‌ಮೆಂಟ್ ವರೆಗೆ.',
-    regulationsHeading: 'ಜರ್ಮನ್ ನಿಯಮಗಳು ಮತ್ತು ಕಾನೂನುಗಳು',
-    regulationsSub: 'ಜರ್ಮರಿಯಲ್ಲಿ ವಾಸಿಸುವಾಗ ತಿಳಿದಿರಬೇಕಾದ ಪ್ರಮುಖ ಕಾನೂನುಗಳು.',
-    simpleBriefHeading: 'ಸರಳ ಭಾಷೆಯಲ್ಲಿ:',
-    actionPlanHeading: 'ಕ್ರಿಯಾ ಯೋಜನೆ:',
-    markCompleteBtn: 'ಪೂರ್ಣಗೊಂಡಿದೆ ಎಂದು ಗುರುತಿಸಿ',
-    completedBtn: 'ಪೂರ್ಣಗೊಂಡಿದೆ ✓',
-    youAreAsking: 'ನೀವು ಕೇಳುತ್ತಿರುವುದು:',
-    showToLocal: 'ಸ್ಥಳೀಯ ವ್ಯಕ್ತಿಗೆ ತೋರಿಸಿ:',
-    tapToAnswer: '👇 ಉತ್ತರವನ್ನು ಆಯ್ಕೆಮಾಡಿ:',
-    localAnswered: 'ಸ್ಥಳೀಯ ವ್ಯಕ್ತಿ ಈ ಉತ್ತರವನ್ನು ಆಯ್ಕೆ ಮಾಡಿದ್ದಾರೆ:',
-    addNewCardBtn: '➕ ಹೊಸ ಕಾರ್ಡ್ ರಚಿಸಿ',
-    customCardBadge: 'ಕಸ್ಟಮ್ ಕಾರ್ಡ್',
-    templateLabel: '⚡ ಟೆಂಪ್ಲೇಟ್ ಆಯ್ಕೆಮಾಡಿ:',
-    substitutesTitle: 'ಜರ್ಮನ್ ಸೂಪರ್‌ಮಾರ್ಕೆಟ್ ಪರ್ಯಾಯಗಳು',
-    substitutesSub: 'ಪನ್ನೀರ್ ಮತ್ತು ಹಿಟ್ಟಿನ ಸ್ಥಳೀಯ ಪರ್ಯಾಯಗಳು:',
-    safeAlternative: 'ಸುರಕ್ಷಿತ ಪರ್ಯಾಯ',
-    restaurantsTitle: 'ಭಾರತೀಯ ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು',
-    communityTitle: 'ಭಾರತೀಯ ಕುಟುಂಬಗಳು & ದೇವಾಲಯಗಳು',
-    homeAddressLabel: 'ಮನೆ ವಿಳಾಸ:',
-    callFamilyBtn: 'ಈಗ ಕರೆ ಮಾಡಿ',
-    navigateHome: '📍 ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್‌ನಲ್ಲಿ ಮನೆಗೆ ದಾರಿ',
-    openGoogleMaps: '📍 ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ',
-    openPortal: '🌐 ಪೋರ್ಟಲ್ ತೆರೆಯಿರಿ',
-    officeSectionTitle: 'ಜರ್ಮನ್ ಸರ್ಕಾರಿ ಕಚೇರಿಗಳು',
-    liveMedicalLocator: 'ವೈದ್ಯಕೀಯ ಲೊಕೇಟರ್',
-    gpsMedicalDesc: 'ಹತ್ತಿರದ ಆಸ್ಪತ್ರೆಗಳನ್ನು ಹುಡುಕಿ.'
-  },
-  ml: {
-    appName: 'പ്രവാസി സാരഥി: ജർമ്മനി',
-    editionTag: 'ജർമ്മനി ഗൈഡ്',
-    tagline: 'ജർമ്മനിയിലെ ഇന്ത്യൻ കുടുംബങ്ങൾക്കും പ്രൊഫഷണലുകൾക്കുമുള്ള വിശ്വസ്ത കൂട്ടുകാരൻ',
-    lostHelpBtn: '🚨 വഴി തെറ്റിയോ?',
-    selectLangTitle: 'നിങ്ങളുടെ മാതൃഭാഷ തിരഞ്ഞെടുക്കുക',
-    policeAmbulance: 'പോലീസ് / ആംബുലൻസ്:',
-    nonEmergencyDoc: 'ഡോക്ടർ ഓൺ-കോൾ:',
-    currencyCalc: 'കറൻസി കാൽക്കുലേറ്റർ',
-    tabs: {
-      journey: '1. ആദ്യ 30 ദിവസ റോഡ്‌മാപ്പ്',
-      offices: '2. സർക്കാർ ഓഫീസുകൾ',
-      regulations: '3. ജർമ്മൻ നിയമങ്ങൾ',
-      flashcards: '4. സ്ക്രീൻ കാണിക്കുക',
-      essentials: '5. ആശുപത്രികൾ',
-      desiRadar: '6. പലചരക്ക് & ഭക്ഷണം',
-      community: '7. ക്ഷേത്രങ്ങളും സമൂഹവും',
-      chat: '8. കമ്മ്യൂണിറ്റി ചാറ്റ്',
-      about: '9. ഞങ്ങളെക്കുറിച്ച്'
-    },
-    roadmapHeading: 'ജർമ്മനിയിലെ ആദ്യ 30 ദിവസത്തെ മാസ്റ്റർ റോഡ്‌മാപ്പ്',
-    roadmapSub: 'സിം കാർഡ് മുതൽ അപ്പാർട്ട്മെന്റും ടാക്സ് ഐഡിയും വരെ.',
-    regulationsHeading: 'ജർമ്മൻ നിയമങ്ങളും ചട്ടങ്ങളും',
-    regulationsSub: 'ജർമ്മനിയിൽ ജീവിക്കുമ്പോൾ പാലിക്കേണ്ട പ്രധാന നിയമങ്ങൾ.',
-    simpleBriefHeading: 'ലളിതമായ ഭാഷയിൽ:',
-    actionPlanHeading: 'കർമ്മപദ്ധതി:',
-    markCompleteBtn: 'പൂർത്തിയായി എന്ന് അടയാളപ്പെടുത്തുക',
-    completedBtn: 'പൂർത്തിയായി ✓',
-    youAreAsking: 'നിങ്ങൾ ചോദിക്കുന്നത്:',
-    showToLocal: 'പ്രാദേശിക വ്യക്തിക്ക് കാണിക്കുക:',
-    tapToAnswer: '👇 മറുപടി തിരഞ്ഞെടുക്കുക:',
-    localAnswered: 'പ്രാദേശിക വ്യക്തി ഈ ഉത്തരം തിരഞ്ഞെടുത്തിരിക്കുന്നു:',
-    addNewCardBtn: '➕ പുതിയ കാർഡ് നിർമ്മിക്കുക',
-    customCardBadge: 'കസ്റ്റം കാർഡ്',
-    templateLabel: '⚡ ടെംപ്ലേറ്റ് തിരഞ്ഞെടുക്കുക:',
-    substitutesTitle: 'ജർമ്മൻ സൂപ്പർമാർക്കറ്റ് പകരക്കാർ',
-    substitutesSub: 'പനീറും പൊടിയും കണ്ടെത്താനുള്ള വഴികൾ:',
-    safeAlternative: 'സുരക്ഷിതമായ പകരക്കാരൻ',
-    restaurantsTitle: 'ഇന്ത്യൻ റെസ്റ്റോറന്റുകൾ',
-    communityTitle: 'ഇന്ത്യൻ കുടുംബങ്ങളും ക്ഷേത്രങ്ങളും',
-    homeAddressLabel: 'വീട്ടു വിലാസം:',
-    callFamilyBtn: 'ഇപ്പോൾ വിളിക്കുക',
-    navigateHome: '📍 ഗൂഗിൾ മാപ്പിൽ വീട്ടിലേക്കുള്ള വഴി',
-    openGoogleMaps: '📍 ഗൂഗിൾ മാപ്പിൽ തുറക്കുക',
-    openPortal: '🌐 പോർട്ടൽ തുറക്കുക',
-    officeSectionTitle: 'ജർമ്മൻ സർക്കാർ ഓഫീസുകൾ',
-    liveMedicalLocator: 'മെഡിക്കൽ ലൊക്കേറ്റർ',
-    gpsMedicalDesc: 'അടുത്തുള്ള ആശുപത്രികളും ഫാർമസികളും കണ്ടെത്തുക.'
+    roadmapHeading: 'First 30 Days Master Relocation Roadmap',
+    roadmapSub: 'Complete tasks from landing in Germany to getting your D-Ticket, apartment, and Tax ID.',
+    regulationsHeading: 'German Rules & Regulations',
+    regulationsSub: 'Mandatory legal obligations, quiet hours, and recycling laws in Germany.',
+    simpleBriefHeading: 'In Simple Words:',
+    actionPlanHeading: 'Action Plan:',
+    markCompleteBtn: 'Mark Complete',
+    completedBtn: 'Completed ✓',
+    youAreAsking: 'What you are asking:',
+    showToLocal: 'Show to Local Person:',
+    tapToAnswer: '👇 The local person can tap their answer directly on the screen:',
+    localAnswered: 'The local person selected this answer:',
+    addNewCardBtn: '➕ Create Custom Card',
+    customCardBadge: 'Custom Card',
+    templateLabel: '⚡ Select a Template:',
+    substitutesTitle: 'Desi Substitutes in German Supermarkets (Rewe/Edeka)',
+    substitutesSub: 'Find alternatives for paneer, chakki atta, and curd locally:',
+    safeAlternative: 'Safe Alternative',
+    restaurantsTitle: 'Indian Restaurants & Grocery Stores',
+    communityTitle: 'Indian Families, Temples & Gurudwaras',
+    homeAddressLabel: 'Home Address:',
+    callFamilyBtn: 'Call Now',
+    navigateHome: '📍 Navigate Home on Google Maps',
+    openGoogleMaps: '📍 Open on Google Maps',
+    openPortal: '🌐 Open Official Portal',
+    officeSectionTitle: 'Official German Government Offices',
+    liveMedicalLocator: 'Live Medical & Clinic Locator',
+    gpsMedicalDesc: 'Find nearest emergency rooms, 24/7 doctors, and Sunday duty pharmacies (Notdienst).'
   }
 };
 
+// Fallback generator for other languages to English base if needed
+['ta', 'te', 'bn', 'mr', 'gu', 'pa', 'kn', 'ml'].forEach(code => {
+  if (!UI_TEXT[code]) UI_TEXT[code] = UI_TEXT.en;
+});
+
 // ============================================================================
-// 4. GERMANY 30-DAY RELOCATION ROADMAP TASKS
+// 4. GERMANY 30-DAY RELOCATION ROADMAP TASKS (WITH D-TICKET & DB NAVIGATOR)
 // ============================================================================
 const GERMANY_ROADMAP_TASKS = [
   {
@@ -551,6 +232,22 @@ const GERMANY_ROADMAP_TASKS = [
     steps: [
       'Download a European travel eSIM before departure, or',
       'Purchase a prepaid physical SIM card at airport kiosks (bring your Indian Passport for verification).'
+    ]
+  },
+  {
+    id: 'transportation_dticket',
+    dayTarget: 'Day 1–3',
+    urgency: 'High',
+    category: 'Daily Living & Transit',
+    title: 'Deutschlandticket (D-Ticket) & DB Navigator',
+    whyImportant: 'The €49/month Deutschlandticket grants unlimited regional and city transit (U-Bahn, buses, trams, regional trains) across all of Germany. DB Navigator is mandatory for live schedules.',
+    brief: {
+      hi: 'पूरे जर्मनी में असीमित यात्रा के लिए Deutschlandticket (€49/month) लें और लाइव ट्रेनों के लिए DB Navigator ऐप डाउनलोड करें।',
+      en: 'Get the monthly Deutschlandticket for nationwide transit and download DB Navigator for live train tracking.'
+    },
+    steps: [
+      'Download the DB Navigator app for live train routing and ticket bookings.',
+      'Subscribe to the Deutschlandticket digitally via RMV, MVV, BVG, or DB app for seamless travel.'
     ]
   },
   {
@@ -634,22 +331,6 @@ const GERMANY_ROADMAP_TASKS = [
     ]
   },
   {
-    id: 'transportation',
-    dayTarget: 'Day 1–3',
-    urgency: 'High',
-    category: 'Daily Living & Transit',
-    title: 'Deutschlandticket (D-Ticket) & DB Navigator',
-    whyImportant: 'Essential apps and transit passes for navigating German trains (Deutsche Bahn), U-Bahn, trams, and buses nationwide.',
-    brief: {
-      hi: 'पूरे जर्मनी में असीमित यात्रा के लिए Deutschlandticket (€49/month) लें और DB Navigator ऐप डाउनलोड करें।',
-      en: 'Download DB Navigator and get the monthly Deutschlandticket for unlimited regional/city transit across Germany.'
-    },
-    steps: [
-      'Download DB Navigator for live train schedules.',
-      'Subscribe to the Deutschlandticket via RMV, MVV, BVG, or DB for nationwide regional transport.'
-    ]
-  },
-  {
     id: 'gez_broadcasting',
     dayTarget: 'Day 20–30',
     urgency: 'Medium',
@@ -698,18 +379,11 @@ const GERMAN_REGULATIONS = [
     icon: '📊',
     summary: 'Financial reputation tracking is central to renting apartments or signing contracts.',
     details: 'SCHUFA is Germany’s primary credit agency. Landlords, telecom operators, and banks check your SCHUFA score before approving housing contracts or postpaid SIM cards. Always pay bills on time to maintain a clean record.'
-  },
-  {
-    id: 'reg_speed_cameras',
-    title: 'Speed Cameras & Dashcams',
-    icon: '🚗',
-    summary: 'Strict traffic enforcement and privacy laws govern roads.',
-    details: 'Speed traps (Blitzer) are automated across cities and Autobahns. Additionally, continuous dashcam recording is tightly regulated under strict GDPR privacy laws; storing or publishing public dashcam footage without cause can lead to steep fines.'
   }
 ];
 
 // ============================================================================
-// 6. CITY-SPECIFIC SHOPS, TEMPLES & PARKS (RATINGS INCLUDED)
+// 6. CITY-SPECIFIC DIRECTORY (GROCERIES, RESTAURANTS, TEMPLES, PARKS)
 // ============================================================================
 const CITY_SPECIFIC_DIRECTORY = {
   'Frankfurt am Main': {
@@ -792,8 +466,15 @@ const GERMAN_OFFICES = [
 ];
 
 const GERMAN_HOSPITALS = [
-  { name: 'Universitätsklinikum (University Hospital)', address: 'Major University Hospitals in Frankfurt, Munich, Berlin, Heidelberg', phone: '112', type: '24/7 Adult & Trauma ER', status: '24/7 Open' },
-  { name: 'Kinderklinik (Pediatric Hospital / ER)', address: 'Dedicated children hospitals in all major German cities', phone: '116 117', type: 'Children Fever & Emergency Care', status: '24/7 Children ER' }
+  { name: 'Universitätsklinikum (University Hospital & 24/7 ER)', address: 'Major University Hospitals in Frankfurt, Munich, Berlin, Heidelberg', phone: '112', type: '24/7 Adult & Trauma ER', status: '24/7 Open' },
+  { name: 'Kinderklinik (Pediatric Hospital & Fever Care)', address: 'Dedicated children hospitals in all major German cities', phone: '116 117', type: 'Children Fever & Emergency Care', status: '24/7 Children ER' },
+  { name: 'Notdienst Apotheke (Sunday & Night Pharmacy)', address: 'Rotating duty pharmacies in every district', phone: '0800 00 22 833', type: 'Open 24/7 & Sundays for Urgent Prescriptions', status: '24/7 Duty' }
+];
+
+const GROCERY_SUBSTITUTES = [
+  { item: 'Paneer (पनीर)', substitute: 'Schichtkäse (10%/20% Fett) / Türkischer Schnittkäse', stores: 'Rewe, Edeka, Lidl, Turkish markets', note: 'Schichtkäse has the identical mild taste. For frying, Turkish Börek cheese works.' },
+  { item: 'Chakki Atta (रोटी का आटा)', substitute: 'Weizenmehl Type 1050 + Vollkornmehl (50:50 mix)', stores: 'Aldi, Lidl, Rewe, DM Bio', note: 'Mix Type 1050 with whole wheat flour for soft Rotis.' },
+  { item: 'Dahi / Curd (दही)', substitute: 'Stichfester Joghurt (3.5% / 10% Fett)', stores: 'Rewe, Aldi, Lidl, Carrefour', note: 'Look for "stichfest" (set curd) on the bucket, not "cremig gerührt".' }
 ];
 
 // ============================================================================
@@ -819,46 +500,28 @@ export default function App() {
 
   const [completedTasks, setCompletedTasks] = useState({ sim_connectivity: true });
 
-  const [customCards, setCustomCards] = useState(() => {
+  // Custom added restaurants state
+  const [customRestaurants, setCustomRestaurants] = useState(() => {
     try {
-      const saved = localStorage.getItem('pravasi_germany_custom_cards');
+      const saved = localStorage.getItem('pravasi_germany_custom_restaurants');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
     }
   });
-
-  const [showNewCardModal, setShowNewCardModal] = useState(false);
-  const [newCardForm, setNewCardForm] = useState({
-    category: 'Daily Living',
-    userText: '',
-    localText: '',
-    opt1: 'Ja / Yes',
-    opt2: 'Nein / No',
-    opt3: 'Bitte warten / Please wait'
-  });
-
-  const [isTranslating, setIsTranslating] = useState(false);
+  const [showAddRestModal, setShowAddRestModal] = useState(false);
+  const [newRestForm, setNewRestForm] = useState({ name: '', address: '', rating: '4.5', note: '' });
 
   // Chat State
-  const [myUserId] = useState(() => {
-    try {
-      let id = localStorage.getItem('pravasi_device_id');
-      if (!id) { id = 'usr_' + Math.random().toString(36).substr(2, 9); localStorage.setItem('pravasi_device_id', id); }
-      return id;
-    } catch (e) { return 'usr_guest'; }
+  const [hasJoinedChat, setHasJoinedChat] = useState(() => {
+    try { return !!localStorage.getItem('pravasi_chat_name'); } catch (e) { return false; }
   });
   const [chatName, setChatName] = useState(() => {
     try { return localStorage.getItem('pravasi_chat_name') || ''; } catch (e) { return ''; }
   });
-  const [hasJoinedChat, setHasJoinedChat] = useState(() => {
-    try { return !!localStorage.getItem('pravasi_chat_name'); } catch (e) { return false; }
-  });
-  
-  const [chatView, setChatView] = useState('board');
   const [composeText, setComposeText] = useState('');
   const [publicPosts, setPublicPosts] = useState([]);
-  
+
   useEffect(() => {
     async function fetchPosts() {
       const { data } = await supabase
@@ -869,8 +532,8 @@ export default function App() {
         setPublicPosts(data);
       } else {
         setPublicPosts([
-          { id: 101, authorId: 'mock1', authorName: 'Rahul M.', text: 'Landing in Frankfurt next week. Can someone guide me on getting a TK health insurance certificate?', time: '10:30 AM' },
-          { id: 102, authorId: 'mock2', authorName: 'Priya S.', text: 'Does anyone know how long Bürgeramt appointments take in Munich right now?', time: '09:15 AM' }
+          { id: 101, authorName: 'Rahul M.', text: 'Landing in Frankfurt next week. Can someone guide me on getting a TK health insurance certificate?', time: '10:30 AM' },
+          { id: 102, authorName: 'Priya S.', text: 'Does anyone know how long Bürgeramt appointments take in Munich right now?', time: '09:15 AM' }
         ]);
       }
     }
@@ -889,8 +552,8 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    try { localStorage.setItem('pravasi_germany_custom_cards', JSON.stringify(customCards)); } catch (e) { console.error(e); }
-  }, [customCards]);
+    try { localStorage.setItem('pravasi_germany_custom_restaurants', JSON.stringify(customRestaurants)); } catch (e) { console.error(e); }
+  }, [customRestaurants]);
 
   const joinChat = (e) => {
     e.preventDefault();
@@ -918,6 +581,15 @@ export default function App() {
     setComposeText('');
   };
 
+  const handleAddRestaurant = (e) => {
+    e.preventDefault();
+    if (!newRestForm.name.trim() || !newRestForm.address.trim()) return;
+    const item = { city: selectedCity, ...newRestForm };
+    setCustomRestaurants([item, ...customRestaurants]);
+    setNewRestForm({ name: '', address: '', rating: '4.5', note: '' });
+    setShowAddRestModal(false);
+  };
+
   const t = UI_TEXT[selectedLang] || UI_TEXT.en;
   const currentLangObj = INDIAN_LANGUAGES.find(l => l.code === selectedLang) || INDIAN_LANGUAGES[0];
 
@@ -927,8 +599,12 @@ export default function App() {
     return 'text-sm leading-normal';
   }, [textSize]);
 
-  // Current city directory fallback
-  const cityDir = CITY_SPECIFIC_DIRECTORY[selectedCity] || CITY_SPECIFIC_DIRECTORY['Frankfurt am Main'];
+  // Base city directory + custom restaurants for selected city
+  const baseCityDir = CITY_SPECIFIC_DIRECTORY[selectedCity] || CITY_SPECIFIC_DIRECTORY['Frankfurt am Main'];
+  const cityRestaurants = [
+    ...baseCityDir.restaurants,
+    ...customRestaurants.filter(r => r.city === selectedCity)
+  ];
 
   return (
     <div className={`min-h-screen bg-[#f8fafc] text-slate-800 font-sans flex flex-col ${fontMultiplierClass}`}>
@@ -980,7 +656,7 @@ export default function App() {
       )}
 
       {/* ============================================================== */}
-      {/* 2. MAIN HEADER (BRANDING)                                      */}
+      {/* 2. MAIN HEADER (BRANDING & STATE/CITY SELECTORS)               */}
       {/* ============================================================== */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -1025,7 +701,6 @@ export default function App() {
             { id: 'journey', label: t.tabs.journey, icon: Compass },
             { id: 'offices', label: t.tabs.offices, icon: Building2 },
             { id: 'regulations', label: t.tabs.regulations, icon: Scale },
-            { id: 'flashcards', label: t.tabs.flashcards, icon: Languages },
             { id: 'essentials', label: t.tabs.essentials, icon: Stethoscope },
             { id: 'desiRadar', label: t.tabs.desiRadar, icon: ShoppingBag },
             { id: 'community', label: t.tabs.community, icon: Users },
@@ -1048,7 +723,7 @@ export default function App() {
       {/* ============================================================== */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-8 space-y-8">
 
-        {/* TAB 1: GERMANY 30-DAY ROADMAP */}
+        {/* TAB 1: ROADMAP (WITH D-TICKET & DB NAVIGATOR) */}
         {activeTab === 'journey' && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
@@ -1108,7 +783,7 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 2: GERMAN OFFICES */}
+        {/* TAB 2: OFFICES */}
         {activeTab === 'offices' && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-6 relative overflow-hidden">
@@ -1118,7 +793,7 @@ export default function App() {
                   <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600"><Building2 className="w-5 h-5" /></div>
                   <h2 className="text-xl font-bold text-slate-900">{t.officeSectionTitle}</h2>
                 </div>
-                <p className="text-sm text-slate-500 max-w-2xl">Essential German authorities (Bürgeramt, Finanzamt) across federal states.</p>
+                <p className="text-sm text-slate-500 max-w-2xl">Verified physical government branches with exact street addresses and one-click Google Maps navigation.</p>
               </div>
             </div>
 
@@ -1129,11 +804,12 @@ export default function App() {
                     <span className="text-xs font-semibold text-indigo-700 bg-indigo-50 px-3 py-1.5 rounded-full border border-indigo-100">{office.category}</span>
                     <h3 className="font-bold text-lg text-slate-900 leading-snug">{office.name}</h3>
                     <p className="text-sm text-slate-600 flex items-start gap-2"><MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" /><span className="leading-relaxed">{office.address}</span></p>
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-sm space-y-1.5"><p className="font-medium text-slate-700">🚇 Nearest Transit / Metro:</p><p className="text-slate-500">{office.metro}</p></div>
                     <div className="bg-amber-50/50 p-4 rounded-2xl border border-amber-100 text-sm space-y-1.5"><p className="font-medium text-amber-900 flex items-center gap-1.5"><Clock className="w-4 h-4 opacity-70" /><span>Hours & Appointment Tip:</span></p><p className="text-slate-700 leading-relaxed">{office.hoursTip}</p></div>
                   </div>
                   <div className="space-y-3 pt-4 border-t border-slate-100">
                     <div className="flex flex-wrap gap-3">
-                      <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(office.mapsQuery + ' ' + selectedCity)}`} target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 text-slate-700 font-medium px-4 py-2.5 rounded-xl text-sm inline-flex items-center gap-2 border border-slate-200 shadow-sm transition"><Navigation className="w-4 h-4 text-slate-400" /><span>{t.openGoogleMaps}</span></a>
+                      <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(office.mapsQuery || office.name + ' ' + office.address)}`} target="_blank" rel="noreferrer" className="bg-white hover:bg-slate-50 text-slate-700 font-medium px-4 py-2.5 rounded-xl text-sm inline-flex items-center gap-2 border border-slate-200 shadow-sm transition"><Navigation className="w-4 h-4 text-slate-400" /><span>{t.openGoogleMaps}</span></a>
                       <a href={office.portalUrl} target="_blank" rel="noreferrer" className="bg-slate-900 hover:bg-slate-800 text-white font-medium px-4 py-2.5 rounded-xl text-sm inline-flex items-center gap-2 shadow-sm transition"><Globe className="w-4 h-4 opacity-80" /><span>{t.openPortal}</span></a>
                     </div>
                   </div>
@@ -1150,8 +826,8 @@ export default function App() {
               <div className="absolute top-0 left-0 w-2 h-full bg-amber-500"></div>
               <div className="pl-2">
                 <span className="bg-amber-100 text-amber-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-widest">Legal Awareness</span>
-                <h2 className="text-2xl font-bold text-slate-900 mt-2">🇩🇪 German Rules & Regulations</h2>
-                <p className="text-sm text-slate-500 mt-1">Key laws, etiquette, and compliance rules every expat family should know to avoid fines.</p>
+                <h2 className="text-2xl font-bold text-slate-900 mt-2">{t.regulationsHeading}</h2>
+                <p className="text-sm text-slate-500 mt-1">{t.regulationsSub}</p>
               </div>
             </div>
 
@@ -1170,28 +846,7 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 4: FLASHCARDS */}
-        {activeTab === 'flashcards' && (
-          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white p-6 sm:p-8 rounded-3xl shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-              <div className="flex items-start sm:items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
-                  <Mic className="w-6 h-6 text-white animate-pulse" />
-                </div>
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-widest bg-white/20 px-2.5 py-0.5 rounded-full">German Voice Bridge</span>
-                  <h3 className="text-xl font-bold mt-1">Google Voice & Text German Translator</h3>
-                  <p className="text-xs sm:text-sm text-indigo-100 mt-0.5">Translate instantly between {currentLangObj.label} and German.</p>
-                </div>
-              </div>
-              <a href="https://translate.google.com/?sl=auto&tl=de&op=translate" target="_blank" rel="noreferrer" className="bg-white text-indigo-700 hover:bg-indigo-50 font-bold px-5 py-3.5 rounded-2xl text-sm flex items-center justify-center gap-2 shadow-sm transition shrink-0">
-                <Globe className="w-4 h-4" /> <span>Open Google Translate</span>
-              </a>
-            </div>
-          </div>
-        )}
-
-        {/* TAB 5: HOSPITALS */}
+        {/* TAB 4: HOSPITALS & 24/7 SUNDAY PHARMACIES */}
         {activeTab === 'essentials' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-gradient-to-br from-rose-50 to-red-50 border border-rose-200 p-5 sm:p-6 rounded-3xl flex flex-col md:flex-row justify-between md:items-center gap-6 relative overflow-hidden">
@@ -1201,9 +856,8 @@ export default function App() {
                  <p className="text-sm text-rose-700 mt-1.5 max-w-md leading-relaxed">{t.gpsMedicalDesc}</p>
                </div>
                <div className="flex flex-wrap gap-3 shrink-0">
-                 <a href={`https://www.google.com/maps/search/?api=1&query=Hospital+Krankenhaus+${encodeURIComponent(selectedCity)}`} target="_blank" rel="noreferrer" className="bg-white hover:bg-rose-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition">🏥 Hospital</a>
-                 <a href={`https://www.google.com/maps/search/?api=1&query=Kinderarzt+Pediatrician+${encodeURIComponent(selectedCity)}`} target="_blank" rel="noreferrer" className="bg-white hover:bg-blue-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition">👶 Pediatrician</a>
-                 <a href={`https://www.google.com/maps/search/?api=1&query=Apotheke+Pharmacy+${encodeURIComponent(selectedCity)}`} target="_blank" rel="noreferrer" className="bg-white hover:bg-emerald-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition">💊 Pharmacy</a>
+                 <a href={`https://www.google.com/maps/search/?api=1&query=Hospital+Krankenhaus+${encodeURIComponent(selectedCity)}`} target="_blank" rel="noreferrer" className="bg-white hover:bg-rose-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition">🏥 Hospital / ER</a>
+                 <a href={`https://www.google.com/maps/search/?api=1&query=Notdienst+Apotheke+Sunday+Pharmacy+${encodeURIComponent(selectedCity)}`} target="_blank" rel="noreferrer" className="bg-white hover:bg-emerald-50 text-slate-700 border border-slate-200 px-4 py-2.5 rounded-2xl text-sm font-medium flex items-center gap-2 shadow-sm transition">💊 Sunday Pharmacy</a>
                </div>
             </div>
 
@@ -1216,34 +870,45 @@ export default function App() {
                     <p className="text-sm text-slate-600 pt-2"><MapPin className="w-4 h-4 text-slate-400 inline mr-1" />{hosp.address}</p>
                   </div>
                   <div className="flex items-center gap-3 pt-5 border-t border-slate-100">
-                    <a href={`tel:${hosp.phone}`} className="bg-slate-900 text-white px-4 py-2.5 rounded-xl text-sm font-medium flex items-center gap-2"><Phone className="w-4 h-4" /><span>Dial {hosp.phone}</span></a>
+                    <a href={`tel:${hosp.phone}`} className="bg-slate-900 text-white px-4 py-2.5 rounded-xl text-sm font-medium flex items-center gap-2"><Phone className="w-4 h-4" /><span>Call {hosp.phone}</span></a>
                   </div>
                 </div>
               ))}
             </div>
+
+            {/* Baby Care & 24/7 Essentials */}
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3">
+              <h4 className="font-bold text-slate-900 text-base">👶 Baby Care & 24/7 Supermarket Essentials (dm / Rossmann / Hauptbahnhof)</h4>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                If you need baby formula milk (<span className="font-semibold">Aptamil / HiPP</span>) or diapers in the middle of the night or on a Sunday when regular supermarkets are closed, head to the 24/7 pharmacy (<span className="font-semibold">Notdienst Apotheke</span>) or the pharmacy/drugstore located inside major central train stations (<span className="font-semibold">Hauptbahnhof</span> like Frankfurt Hbf or München Hbf) which operate 365 days a year.
+              </p>
+            </div>
           </div>
         )}
 
-        {/* TAB 6: DESI RADAR (CITY SPECIFIC SHOPS, RESTAURANTS, PARKS) */}
+        {/* TAB 5: DESI RADAR (CITY-SPECIFIC SHOPS, RESTAURANTS WITH ADD OPTION) */}
         {activeTab === 'desiRadar' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-white border border-slate-100 shadow-sm p-6 sm:p-8 rounded-3xl flex flex-col md:flex-row justify-between md:items-center gap-6 relative overflow-hidden">
                <div className="absolute top-0 left-0 w-1.5 h-full bg-amber-400 rounded-l-3xl"></div>
                <div className="pl-2">
-                 <h3 className="font-bold text-slate-800 flex items-center gap-2.5 text-lg"><span>🛒</span> {selectedCity} Indian Directory & Parks</h3>
-                 <p className="text-sm text-slate-500 mt-1.5">Top-rated grocery shops, restaurants, and family parks specific to your selected city.</p>
+                 <h3 className="font-bold text-slate-800 flex items-center gap-2.5 text-lg"><span>🛒</span> {selectedCity} Indian Directory & Restaurants</h3>
+                 <p className="text-sm text-slate-500 mt-1.5">Top-rated grocery shops and authentic Indian eateries specific to your selected city.</p>
                </div>
+               <button onClick={() => setShowAddRestModal(true)} className="bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs py-3 px-5 rounded-2xl transition shadow-sm shrink-0 flex items-center gap-2">
+                 <PlusCircle className="w-4 h-4" /> Add Restaurant / Shop
+               </button>
             </div>
 
             {/* Grocery Stores */}
             <div className="space-y-4">
               <h3 className="text-xl font-bold text-slate-900">🛒 Top Indian Grocery Stores in {selectedCity}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {cityDir.groceries.map((store, i) => (
+                {baseCityDir.groceries.map((store, i) => (
                   <div key={i} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3">
                     <div className="flex justify-between items-start">
                       <h4 className="font-bold text-slate-900 text-base">{store.name}</h4>
-                      <span className="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded-full">★ {store.rating}</span>
+                      <span className="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1"><Star className="w-3 h-3 fill-amber-500 text-amber-500" /> {store.rating}</span>
                     </div>
                     <p className="text-xs text-slate-500 flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{store.address}</p>
                     <p className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100">{store.note}</p>
@@ -1256,41 +921,24 @@ export default function App() {
             <div className="space-y-4 pt-4">
               <h3 className="text-xl font-bold text-slate-900">🍛 Best Indian Restaurants in {selectedCity}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {cityDir.restaurants.map((res, i) => (
+                {cityRestaurants.map((res, i) => (
                   <div key={i} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3">
                     <div className="flex justify-between items-start">
                       <h4 className="font-bold text-slate-900 text-base">{res.name}</h4>
-                      <span className="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded-full">★ {res.rating}</span>
+                      <span className="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1"><Star className="w-3 h-3 fill-amber-500 text-amber-500" /> {res.rating}</span>
                     </div>
                     <p className="text-xs text-slate-500 flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{res.address}</p>
-                    <p className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100">{res.note}</p>
+                    <p className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100">{res.note || 'Recommended Indian eatery.'}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Parks */}
-            <div className="space-y-4 pt-4">
-              <h3 className="text-xl font-bold text-slate-900">🌳 Family Parks & Leisure Spots in {selectedCity}</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {cityDir.parks.map((park, i) => (
-                  <div key={i} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3">
-                    <div className="flex justify-between items-start">
-                      <h4 className="font-bold text-slate-900 text-base">{park.name}</h4>
-                      <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded-full">★ {park.rating}</span>
-                    </div>
-                    <p className="text-xs text-slate-500 flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{park.address}</p>
-                    <p className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100">{park.note}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Substitutes */}
+            {/* Cooking Substitutes */}
             <div className="space-y-6 pt-6">
               <h3 className="text-xl font-bold text-slate-900">{t.substitutesTitle}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {GERMAN_GROCERY_SUBSTITUTES.map((sub, i) => (
+                {GROCERY_SUBSTITUTES.map((sub, i) => (
                   <div key={i} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
                     <div className="flex items-center justify-between"><h4 className="font-bold text-slate-900 text-base">{sub.item}</h4><span className="text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2.5 py-1 rounded-full border border-emerald-100 uppercase">{t.safeAlternative}</span></div>
                     <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1"><span className="text-[10px] text-slate-400 font-bold uppercase block mb-1">Buy On German Shelf:</span><span className="text-sm font-bold text-slate-800 block">{sub.substitute}</span></div>
@@ -1302,17 +950,17 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 7: COMMUNITY */}
+        {/* TAB 6: COMMUNITY (TEMPLES, GURUDWARAS & PARKS) */}
         {activeTab === 'community' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className="bg-white border border-slate-100 shadow-sm p-6 sm:p-8 rounded-3xl relative overflow-hidden mb-6">
               <div className="absolute top-0 left-0 w-1.5 h-full bg-indigo-400 rounded-l-3xl"></div>
               <div className="pl-2 mb-6">
-                <h3 className="font-bold text-slate-800 flex items-center gap-2.5 text-lg"><span>🛕</span> Temples, Gurudwaras & Associations in {selectedCity}</h3>
-                <p className="text-sm text-slate-500 mt-1.5">Connect with the spiritual and cultural Indian diaspora.</p>
+                <h3 className="font-bold text-slate-800 flex items-center gap-2.5 text-lg"><span>🛕</span> Temples, Gurudwaras & Family Parks in {selectedCity}</h3>
+                <p className="text-sm text-slate-500 mt-1.5">Connect with spiritual centers and enjoy green recreational parks with your family.</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pl-2">
-                {cityDir.temples.map((temple, i) => (
+                {baseCityDir.temples.map((temple, i) => (
                   <div key={i} className="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-2">
                     <h4 className="font-bold text-slate-900 text-sm">{temple.name}</h4>
                     <p className="text-xs text-slate-500 flex items-center gap-1"><MapPin className="w-3 h-3"/>{temple.address}</p>
@@ -1321,10 +969,27 @@ export default function App() {
                 ))}
               </div>
             </div>
+
+            {/* Parks */}
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-slate-900">🌳 Recommended Family Parks in {selectedCity}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {baseCityDir.parks.map((park, i) => (
+                  <div key={i} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3">
+                    <div className="flex justify-between items-start">
+                      <h4 className="font-bold text-slate-900 text-base">{park.name}</h4>
+                      <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1"><Star className="w-3 h-3 fill-emerald-500 text-emerald-500" /> {park.rating}</span>
+                    </div>
+                    <p className="text-xs text-slate-500 flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{park.address}</p>
+                    <p className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl border border-slate-100">{park.note}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 
-        {/* TAB 8: CHAT */}
+        {/* TAB 7: COMMUNITY CHAT */}
         {activeTab === 'chat' && (
           <div className="bg-white rounded-3xl border border-slate-200 shadow-sm h-[700px] flex flex-col overflow-hidden animate-in fade-in duration-500">
             <div className="bg-slate-50 border-b border-slate-200 p-4 flex justify-between items-center shrink-0">
@@ -1365,7 +1030,7 @@ export default function App() {
           </div>
         )}
 
-        {/* TAB 9: ABOUT US */}
+        {/* TAB 8: ABOUT US */}
         {activeTab === 'about' && (
           <div className="space-y-6 animate-in fade-in duration-500">
             <div className="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm space-y-6">
@@ -1375,6 +1040,25 @@ export default function App() {
           </div>
         )}
       </main>
+
+      {/* ADD RESTAURANT / SHOP MODAL */}
+      {showAddRestModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full border border-slate-200 shadow-2xl p-6 sm:p-8 space-y-6">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <h3 className="font-bold text-lg text-slate-900">Add Indian Restaurant in {selectedCity}</h3>
+              <button onClick={() => setShowAddRestModal(false)} className="text-slate-400 p-2 rounded-full"><X className="w-5 h-5" /></button>
+            </div>
+            <form onSubmit={handleAddRestaurant} className="space-y-4">
+              <div><label className="text-xs font-semibold text-slate-600 block mb-1">Restaurant/Shop Name</label><input type="text" required value={newRestForm.name} onChange={(e) => setNewRestForm({...newRestForm, name: e.target.value})} className="w-full text-sm p-3 rounded-xl border border-slate-200" placeholder="e.g. Spice India" /></div>
+              <div><label className="text-xs font-semibold text-slate-600 block mb-1">Street Address</label><input type="text" required value={newRestForm.address} onChange={(e) => setNewRestForm({...newRestForm, address: e.target.value})} className="w-full text-sm p-3 rounded-xl border border-slate-200" placeholder="e.g. Zeil 10" /></div>
+              <div><label className="text-xs font-semibold text-slate-600 block mb-1">Rating (1 to 5)</label><input type="number" step="0.1" max="5" min="1" value={newRestForm.rating} onChange={(e) => setNewRestForm({...newRestForm, rating: e.target.value})} className="w-full text-sm p-3 rounded-xl border border-slate-200" /></div>
+              <div><label className="text-xs font-semibold text-slate-600 block mb-1">Specialty / Note</label><input type="text" value={newRestForm.note} onChange={(e) => setNewRestForm({...newRestForm, note: e.target.value})} className="w-full text-sm p-3 rounded-xl border border-slate-200" placeholder="e.g. Best Biryani in town" /></div>
+              <button type="submit" className="w-full bg-slate-900 text-white font-semibold py-3 rounded-xl text-sm shadow-sm">Save Restaurant</button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* EMERGENCY CARD MODAL */}
       {showEmergencyCard && (
