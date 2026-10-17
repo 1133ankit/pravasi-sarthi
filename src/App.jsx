@@ -1630,7 +1630,7 @@ export default function App() {
 
   useEffect(() => {
     async function fetchPosts() {
-      const { data } = await supabase.from('public_posts_germany').select('*').order('id', { ascending: false });
+      const { data } = await supabase.from('public_posts').select('*').order('id', { ascending: false });
       if (data && data.length > 0) {
         setPublicPosts(data.map((p) => ({ ...p, author_name: p.author_name || p.authorName })));
       } else {
@@ -1643,8 +1643,8 @@ export default function App() {
     fetchPosts();
 
     const sub = supabase
-      .channel('public_posts_germany_realtime')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'public_posts_germany' }, (payload) => addPost(payload.new))
+      .channel('public_posts_realtime')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'public_posts' }, (payload) => addPost(payload.new))
       .subscribe();
     return () => { supabase.removeChannel(sub); };
   }, []);
@@ -1680,7 +1680,7 @@ const handlePostToBoard = async (e) => {
   // We only insert columns that Supabase expects
   // Let Postgres calculate ID and Timestamp automatically
   const { data, error } = await supabase
-    .from('public_posts_germany')
+    .from('public_posts')
     .insert([
       {
         author_name: chatName || 'Anonymous',
