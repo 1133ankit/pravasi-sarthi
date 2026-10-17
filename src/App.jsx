@@ -1024,6 +1024,23 @@ const GERMAN_HOSPITALS = [
 
 const GERMANY_ROADMAP_TASKS = [
   {
+    id: 'pre_arrival_docs',
+    title: 'Essential Documents Checklist (Pre-Arrival)',
+    dayFrom: 0, dayTo: 0, urgency: 'Critical',
+    brief: {
+      en: 'Pack all necessary original documents, apostilled certificates, and biometric photos before flying.',
+      hi: 'उड़ान भरने से पहले सभी आवश्यक मूल दस्तावेज, एपोस्टिल्ड सर्टिफिकेट और बायोमेट्रिक तस्वीरें पैक करें।'
+    },
+    whyImportant: 'You will need original documents for your Blue Card / Residence Permit appointment (Ausländerbehörde) and employer verification.',
+    steps: [
+      'Gather original passports, employment contract (Arbeitsvertrag), and university degrees.',
+      'Pack apostilled marriage and birth certificates (with German translations if applying for family reunion).',
+      '🔗 Get biometric passport-size photos (35x45mm) strictly meeting German standards. Check rules here: https://www.biometrisches-passbild.net',
+      '✅ DO: Carry all original documents in your cabin/hand luggage, never in your checked bags.',
+      '❌ DON\'T: Do not laminate your original certificates. Laminated documents are often rejected by German authorities.'
+    ]
+  },
+  {
     id: 'sim_connectivity',
     title: 'Get a German SIM & mobile number',
     dayFrom: 1, dayTo: 3, urgency: 'Important',
@@ -1041,9 +1058,27 @@ const GERMANY_ROADMAP_TASKS = [
     },
     whyImportant: 'Banks, landlords and the Bürgeramt all send codes or call you. A local number makes everything easier.',
     steps: [
-      'Buy a prepaid SIM at a supermarket or mobile shop (e.g. Aldi Talk, Lidl Connect, Telekom).',
-      'Carry your passport; activation often needs ID or a video-ident.',
-      'Keep this number for your bank, Anmeldung and insurance forms.'
+      'Buy a prepaid SIM at a supermarket checkout (Aldi Talk, Lidl Connect) or a telecom store (O2, Telekom, Vodafone).',
+      '🔗 Activate the SIM online using the PostIdent app or WebID video call: https://www.postident.de',
+      '✅ DO: Use your original passport for the video verification call. Keep your local German address handy.',
+      '❌ DON\'T: Do not sign a 24-month mobile contract (Laufzeitvertrag) immediately. Start with a prepaid plan until you settle.'
+    ]
+  },
+  {
+    id: 'house_finding',
+    title: 'Find a House / Apartment (Wohnungssuche)',
+    dayFrom: 1, dayTo: 30, urgency: 'Critical',
+    brief: {
+      en: 'Finding an apartment in Germany is highly competitive. Prepare a strong application folder (Bewerbungsmappe) to stand out.',
+      hi: 'जर्मनी में घर खोजना बहुत मुश्किल है। मकान मालिक को देने के लिए अपना एप्लीकेशन फोल्डर (Bewerbungsmappe) तैयार रखें।'
+    },
+    whyImportant: 'Without a permanent address and rental contract, you cannot get your Anmeldung, which blocks your bank account and Tax ID.',
+    steps: [
+      '🔗 Set up property alerts on the biggest portals: https://www.immobilienscout24.de and https://www.wg-gesucht.de',
+      '🔗 Order your SCHUFA credit report (if you already have a German bank account): https://www.meineschufa.de',
+      'Prepare your Bewerbungsmappe (Application Folder): Passport copy, Employment contract, last 3 salary slips, and a short cover letter introducing your family.',
+      '✅ DO: State clearly if you are a non-smoker (Nichtraucher) and have no pets (Keine Haustiere), as landlords prefer this.',
+      '❌ DON\'T: Never transfer a deposit (Kaution) before viewing the apartment in person and signing a physical contract. Remote renting scams are very common.'
     ]
   },
   {
@@ -1052,22 +1087,15 @@ const GERMANY_ROADMAP_TASKS = [
     dayFrom: 1, dayTo: 14, urgency: 'Critical',
     brief: {
       en: 'Register your address at the Bürgeramt within 14 days of moving in. Almost everything else depends on it.',
-      hi: 'घर बदलने के 14 दिन के अंदर Bürgeramt में पता दर्ज कराएं। बाकी लगभग हर काम इसी पर निर्भर है।',
-      ta: 'குடிபெயர்ந்த 14 நாட்களுக்குள் Bürgeramt-ல் முகவரியைப் பதிவு செய்யுங்கள். மற்ற பெரும்பாலான வேலைகள் இதைச் சார்ந்தவை.',
-      te: 'ఇంట్లో చేరిన 14 రోజుల్లో Bürgeramt లో చిరునామా నమోదు చేయండి. మిగతా దాదాపు అన్ని పనులు దీనిపైనే ఆధారపడతాయి.',
-      bn: 'বাসা নেওয়ার ১৪ দিনের মধ্যে Bürgeramt-এ ঠিকানা নিবন্ধন করুন। বাকি প্রায় সব কাজ এর ওপর নির্ভর করে।',
-      mr: 'घरात राहायला आल्यापासून १४ दिवसांत Bürgeramt मध्ये पत्ता नोंदवा. बाकी जवळपास सर्व कामे यावर अवलंबून आहेत.',
-      gu: 'રહેવા આવ્યાના ૧૪ દિવસમાં Bürgeramt માં સરનામું નોંધાવો. બાકીનાં લગભગ બધાં કામ આના પર નિર્ભર છે.',
-      pa: 'ਘਰ ਵਿੱਚ ਆਉਣ ਦੇ 14 ਦਿਨਾਂ ਅੰਦਰ Bürgeramt ਵਿੱਚ ਪਤਾ ਦਰਜ ਕਰਵਾਓ। ਬਾਕੀ ਲਗਭਗ ਸਾਰੇ ਕੰਮ ਇਸ ਉੱਤੇ ਨਿਰਭਰ ਹਨ।',
-      kn: 'ಮನೆಗೆ ಬಂದ 14 ದಿನಗಳೊಳಗೆ Bürgeramt ನಲ್ಲಿ ವಿಳಾಸ ನೋಂದಾಯಿಸಿ. ಉಳಿದ ಬಹುತೇಕ ಕೆಲಸಗಳು ಇದರ ಮೇಲೆ ಅವಲಂಬಿತ.',
-      ml: 'താമസം തുടങ്ങി 14 ദിവസത്തിനകം Bürgeramt-ൽ വിലാസം രജിസ്റ്റർ ചെയ്യുക. മറ്റ് മിക്ക കാര്യങ്ങളും ഇതിനെ ആശ്രയിച്ചിരിക്കുന്നു.'
+      hi: 'घर बदलने के 14 दिन के अंदर Bürgeramt में पता दर्ज कराएं। बाकी लगभग हर काम इसी पर निर्भर है।'
     },
     whyImportant: 'The Anmeldung confirmation (Meldebescheinigung) is needed for a bank account, tax ID, health insurance and residence permit matters.',
     steps: [
-      'Book a Bürgeramt appointment online as early as possible.',
-      'Bring your passport, rental contract and the landlord confirmation (Wohnungsgeberbestätigung).',
-      'Fill in the registration form (Anmeldeformular) before the visit.',
-      'Keep the Meldebescheinigung safe — you will need it many times.'
+      '🔗 Search "Bürgeramt Termin [Your City]" on Google to book an appointment online as early as possible.',
+      '🔗 Download and ask your landlord to sign the "Wohnungsgeberbestätigung" (Landlord Confirmation of Residence) form.',
+      'Bring your passport, rental contract, landlord confirmation, and the filled Anmeldung form to the appointment.',
+      '✅ DO: Put your name on your physical mailbox immediately after moving in, or official government letters will bounce back.',
+      '❌ DON\'T: Do not lose your original Meldebescheinigung paper. You will need to show it for years to come.'
     ]
   },
   {
@@ -1076,22 +1104,49 @@ const GERMANY_ROADMAP_TASKS = [
     dayFrom: 1, dayTo: 14, urgency: 'Critical',
     brief: {
       en: 'Health insurance is mandatory in Germany. Pick a public (e.g. TK, AOK) or private plan.',
-      hi: 'जर्मनी में स्वास्थ्य बीमा अनिवार्य है। सरकारी (जैसे TK, AOK) या निजी योजना चुनें।',
-      ta: 'ஜெர்மனியில் மருத்துவக் காப்பீடு கட்டாயம். அரசு (TK, AOK) அல்லது தனியார் திட்டத்தைத் தேர்ந்தெடுங்கள்.',
-      te: 'జర్మనీలో ఆరోగ్య బీమా తప్పనిసరి. ప్రభుత్వ (TK, AOK) లేదా ప్రైవేట్ ప్లాన్ ఎంచుకోండి.',
-      bn: 'জার্মানিতে স্বাস্থ্য বিমা বাধ্যতামূলক। সরকারি (TK, AOK) বা বেসরকারি প্ল্যান বেছে নিন।',
-      mr: 'जर्मनीत आरोग्य विमा अनिवार्य आहे. सरकारी (TK, AOK) किंवा खाजगी योजना निवडा.',
-      gu: 'જર્મનીમાં આરોગ્ય વીમો ફરજિયાત છે. સરકારી (TK, AOK) અથવા ખાનગી યોજના પસંદ કરો.',
-      pa: 'ਜਰਮਨੀ ਵਿੱਚ ਸਿਹਤ ਬੀਮਾ ਲਾਜ਼ਮੀ ਹੈ। ਸਰਕਾਰੀ (TK, AOK) ਜਾਂ ਪ੍ਰਾਈਵੇਟ ਯੋਜਨਾ ਚੁਣੋ।',
-      kn: 'ಜರ್ಮನಿಯಲ್ಲಿ ಆರೋಗ್ಯ ವಿಮೆ ಕಡ್ಡಾಯ. ಸರ್ಕಾರಿ (TK, AOK) ಅಥವಾ ಖಾಸಗಿ ಯೋಜನೆ ಆಯ್ಕೆಮಾಡಿ.',
-      ml: 'ജർമ്മനിയിൽ ആരോഗ്യ ഇൻഷുറൻസ് നിർബന്ധമാണ്. പൊതു (TK, AOK) അല്ലെങ്കിൽ സ്വകാര്യ പ്ലാൻ തിരഞ്ഞെടുക്കുക.'
+      hi: 'जर्मनी में स्वास्थ्य बीमा अनिवार्य है। सरकारी (जैसे TK, AOK) या निजी योजना चुनें।'
     },
     whyImportant: 'Doctors, hospitals and many employers require proof of insurance. Being uninsured can lead to back-payments.',
     steps: [
-      'Compare a public insurer (TK, AOK, Barmer) with private options; ask your employer or university for guidance.',
-      'Apply online and receive your insurance certificate (Versicherungsbescheinigung).',
-      'Give the certificate to your employer or university.',
-      'Wait for the insurance card (Gesundheitskarte) by post.'
+      '🔗 Choose a public health insurer and apply online. Popular expat options: https://www.tk.de or https://www.aok.de',
+      'Receive your digital insurance certificate (Versicherungsbescheinigung).',
+      '✅ DO: Email the insurance certificate to your employer/HR immediately so they can process your first salary.',
+      '❌ DON\'T: Do not ignore letters from your insurance asking for a passport-sized photo. They need it to print your physical health card (Gesundheitskarte).'
+    ]
+  },
+  {
+    id: 'doc_explainer',
+    title: 'German Document Explainer',
+    dayFrom: 1, dayTo: 30, urgency: 'Important',
+    brief: {
+      en: 'Understand the most important German paperwork you will receive in your first month.',
+      hi: 'अपने पहले महीने में मिलने वाले सबसे महत्वपूर्ण जर्मन कागजातों को समझें।'
+    },
+    whyImportant: 'Physical mail is the primary way the German government communicates. Do not throw away official-looking letters!',
+    steps: [
+      '📄 Mietvertrag: Your rental contract.',
+      '📄 Meldebescheinigung: Your address registration certificate. Keep this safe forever.',
+      '📄 Steuer-ID (TIN): 11-digit Tax ID sent by mail after Anmeldung. Give this to your HR.',
+      '📄 Aufenthaltstitel: Your plastic Residence Permit card (e.g., Blue Card).',
+      '📄 Rundfunkbeitrag: The mandatory TV/Radio tax letter sent per household.',
+      '✅ DO: Buy a physical folder (Leitz Ordner), a hole puncher, and file every single official letter you receive.',
+      '❌ DON\'T: Do not throw away letters with the "Rundfunkbeitrag" (Radio/TV tax) logo. It is legally mandatory to pay this fee.'
+    ]
+  },
+  {
+    id: 'kindergeld',
+    title: 'Apply for Child Benefits (Kindergeld)',
+    dayFrom: 15, dayTo: 30, urgency: 'Important',
+    brief: {
+      en: 'Apply for the monthly child allowance (Kindergeld) at the Familienkasse once your child is registered.',
+      hi: 'बच्चे का पंजीकरण (Anmeldung) होने के बाद मासिक बाल भत्ते (Kindergeld) के लिए आवेदन करें।'
+    },
+    whyImportant: 'The German government provides a fixed monthly financial support (currently €250 per child) to help families. This applies to expat professionals with valid residence permits too!',
+    steps: [
+      'Wait for your child\'s Tax ID (Steuer-ID), which arrives by post about 2 weeks after their Anmeldung.',
+      '🔗 Download the forms "Antrag auf Kindergeld" and "Anlage Kind" from the official portal: https://www.arbeitsagentur.de/familie-und-kinder/downloads-kindergeld-kinderzuschlag',
+      '✅ DO: Attach copies of your child\'s birth certificate, passports, and your residence permit.',
+      '❌ DON\'T: Do not send your original passports or original birth certificates by post. Send standard copies unless "beglaubigte Kopien" (certified copies) are specifically requested.'
     ]
   },
   {
@@ -1100,21 +1155,13 @@ const GERMANY_ROADMAP_TASKS = [
     dayFrom: 3, dayTo: 20, urgency: 'Important',
     brief: {
       en: 'The Deutschlandticket is a monthly pass for local and regional trains and buses across Germany.',
-      hi: 'Deutschlandticket पूरे जर्मनी में लोकल और रीजनल ट्रेन व बस के लिए मासिक पास है।',
-      ta: 'Deutschlandticket என்பது ஜெர்மனி முழுவதும் உள்ளூர் ரயில், பேருந்துகளுக்கான மாதாந்திர பாஸ்.',
-      te: 'Deutschlandticket జర్మనీ అంతటా లోకల్, రీజనల్ రైళ్లు, బస్సులకు నెలవారీ పాస్.',
-      bn: 'Deutschlandticket হলো জার্মানি জুড়ে লোকাল ও রিজিওনাল ট্রেন-বাসের মাসিক পাস।',
-      mr: 'Deutschlandticket म्हणजे संपूर्ण जर्मनीतील लोकल व रीजनल ट्रेन-बससाठी मासिक पास.',
-      gu: 'Deutschlandticket આખા જર્મનીમાં લોકલ અને રીજનલ ટ્રેન-બસ માટે માસિક પાસ છે.',
-      pa: 'Deutschlandticket ਪੂਰੇ ਜਰਮਨੀ ਵਿੱਚ ਲੋਕਲ ਤੇ ਰੀਜਨਲ ਰੇਲ-ਬੱਸ ਲਈ ਮਹੀਨਾਵਾਰ ਪਾਸ ਹੈ।',
-      kn: 'Deutschlandticket ಜರ್ಮನಿಯಾದ್ಯಂತ ಸ್ಥಳೀಯ ಮತ್ತು ಪ್ರಾದೇಶಿಕ ರೈಲು-ಬಸ್‌ಗಳಿಗೆ ಮಾಸಿಕ ಪಾಸ್.',
-      ml: 'Deutschlandticket ജർമ്മനിയിലുടനീളമുള്ള ലോക്കൽ, റീജിയണൽ ട്രെയിൻ-ബസുകൾക്കുള്ള പ്രതിമാസ പാസാണ്.'
+      hi: 'Deutschlandticket पूरे जर्मनी में लोकल और रीजनल ट्रेन व बस के लिए मासिक पास है।'
     },
     whyImportant: 'One monthly subscription replaces most single tickets for local transport and is easy to cancel.',
     steps: [
-      'Subscribe through DB Navigator, your local transport app or website.',
-      'Check the current monthly price and whether your employer or university offers a discount.',
-      'Keep the digital ticket on your phone; carry ID if asked.'
+      '🔗 Download the "DB Navigator" app or use your local transit app (like RMV, BVG, MVG) to subscribe to the Deutschlandticket.',
+      '✅ DO: Check with your HR department if they offer a subsidized "Jobticket", which makes the pass even cheaper.',
+      '❌ DON\'T: Do not forget that this is a rolling subscription. If you do not need it for the next month, you must cancel it by the 10th day of the current month.'
     ]
   },
   {
@@ -1123,21 +1170,14 @@ const GERMANY_ROADMAP_TASKS = [
     dayFrom: 14, dayTo: 30, urgency: 'Important',
     brief: {
       en: 'You will receive your tax ID (Steuer-ID) by post a few weeks after Anmeldung. Keep it safe; your employer needs it.',
-      hi: 'Anmeldung के कुछ हफ्ते बाद टैक्स आईडी (Steuer-ID) डाक से आएगी। इसे संभालकर रखें; नियोक्ता को चाहिए।',
-      ta: 'Anmeldung-க்குப் பிறகு சில வாரங்களில் வரி எண் (Steuer-ID) அஞ்சலில் வரும். பத்திரமாக வைக்கவும்; நிறுவனத்துக்குத் தேவை.',
-      te: 'Anmeldung తర్వాత కొన్ని వారాల్లో టాక్స్ ఐడి (Steuer-ID) పోస్ట్‌లో వస్తుంది. భద్రంగా ఉంచండి; యజమానికి అవసరం.',
-      bn: 'Anmeldung-এর কয়েক সপ্তাহ পর ডাকে ট্যাক্স আইডি (Steuer-ID) আসবে। যত্নে রাখুন; নিয়োগকর্তার লাগবে।',
-      mr: 'Anmeldung नंतर काही आठवड्यांत टपालाने टॅक्स आयडी (Steuer-ID) येईल. जपून ठेवा; नियोक्त्याला लागेल.',
-      gu: 'Anmeldung પછી થોડા અઠવાડિયામાં ટપાલથી ટેક્સ આઈડી (Steuer-ID) આવશે. સાચવી રાખો; નોકરીદાતાને જોઈશે.',
-      pa: 'Anmeldung ਤੋਂ ਕੁਝ ਹਫ਼ਤਿਆਂ ਬਾਅਦ ਟੈਕਸ ਆਈਡੀ (Steuer-ID) ਡਾਕ ਰਾਹੀਂ ਆਵੇਗੀ। ਸੰਭਾਲ ਕੇ ਰੱਖੋ; ਮਾਲਕ ਨੂੰ ਲੋੜ ਹੋਵੇਗੀ।',
-      kn: 'Anmeldung ನಂತರ ಕೆಲವು ವಾರಗಳಲ್ಲಿ ತೆರಿಗೆ ಐಡಿ (Steuer-ID) ಅಂಚೆಯಲ್ಲಿ ಬರುತ್ತದೆ. ಜೋಪಾನವಾಗಿಡಿ; ಉದ್ಯೋಗದಾತರಿಗೆ ಬೇಕು.',
-      ml: 'Anmeldung കഴിഞ്ഞ് ഏതാനും ആഴ്ചകൾക്കകം ടാക്സ് ഐഡി (Steuer-ID) തപാലിൽ വരും. സൂക്ഷിച്ചു വയ്ക്കുക; തൊഴിലുടമയ്ക്ക് വേണം.'
+      hi: 'Anmeldung के कुछ हफ्ते बाद टैक्स आईडी (Steuer-ID) डाक से आएगी। इसे संभालकर रखें; नियोक्ता को चाहिए।'
     },
     whyImportant: 'Your employer uses the Steuer-ID to calculate your payroll tax correctly.',
     steps: [
-      'Wait 2–4 weeks after Anmeldung for the letter from the Federal Central Tax Office.',
-      'If it has not arrived, request it via the BZSt portal.',
-      'Give the number to your employer and keep a copy.'
+      'Wait 2–4 weeks after your Anmeldung for the letter from the Federal Central Tax Office (BZSt).',
+      '🔗 If it hasn\'t arrived after 4 weeks, or if you lost it, you can request it to be resent here: https://www.bzst.de/DE/Privatpersonen/SteuerlicheIdentifikationsnummer/steuerlicheidentifikationsnummer_node.html',
+      '✅ DO: Immediately inform your HR department of this number so they can pull your correct tax class.',
+      '❌ DON\'T: Do not panic if your first salary is taxed heavily (Tax Class 6) because the ID was delayed. You will get the extra deducted tax back once the ID is updated or when you file your tax return next year.'
     ]
   }
 ];
