@@ -43,7 +43,7 @@ const detectLang = () => {
 // English (base / fallback)
 // ----------------------------------------------------------------------------
 const EN = {
-  appName: 'Pravasi Sarthi: Germany',
+  appName: 'Parivaar Sarthi: Germany',
   editionTag: 'Germany Special Guide',
   tagline: 'A trusted companion for Indian families, students and professionals in Germany',
   lostHelpBtn: '🚨 Lost? (Help)',
@@ -1304,7 +1304,7 @@ function TalkModule({ t }) {
   const [err, setErr] = useState('');
   const [listening, setListening] = useState(false);
   const [history, setHistory] = useState(() => {
-    try { return JSON.parse(lsGet('pravasi_talk_history', '[]')); } catch (e) { return []; }
+    try { return JSON.parse(lsGet('Parivaar_talk_history', '[]')); } catch (e) { return []; }
   });
 
   const translate = async (input = text, from = src) => {
@@ -1320,7 +1320,7 @@ function TalkModule({ t }) {
       setOut(de);
       const next = [{ q, de }, ...history.filter((h) => h.q !== q)].slice(0, 10);
       setHistory(next);
-      lsSet('pravasi_talk_history', JSON.stringify(next));
+      lsSet('Parivaar_talk_history', JSON.stringify(next));
     } catch (e) {
       setErr(t.talkError);
     } finally { setBusy(false); }
@@ -1413,7 +1413,7 @@ function TalkModule({ t }) {
 
 const CONTACT = {
   name: 'Ankit',
-  role: 'Founder, Pravasi Sarthi',
+  role: 'Founder, Parivaar Sarthi',
   email: '1122ankitverma@gmail.com',
   linkedin: 'https://www.linkedin.com/in/analyst-ankit-verma/',
   phone: '',
@@ -1428,7 +1428,7 @@ const ABOUT = {
     ml: 'ഇത് എന്തിന് ഉണ്ടാക്കി'
   },
   why: {
-    en: 'Moving to Germany is exciting, but the first weeks are confusing: new language, new paperwork, unfamiliar food and rules. We built Pravasi Sarthi so that no Indian family, student or professional has to figure it all out alone. Everything is explained in your own mother tongue, step by step.',
+    en: 'Moving to Germany is exciting, but the first weeks are confusing: new language, new paperwork, unfamiliar food and rules. We built Parivaar Sarthi so that no Indian family, student or professional has to figure it all out alone. Everything is explained in your own mother tongue, step by step.',
     hi: 'जर्मनी आना रोमांचक है, लेकिन शुरुआती हफ्ते उलझन भरे होते हैं: नई भाषा, नए कागज़ात, अनजाना खाना और नियम। हमने प्रवासी सारथी इसलिए बनाया ताकि कोई भी भारतीय परिवार, छात्र या पेशेवर यह सब अकेले न समझे। हर चीज़ आपकी अपनी मातृभाषा में, कदम-दर-कदम समझाई गई है।',
     ta: 'ஜெர்மனிக்கு வருவது உற்சாகமானது, ஆனால் முதல் வாரங்கள் குழப்பமானவை: புதிய மொழி, புதிய ஆவணங்கள், பழக்கமில்லாத உணவு, விதிகள். எந்த இந்தியக் குடும்பமும், மாணவரும், தொழில்முறையாளரும் இதையெல்லாம் தனியாகச் சமாளிக்கக் கூடாது என்பதற்காகவே பிரவாசி சாரதியை உருவாக்கினோம். எல்லாம் உங்கள் தாய்மொழியில், படிப்படியாக விளக்கப்பட்டுள்ளது.',
     te: 'జర్మనీకి రావడం ఉత్సాహకరం, కానీ మొదటి వారాలు గందరగోళంగా ఉంటాయి: కొత్త భాష, కొత్త పత్రాలు, తెలియని ఆహారం, నియమాలు. ఏ భారతీయ కుటుంబం, విద్యార్థి, ఉద్యోగి ఇవన్నీ ఒంటరిగా తెలుసుకోవాల్సిన అవసరం లేకుండా ప్రవాసి సార్థిని రూపొందించాము. ప్రతిదీ మీ మాతృభాషలో, దశలవారీగా వివరించబడింది.',
@@ -1563,7 +1563,7 @@ function AboutTab({ t, lang }) {
 
 export default function App() {
   const [selectedLang, setSelectedLang] = useState(() => {
-    const saved = lsGet('pravasi_lang', null);
+    const saved = lsGet('Parivaar_lang', null);
     return saved && INDIAN_LANGUAGES.some((l) => l.code === saved) ? saved : detectLang();
   });
   const [showLangModal, setShowLangModal] = useState(false);
@@ -1576,40 +1576,40 @@ export default function App() {
   const [selectedState, setSelectedState] = useState(GERMANY_CONFIG.states[0].name);
   const [selectedCity, setSelectedCity] = useState(GERMANY_CONFIG.states[0].cities[0]);
   const [activeTab, setActiveTab] = useState('journey');
-  const [textSize, setTextSize] = useState(() => lsGet('pravasi_text_size', 'normal'));
+  const [textSize, setTextSize] = useState(() => lsGet('Parivaar_text_size', 'normal'));
 
   const [showCurrencyModal, setShowCurrencyModal] = useState(false);
   const [inrAmount, setInrAmount] = useState('100000');
   const [eurAmount, setEurAmount] = useState(String(Math.round(100000 / GERMANY_CONFIG.rateToInr)));
 
   const [showEmergencyCard, setShowEmergencyCard] = useState(false);
-  const [familyPhone, setFamilyPhone] = useState(() => lsGet('pravasi_family_phone', ''));
-  const [homeAddress, setHomeAddress] = useState(() => lsGet('pravasi_home_address', ''));
+  const [familyPhone, setFamilyPhone] = useState(() => lsGet('Parivaar_family_phone', ''));
+  const [homeAddress, setHomeAddress] = useState(() => lsGet('Parivaar_home_address', ''));
 
   const [completedTasks, setCompletedTasks] = useState(() => {
-    try { return JSON.parse(lsGet('pravasi_tasks', 'null')) || { sim_connectivity: true }; } catch (e) { return { sim_connectivity: true }; }
+    try { return JSON.parse(lsGet('Parivaar_tasks', 'null')) || { sim_connectivity: true }; } catch (e) { return { sim_connectivity: true }; }
   });
 
   const [customRestaurants, setCustomRestaurants] = useState(() => {
-    try { return JSON.parse(lsGet('pravasi_germany_custom_restaurants', '[]')); } catch (e) { return []; }
+    try { return JSON.parse(lsGet('Parivaar_germany_custom_restaurants', '[]')); } catch (e) { return []; }
   });
   const [showAddRestModal, setShowAddRestModal] = useState(false);
   const [newRestForm, setNewRestForm] = useState({ name: '', address: '', rating: '4.5', note: '' });
 
-  const [hasJoinedChat, setHasJoinedChat] = useState(() => !!lsGet('pravasi_chat_name', ''));
-  const [chatName, setChatName] = useState(() => lsGet('pravasi_chat_name', ''));
+  const [hasJoinedChat, setHasJoinedChat] = useState(() => !!lsGet('Parivaar_chat_name', ''));
+  const [chatName, setChatName] = useState(() => lsGet('Parivaar_chat_name', ''));
   const [composeText, setComposeText] = useState('');
   const [publicPosts, setPublicPosts] = useState([]);
 
   useEffect(() => {
-    lsSet('pravasi_lang', selectedLang);
+    lsSet('Parivaar_lang', selectedLang);
     document.documentElement.lang = selectedLang;
   }, [selectedLang]);
 
   useEffect(() => {
-    if (document.getElementById('pravasi-fonts')) return;
+    if (document.getElementById('Parivaar-fonts')) return;
     const link = document.createElement('link');
-    link.id = 'pravasi-fonts';
+    link.id = 'Parivaar-fonts';
     link.rel = 'stylesheet';
     link.href = FONT_URL;
     document.head.appendChild(link);
@@ -1617,13 +1617,13 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.style.fontSize = `${TEXT_SIZE_PX[textSize] || 16}px`;
-    lsSet('pravasi_text_size', textSize);
+    lsSet('Parivaar_text_size', textSize);
   }, [textSize]);
 
-  useEffect(() => { lsSet('pravasi_tasks', JSON.stringify(completedTasks)); }, [completedTasks]);
-  useEffect(() => { lsSet('pravasi_germany_custom_restaurants', JSON.stringify(customRestaurants)); }, [customRestaurants]);
-  useEffect(() => { lsSet('pravasi_family_phone', familyPhone); }, [familyPhone]);
-  useEffect(() => { lsSet('pravasi_home_address', homeAddress); }, [homeAddress]);
+  useEffect(() => { lsSet('Parivaar_tasks', JSON.stringify(completedTasks)); }, [completedTasks]);
+  useEffect(() => { lsSet('Parivaar_germany_custom_restaurants', JSON.stringify(customRestaurants)); }, [customRestaurants]);
+  useEffect(() => { lsSet('Parivaar_family_phone', familyPhone); }, [familyPhone]);
+  useEffect(() => { lsSet('Parivaar_home_address', homeAddress); }, [homeAddress]);
 
   const addPost = (p) =>
     setPublicPosts((prev) => (prev.some((x) => String(x.id) === String(p.id)) ? prev : [p, ...prev]));
@@ -1652,7 +1652,7 @@ export default function App() {
   const joinChat = (e) => {
     e.preventDefault();
     if (chatName.trim()) {
-      lsSet('pravasi_chat_name', chatName.trim());
+      lsSet('Parivaar_chat_name', chatName.trim());
       setHasJoinedChat(true);
     }
   };
@@ -1682,7 +1682,7 @@ const handlePostToBoard = async (e) => {
   const { data, error } = await supabase
     .from('public_posts')
     .insert([
-      {
+      { id: optimisticDraft.id,
         author_name: chatName || 'Anonymous',
         text: text
         // If your table requires time: '03:00 PM', keep this. 
