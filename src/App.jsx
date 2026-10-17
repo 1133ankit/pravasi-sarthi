@@ -1035,7 +1035,7 @@ const GERMANY_ROADMAP_TASKS = [
     steps: [
       'Gather original passports, employment contract (Arbeitsvertrag), and university degrees.',
       'Pack apostilled marriage and birth certificates (with German translations if applying for family reunion).',
-      '🔗 Get biometric passport-size photos (35x45mm) strictly meeting German standards. Check rules here: https://www.biometrisches-passbild.net',
+      '🔗 Get biometric passport-size photos (35x45mm) strictly meeting German standards. [Check photo rules here](https://www.biometrisches-passbild.net).',
       '✅ DO: Carry all original documents in your cabin/hand luggage, never in your checked bags.',
       '❌ DON\'T: Do not laminate your original certificates. Laminated documents are often rejected by German authorities.'
     ]
@@ -1046,20 +1046,12 @@ const GERMANY_ROADMAP_TASKS = [
     dayFrom: 1, dayTo: 3, urgency: 'Important',
     brief: {
       en: 'Buy a prepaid German SIM so you can receive OTPs and book appointments.',
-      hi: 'OTP और अपॉइंटमेंट के लिए जर्मन प्रीपेड सिम खरीदें।',
-      ta: 'OTP மற்றும் முன்பதிவுகளுக்கு ஜெர்மன் ப்ரீபெய்ட் சிம் வாங்குங்கள்.',
-      te: 'OTP మరియు అపాయింట్‌మెంట్ల కోసం జర్మన్ ప్రీపెయిడ్ సిమ్ కొనండి.',
-      bn: 'OTP ও অ্যাপয়েন্টমেন্টের জন্য জার্মান প্রিপেইড সিম কিনুন।',
-      mr: 'OTP आणि अपॉइंटमेंटसाठी जर्मन प्रीपेड सिम खरेदी करा.',
-      gu: 'OTP અને એપોઇન્ટમેન્ટ માટે જર્મન પ્રીપેડ સિમ ખરીદો.',
-      pa: 'OTP ਅਤੇ ਅਪੌਇੰਟਮੈਂਟ ਲਈ ਜਰਮਨ ਪ੍ਰੀਪੇਡ ਸਿਮ ਖਰੀਦੋ।',
-      kn: 'OTP ಮತ್ತು ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್‌ಗಾಗಿ ಜರ್ಮನ್ ಪ್ರೀಪೇಡ್ ಸಿಮ್ ಖರೀದಿಸಿ.',
-      ml: 'OTP, അപ്പോയിന്റ്മെന്റ് എന്നിവയ്ക്കായി ജർമ്മൻ പ്രീപെയ്ഡ് സിം വാങ്ങുക.'
+      hi: 'OTP और अपॉइंटमेंट के लिए जर्मन प्रीपेड सिम खरीदें।'
     },
     whyImportant: 'Banks, landlords and the Bürgeramt all send codes or call you. A local number makes everything easier.',
     steps: [
       'Buy a prepaid SIM at a supermarket checkout (Aldi Talk, Lidl Connect) or a telecom store (O2, Telekom, Vodafone).',
-      '🔗 Activate the SIM online using the PostIdent app or WebID video call: https://www.postident.de',
+      '🔗 Activate the SIM online using the [PostIdent Portal](https://www.postident.de) or a WebID video call.',
       '✅ DO: Use your original passport for the video verification call. Keep your local German address handy.',
       '❌ DON\'T: Do not sign a 24-month mobile contract (Laufzeitvertrag) immediately. Start with a prepaid plan until you settle.'
     ]
@@ -1074,8 +1066,8 @@ const GERMANY_ROADMAP_TASKS = [
     },
     whyImportant: 'Without a permanent address and rental contract, you cannot get your Anmeldung, which blocks your bank account and Tax ID.',
     steps: [
-      '🔗 Set up property alerts on the biggest portals: https://www.immobilienscout24.de and https://www.wg-gesucht.de',
-      '🔗 Order your SCHUFA credit report (if you already have a German bank account): https://www.meineschufa.de',
+      '🔗 Set up property alerts on the biggest portals: [ImmoScout24](https://www.immobilienscout24.de) and [WG-Gesucht](https://www.wg-gesucht.de).',
+      '🔗 Order your [SCHUFA credit report](https://www.meineschufa.de) (if you already have a German bank account).',
       'Prepare your Bewerbungsmappe (Application Folder): Passport copy, Employment contract, last 3 salary slips, and a short cover letter introducing your family.',
       '✅ DO: State clearly if you are a non-smoker (Nichtraucher) and have no pets (Keine Haustiere), as landlords prefer this.',
       '❌ DON\'T: Never transfer a deposit (Kaution) before viewing the apartment in person and signing a physical contract. Remote renting scams are very common.'
@@ -1108,7 +1100,7 @@ const GERMANY_ROADMAP_TASKS = [
     },
     whyImportant: 'Doctors, hospitals and many employers require proof of insurance. Being uninsured can lead to back-payments.',
     steps: [
-      '🔗 Choose a public health insurer and apply online. Popular expat options: https://www.tk.de or https://www.aok.de',
+      '🔗 Choose a public health insurer and apply online. Popular expat options: [TK (Techniker Krankenkasse)](https://www.tk.de) or [AOK](https://www.aok.de).',
       'Receive your digital insurance certificate (Versicherungsbescheinigung).',
       '✅ DO: Email the insurance certificate to your employer/HR immediately so they can process your first salary.',
       '❌ DON\'T: Do not ignore letters from your insurance asking for a passport-sized photo. They need it to print your physical health card (Gesundheitskarte).'
@@ -1144,7 +1136,7 @@ const GERMANY_ROADMAP_TASKS = [
     whyImportant: 'The German government provides a fixed monthly financial support (currently €250 per child) to help families. This applies to expat professionals with valid residence permits too!',
     steps: [
       'Wait for your child\'s Tax ID (Steuer-ID), which arrives by post about 2 weeks after their Anmeldung.',
-      '🔗 Download the forms "Antrag auf Kindergeld" and "Anlage Kind" from the official portal: https://www.arbeitsagentur.de/familie-und-kinder/downloads-kindergeld-kinderzuschlag',
+      '🔗 Download the forms from the [Official Familienkasse Portal](https://www.arbeitsagentur.de/familie-und-kinder/downloads-kindergeld-kinderzuschlag).',
       '✅ DO: Attach copies of your child\'s birth certificate, passports, and your residence permit.',
       '❌ DON\'T: Do not send your original passports or original birth certificates by post. Send standard copies unless "beglaubigte Kopien" (certified copies) are specifically requested.'
     ]
@@ -1175,7 +1167,7 @@ const GERMANY_ROADMAP_TASKS = [
     whyImportant: 'Your employer uses the Steuer-ID to calculate your payroll tax correctly.',
     steps: [
       'Wait 2–4 weeks after your Anmeldung for the letter from the Federal Central Tax Office (BZSt).',
-      '🔗 If it hasn\'t arrived after 4 weeks, or if you lost it, you can request it to be resent here: https://www.bzst.de/DE/Privatpersonen/SteuerlicheIdentifikationsnummer/steuerlicheidentifikationsnummer_node.html',
+      '🔗 If it hasn\'t arrived after 4 weeks, or if you lost it, [request it to be resent here](https://www.bzst.de/DE/Privatpersonen/SteuerlicheIdentifikationsnummer/steuerlicheidentifikationsnummer_node.html).',
       '✅ DO: Immediately inform your HR department of this number so they can pull your correct tax class.',
       '❌ DON\'T: Do not panic if your first salary is taxed heavily (Tax Class 6) because the ID was delayed. You will get the extra deducted tax back once the ID is updated or when you file your tax return next year.'
     ]
@@ -1280,6 +1272,23 @@ const FONT_STACK =
   "'Noto Sans Gujarati','Noto Sans Gurmukhi','Noto Sans Kannada','Noto Sans Malayalam',system-ui,sans-serif";
 
 const TEXT_SIZE_PX = { normal: 16, large: 18, xl: 20 };
+
+// A helper to convert [Text](URL) into clickable React links
+const renderLinks = (text) => {
+  if (typeof text !== 'string') return text;
+  const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g);
+  return parts.map((part, i) => {
+    const match = part.match(/\[([^\]]+)\]\(([^)]+)\)/);
+    if (match) {
+      return (
+        <a key={i} href={match[2]} target="_blank" rel="noreferrer" className="text-indigo-600 hover:text-indigo-800 hover:underline font-semibold transition-colors">
+          {match[1]}
+        </a>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
+};
 
 function PlaceCard({ place, nf, t, tone = 'amber' }) {
   const badge = tone === 'emerald' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800';
@@ -2008,7 +2017,7 @@ export default function App() {
                         {task.steps.map((st, i) => (
                           <div key={i} className="flex items-start gap-3 text-sm text-slate-700">
                             <span className="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 text-slate-500 flex items-center justify-center text-[10px] shrink-0 mt-0.5 font-semibold">{nf(i + 1)}</span>
-                            <span className="leading-relaxed">{st}</span>
+                            <span className="leading-relaxed">{renderLinks(st)}</span>
                           </div>
                         ))}
                       </div>
