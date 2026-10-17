@@ -1566,6 +1566,15 @@ export default function App() {
     const saved = lsGet('Parivaar_lang', null);
     return saved && INDIAN_LANGUAGES.some((l) => l.code === saved) ? saved : detectLang();
   });
+
+  const [myUserId] = useState(() => {
+  let id = lsGet('Parivaar_user_id', '');
+  if (!id) { id = crypto.randomUUID(); lsSet('Parivaar_user_id', id); }
+  return id;
+  });
+  const [chatView, setChatView] = useState('public'); // 'public' | 'private'
+  const [privateChats, setPrivateChats] = useState({}); // { otherUserId: {name, messages[]} }
+  const [activePrivateChatUser, setActivePrivateChatUser] = useState(null);
   const [showLangModal, setShowLangModal] = useState(false);
 
   const t = useMemo(() => getText(selectedLang), [selectedLang]);
@@ -1600,6 +1609,28 @@ export default function App() {
   const [chatName, setChatName] = useState(() => lsGet('Parivaar_chat_name', ''));
   const [composeText, setComposeText] = useState('');
   const [publicPosts, setPublicPosts] = useState([]);
+
+  const addMsg = (m) => {
+  const other = m.sender_id === myUserId ? m.recipient_id : m.sender_id;
+  if (m.sender_id !== myUserId && m.recipient_id !== myUserId) return;
+  setPrivateChats((prev) => {
+    const chat = prev[other] || { name: m.sender_id === myUserId ? 'User' : (m.sender_name || 'User'), messages: [] };
+    if (chat.messages.some((x) => String(x.id) === String(m.id))) return prev;
+    return { ...prev, [other]: { ...chat, messages: [...chat.messages, m] } };
+  });
+  };
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await supabase.from('private_messages').select('*')
+        .or(`sender_id.eq.${myUserId},recipient_id.eq.${myUserId}`).order('id', { ascending: true });
+      (data || []).forEach(addMsg);
+    })();
+    const sub = supabase.channel('private_messages_realtime')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'private_messages' }, (p) => addMsg(p.new))
+      .subscribe();
+    return () => { supabase.removeChannel(sub); };
+  }, [myUserId]);
 
   useEffect(() => {
     lsSet('Parivaar_lang', selectedLang);
@@ -1657,59 +1688,37 @@ export default function App() {
     }
   };
 
-const handlePostToBoard = async (e) => {
+    const handlePostToBoard = async (e) => {
     e.preventDefault();
     if (!composeText.trim()) return;
 
-    const newPost = { 
-      id: Date.now(), 
-      country: currentCountryKey, 
-      author_name: chatName || 'Anonymous', 
-      text: composeText, 
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+    const newPost = {
+      author_id: myUserId,
+      author_name: chatName || 'Anonymous',
+      text: composeText,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
-
-    console.log("Attempting to insert post:", newPost);
-
-    const { data, error } = await supabase
-      .from('public_posts')
-      .insert([newPost]);
-
-    if (error) {
-      console.error("Supabase Post Error:", error.message, error.details, error.hint);
-      alert("Error posting: " + error.message);
-    } else {
-      console.log("Post inserted successfully!", data);
-      setComposeText('');
-    }
+    const { data, error } = await supabase.from('public_posts').insert([newPost]).select();
+    if (error) { alert('Error posting: ' + error.message); return; }
+    if (data?.[0]) addPost(data[0]);
+    setComposeText('');
   };
+ const handleSendPrivateMessage = async (e) => {
+  e.preventDefault();
+  if (!composeText.trim() || !activePrivateChatUser) return;
 
-  const handleSendPrivateMessage = async (e) => {
-    e.preventDefault();
-    if (!composeText.trim() || !activePrivateChatUser) return;
-
-    const newMsg = { 
-      id: Date.now(), 
-      sender_id: myUserId, 
-      recipient_id: activePrivateChatUser.id, 
-      text: composeText, 
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
-    };
-
-    console.log("Attempting to send private message:", newMsg);
-
-    const { data, error } = await supabase
-      .from('private_messages')
-      .insert([newMsg]);
-
-    if (error) {
-      console.error("Supabase Message Error:", error.message, error.details, error.hint);
-      alert("Error sending message: " + error.message);
-    } else {
-      console.log("Private message sent successfully!", data);
-      setComposeText('');
-    }
+  const newMsg = {
+    sender_id: myUserId,
+    sender_name: chatName || 'Anonymous',
+    recipient_id: activePrivateChatUser.id,
+    text: composeText,
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   };
+  const { data, error } = await supabase.from('private_messages').insert([newMsg]).select();
+  if (error) { alert('Error sending message: ' + error.message); return; }
+  if (data?.[0]) addMsg(data[0]);
+  setComposeText('');
+ };
 
   const startPrivateChat = (post) => {
     // Fallback to check both snake_case (Supabase) and camelCase (Mock/Local)
@@ -1733,20 +1742,21 @@ const handlePostToBoard = async (e) => {
   };
 
   const shareWhatsAppNumber = async () => {
-    const num = window.prompt("Enter your WhatsApp number with country code (e.g., +49176... or +9198...):");
-    if (num) {
-      const cleanNum = num.replace(/[^0-9]/g, '');
-      const newMsg = { 
-        id: Date.now(), 
-        sender_id: myUserId, 
-        recipient_id: activePrivateChatUser.id,
-        text: `📱 I have shared my WhatsApp number with you. Let's chat there!\n\nClick here: https://wa.me/${cleanNum}`, 
-        is_system: true, 
-        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
-      };
-      await supabase.from('private_messages').insert([newMsg]);
-    }
-  };
+  if (!activePrivateChatUser) return;
+  const num = window.prompt('Enter your WhatsApp number with country code (e.g., +49176... or +9198...):');
+  if (!num) return;
+  const cleanNum = num.replace(/[^0-9]/g, '');
+  const { data, error } = await supabase.from('private_messages').insert([{
+    sender_id: myUserId,
+    sender_name: chatName || 'Anonymous',
+    recipient_id: activePrivateChatUser.id,
+    text: `📱 I have shared my WhatsApp number with you. Let's chat there!\n\nClick here: https://wa.me/${cleanNum}`,
+    is_system: true,
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  }]).select();
+  if (error) { alert('Error: ' + error.message); return; }
+  if (data?.[0]) addMsg(data[0]);
+};
 
 
 
@@ -2158,44 +2168,111 @@ const handlePostToBoard = async (e) => {
 
         {/* TAB 8: CHAT */}
         {activeTab === 'chat' && (
-          <div className="bg-white rounded-3xl border border-slate-200 shadow-sm h-[700px] flex flex-col overflow-hidden animate-in fade-in duration-500">
-            <div className="bg-slate-50 border-b border-slate-200 p-4 flex justify-between items-center shrink-0">
-              <div className="font-bold text-sm text-slate-800">{t.boardTitle}</div>
-            </div>
+  <div className="bg-white rounded-3xl border border-slate-200 shadow-sm h-[700px] flex flex-col overflow-hidden animate-in fade-in duration-500">
+    <div className="bg-slate-50 border-b border-slate-200 p-4 flex justify-between items-center shrink-0 gap-3">
+      <div className="font-bold text-sm text-slate-800">{t.boardTitle}</div>
+      {hasJoinedChat && (
+        <div className="flex bg-white border border-slate-200 rounded-xl p-0.5 text-xs font-semibold">
+          <button onClick={() => setChatView('public')}
+            className={`px-3 py-1.5 rounded-lg ${chatView === 'public' ? 'bg-slate-900 text-white' : 'text-slate-600'}`}>
+            Public
+          </button>
+          <button onClick={() => setChatView('private')}
+            className={`px-3 py-1.5 rounded-lg ${chatView === 'private' ? 'bg-slate-900 text-white' : 'text-slate-600'}`}>
+            Private{Object.keys(privateChats).length > 0 ? ` (${Object.keys(privateChats).length})` : ''}
+          </button>
+        </div>
+      )}
+    </div>
 
-            {!hasJoinedChat ? (
-              <div className="flex-1 flex flex-col items-center justify-center p-8 space-y-6 text-center bg-slate-50/50">
-                <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-4xl shadow-sm border border-slate-200">👋</div>
-                <div><h4 className="font-bold text-xl text-slate-900 mb-2">{t.joinTitle}</h4><p className="text-sm text-slate-500 max-w-sm mx-auto">{t.joinSub}</p></div>
-                <form onSubmit={joinChat} className="w-full max-w-sm space-y-4 pt-4">
-                  <input type="text" required placeholder={t.namePh} value={chatName} onChange={(e) => setChatName(e.target.value)} className="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white text-sm focus:outline-none text-center font-medium shadow-sm" />
-                  <button type="submit" className="w-full bg-slate-900 text-white font-medium py-3.5 rounded-2xl shadow-sm hover:bg-slate-800 transition">{t.enterBoard}</button>
-                </form>
-              </div>
-            ) : (
-              <div className="flex-1 flex flex-col overflow-hidden">
-                <div className="flex-1 p-6 overflow-y-auto bg-slate-50/50 space-y-4">
-                  {publicPosts.length === 0 ? (
-                    <div className="text-center text-slate-400 text-sm mt-10">{t.noPosts}</div>
-                  ) : (
-                    publicPosts.map((post) => (
-                      <div key={post.id} className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-2">
-                        <div className="flex justify-between items-center"><span className="text-sm font-bold text-slate-900">{post.author_name || post.authorName}</span><span className="text-xs text-slate-400">{post.time}</span></div>
-                        <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap break-words" dir="auto">{post.text}</p>
-                      </div>
-                    ))
-                  )}
+    {!hasJoinedChat ? (
+      <div className="flex-1 flex flex-col items-center justify-center p-8 space-y-6 text-center bg-slate-50/50">
+        <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center text-4xl shadow-sm border border-slate-200">👋</div>
+        <div><h4 className="font-bold text-xl text-slate-900 mb-2">{t.joinTitle}</h4><p className="text-sm text-slate-500 max-w-sm mx-auto">{t.joinSub}</p></div>
+        <form onSubmit={joinChat} className="w-full max-w-sm space-y-4 pt-4">
+          <input type="text" required placeholder={t.namePh} value={chatName} onChange={(e) => setChatName(e.target.value)} className="w-full px-5 py-3.5 rounded-2xl border border-slate-200 bg-white text-sm focus:outline-none text-center font-medium shadow-sm" />
+          <button type="submit" className="w-full bg-slate-900 text-white font-medium py-3.5 rounded-2xl shadow-sm hover:bg-slate-800 transition">{t.enterBoard}</button>
+        </form>
+      </div>
+    ) : chatView === 'public' ? (
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-1 p-6 overflow-y-auto bg-slate-50/50 space-y-4">
+          {publicPosts.length === 0 ? (
+            <div className="text-center text-slate-400 text-sm mt-10">{t.noPosts}</div>
+          ) : (
+            publicPosts.map((post) => (
+              <div key={post.id} className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-bold text-slate-900">{post.author_name || post.authorName}</span>
+                  <span className="text-xs text-slate-400">{post.time}</span>
                 </div>
-                <div className="p-4 bg-white border-t border-slate-200 shrink-0">
-                  <form onSubmit={handlePostToBoard} className="flex flex-col gap-3">
-                    <textarea rows={2} placeholder={t.askPh} value={composeText} onChange={(e) => setComposeText(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3 text-sm focus:outline-none resize-none" />
-                    <div className="flex justify-end"><button type="submit" disabled={!composeText.trim()} className="bg-slate-900 text-white px-6 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-40">{t.postBtn}</button></div>
-                  </form>
-                </div>
+                <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap break-words" dir="auto">{post.text}</p>
+                {post.author_id && post.author_id !== myUserId && (
+                  <button onClick={() => startPrivateChat(post)}
+                    className="text-xs font-medium text-indigo-700 hover:underline inline-flex items-center gap-1.5">
+                    <MessageCircle className="w-3.5 h-3.5" /> Message privately
+                  </button>
+                )}
               </div>
-            )}
+            ))
+          )}
+        </div>
+        <div className="p-4 bg-white border-t border-slate-200 shrink-0">
+          <form onSubmit={handlePostToBoard} className="flex flex-col gap-3">
+            <textarea rows={2} placeholder={t.askPh} value={composeText} onChange={(e) => setComposeText(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3 text-sm focus:outline-none resize-none" />
+            <div className="flex justify-end"><button type="submit" disabled={!composeText.trim()} className="bg-slate-900 text-white px-6 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-40">{t.postBtn}</button></div>
+          </form>
+        </div>
+      </div>
+    ) : !activePrivateChatUser ? (
+      <div className="flex-1 p-6 overflow-y-auto bg-slate-50/50 space-y-3">
+        {Object.keys(privateChats).length === 0 ? (
+          <div className="text-center text-slate-400 text-sm mt-10">
+            No private chats yet. Tap "Message privately" on a public post to start one.
           </div>
+        ) : (
+          Object.entries(privateChats).map(([id, chat]) => {
+            const last = chat.messages[chat.messages.length - 1];
+            return (
+              <button key={id} onClick={() => setActivePrivateChatUser({ id, name: chat.name })}
+                className="w-full text-left bg-white p-4 rounded-2xl border border-slate-200 shadow-sm hover:bg-slate-50">
+                <span className="block text-sm font-bold text-slate-900">{chat.name}</span>
+                <span className="block text-xs text-slate-500 truncate mt-0.5">{last ? last.text : 'No messages yet'}</span>
+              </button>
+            );
+          })
         )}
+      </div>
+    ) : (
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="px-4 py-3 border-b border-slate-200 flex items-center justify-between gap-2 bg-white shrink-0">
+          <button onClick={() => setActivePrivateChatUser(null)} className="text-xs font-medium text-slate-600 hover:underline">← Back</button>
+          <span className="text-sm font-bold text-slate-900">{activePrivateChatUser.name}</span>
+          <button onClick={shareWhatsAppNumber} className="text-xs font-medium text-emerald-700 hover:underline">Share WhatsApp</button>
+        </div>
+        <div className="flex-1 p-6 overflow-y-auto bg-slate-50/50 space-y-3">
+          {(privateChats[activePrivateChatUser.id]?.messages || []).map((m) => {
+            const mine = m.sender_id === myUserId;
+            return (
+              <div key={m.id} className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm whitespace-pre-wrap break-words ${mine ? 'bg-slate-900 text-white' : 'bg-white border border-slate-200 text-slate-800'}`}>
+                  {m.text}
+                  <span className={`block text-[10px] mt-1 ${mine ? 'text-slate-300' : 'text-slate-400'}`}>{m.time}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="p-4 bg-white border-t border-slate-200 shrink-0">
+          <form onSubmit={handleSendPrivateMessage} className="flex gap-3">
+            <input type="text" value={composeText} onChange={(e) => setComposeText(e.target.value)} placeholder="Type a message…" className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-5 py-3 text-sm focus:outline-none" />
+            <button type="submit" disabled={!composeText.trim()} className="bg-slate-900 text-white px-6 rounded-xl text-sm font-semibold disabled:opacity-40">Send</button>
+          </form>
+        </div>
+      </div>
+    )}
+  </div>
+)}
 
         {/* TAB 9: ABOUT */}
         {activeTab === 'about' && <AboutTab t={t} lang={selectedLang} />}
