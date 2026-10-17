@@ -1692,6 +1692,8 @@ const handlePostToBoard = async (e) => {
     ])
     .select()
     .single();
+    
+    console.log("Supabase Response - Data:", data, "Error:", error);
 
   if (error) {
     console.error("Supabase write failed:", error.message, error.details);
