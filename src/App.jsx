@@ -1662,14 +1662,16 @@ const handlePostToBoard = async (e) => {
   const text = composeText.trim();
   if (!text) return;
 
-  // Let's create a visual optimistic preview for instant chat UI feedback
   const clientTime = new Date().toLocaleTimeString(currentLangObj.locale, { 
     hour: '2-digit', 
     minute: '2-digit' 
   });
+  
+  // This line defines nowIso so it can be used in the insert below
+  const nowIso = new Date().toISOString();
 
   const optimisticDraft = {
-    id: Date.now(), // Temporarily use Date.now() for list keys locally
+    id: Date.now(), 
     author_name: chatName || 'Anonymous',
     text,
     time: clientTime
@@ -1677,31 +1679,27 @@ const handlePostToBoard = async (e) => {
 
   setComposeText('');
 
-  // We only insert columns that Supabase expects
-  // Let Postgres calculate ID and Timestamp automatically
   const { data, error } = await supabase
     .from('public_posts')
     .insert([
-      { iid: optimisticDraft.id,                 // From previous error
-        country: 'Germany',                     // Fixed to Germany[cite: 2]
-        author_name: chatName || 'Anonymous',   // Name[cite: 2]
-        text: text,                             // Post content[cite: 2]
-        time: clientTime,                       // Formatted time[cite: 2]
-        created_at: nowIso
+      {
+        id: optimisticDraft.id,                 
+        country: 'Germany',                     
+        author_name: chatName || 'Anonymous',   
+        text: text,                             
+        time: clientTime,                       
+        created_at: nowIso                      
       }
     ])
     .select()
     .single();
-    
-    console.log("Supabase Response - Data:", data, "Error:", error);
 
   if (error) {
     console.error("Supabase write failed:", error.message, error.details);
-    alert(`Could not save message: ${error.message}`); // Shows you RLS blocks or formatting errors
+    alert(`Could not save message: ${error.message}`);
     return;
   }
 
-  // If successfully returned, write the true data (with db-generated id)
   if (data) {
     addPost({
       ...data,
