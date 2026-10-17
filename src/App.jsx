@@ -1657,20 +1657,56 @@ export default function App() {
     }
   };
 
-  const handlePostToBoard = async (e) => {
-    e.preventDefault();
-    const text = composeText.trim();
-    if (!text) return;
-    const draft = {
-      id: Date.now(),
-      author_name: chatName || 'Anonymous',
-      text,
-      time: new Date().toLocaleTimeString(currentLangObj.locale, { hour: '2-digit', minute: '2-digit' })
-    };
-    setComposeText('');
-    const { data, error } = await supabase.from('public_posts_germany').insert([draft]).select().single();
-    addPost(error || !data ? draft : data);
+const handlePostToBoard = async (e) => {
+  e.preventDefault();
+  const text = composeText.trim();
+  if (!text) return;
+
+  // Let's create a visual optimistic preview for instant chat UI feedback
+  const clientTime = new Date().toLocaleTimeString(currentLangObj.locale, { 
+    hour: '2-digit', 
+    minute: '2-digit' 
+  });
+
+  const optimisticDraft = {
+    id: Date.now(), // Temporarily use Date.now() for list keys locally
+    author_name: chatName || 'Anonymous',
+    text,
+    time: clientTime
   };
+
+  setComposeText('');
+
+  // We only insert columns that Supabase expects
+  // Let Postgres calculate ID and Timestamp automatically
+  const { data, error } = await supabase
+    .from('public_posts_germany')
+    .insert([
+      {
+        author_name: chatName || 'Anonymous',
+        text: text
+        // If your table requires time: '03:00 PM', keep this. 
+        // If it uses created_at, you can omit it.
+      }
+    ])
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Supabase write failed:", error.message, error.details);
+    alert(`Could not save message: ${error.message}`); // Shows you RLS blocks or formatting errors
+    return;
+  }
+
+  // If successfully returned, write the true data (with db-generated id)
+  if (data) {
+    addPost({
+      ...data,
+      author_name: data.author_name || data.authorName || 'Anonymous',
+      time: data.time || clientTime
+    });
+  }
+};
 
   const handleAddRestaurant = (e) => {
     e.preventDefault();

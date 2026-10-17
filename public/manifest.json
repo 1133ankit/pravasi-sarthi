@@ -1,0 +1,21 @@
+{
+  "name": "Pravasi Sarthi Germany",
+  "short_name": "PravasiSarthi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "description": "Your ultimate Indian survival kit and peer-to-peer guide for Germany.",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
