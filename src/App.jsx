@@ -1658,56 +1658,97 @@ export default function App() {
   };
 
 const handlePostToBoard = async (e) => {
-  e.preventDefault();
-  const text = composeText.trim();
-  if (!text) return;
+    e.preventDefault();
+    if (!composeText.trim()) return;
 
-  const clientTime = new Date().toLocaleTimeString(currentLangObj.locale, { 
-    hour: '2-digit', 
-    minute: '2-digit' 
-  });
-  
-  // This line defines nowIso so it can be used in the insert below
-  const nowIso = new Date().toISOString();
+    const newPost = { 
+      id: Date.now(), 
+      country: currentCountryKey, 
+      author_name: chatName || 'Anonymous', 
+      text: composeText, 
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+    };
 
-  const optimisticDraft = {
-    id: Date.now(), 
-    author_name: chatName || 'Anonymous',
-    text,
-    time: clientTime
+    console.log("Attempting to insert post:", newPost);
+
+    const { data, error } = await supabase
+      .from('public_posts')
+      .insert([newPost]);
+
+    if (error) {
+      console.error("Supabase Post Error:", error.message, error.details, error.hint);
+      alert("Error posting: " + error.message);
+    } else {
+      console.log("Post inserted successfully!", data);
+      setComposeText('');
+    }
   };
 
-  setComposeText('');
+  const handleSendPrivateMessage = async (e) => {
+    e.preventDefault();
+    if (!composeText.trim() || !activePrivateChatUser) return;
 
-  const { data, error } = await supabase
-    .from('public_posts')
-    .insert([
-      {
-        id: optimisticDraft.id,                 
-        country: 'Germany',                     
-        author_name: chatName || 'Anonymous',   
-        text: text,                             
-        time: clientTime,                       
-        created_at: nowIso                      
-      }
-    ])
-    .select()
-    .single();
+    const newMsg = { 
+      id: Date.now(), 
+      sender_id: myUserId, 
+      recipient_id: activePrivateChatUser.id, 
+      text: composeText, 
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+    };
 
-  if (error) {
-    console.error("Supabase write failed:", error.message, error.details);
-    alert(`Could not save message: ${error.message}`);
-    return;
-  }
+    console.log("Attempting to send private message:", newMsg);
 
-  if (data) {
-    addPost({
-      ...data,
-      author_name: data.author_name || data.authorName || 'Anonymous',
-      time: data.time || clientTime
-    });
-  }
-};
+    const { data, error } = await supabase
+      .from('private_messages')
+      .insert([newMsg]);
+
+    if (error) {
+      console.error("Supabase Message Error:", error.message, error.details, error.hint);
+      alert("Error sending message: " + error.message);
+    } else {
+      console.log("Private message sent successfully!", data);
+      setComposeText('');
+    }
+  };
+
+  const startPrivateChat = (post) => {
+    // Fallback to check both snake_case (Supabase) and camelCase (Mock/Local)
+    const authorId = post.author_id || post.authorId;
+    const authorName = post.author_name || post.authorName;
+
+    if (!authorId) {
+      console.error("Missing author ID on post object:", post);
+      return;
+    }
+
+    if (!privateChats[authorId]) {
+      setPrivateChats(prev => ({ 
+        ...prev, 
+        [authorId]: { name: authorName, messages: [] } 
+      }));
+    }
+    
+    setActivePrivateChatUser({ id: authorId, name: authorName });
+    setChatView('private');
+  };
+
+  const shareWhatsAppNumber = async () => {
+    const num = window.prompt("Enter your WhatsApp number with country code (e.g., +49176... or +9198...):");
+    if (num) {
+      const cleanNum = num.replace(/[^0-9]/g, '');
+      const newMsg = { 
+        id: Date.now(), 
+        sender_id: myUserId, 
+        recipient_id: activePrivateChatUser.id,
+        text: `📱 I have shared my WhatsApp number with you. Let's chat there!\n\nClick here: https://wa.me/${cleanNum}`, 
+        is_system: true, 
+        time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) 
+      };
+      await supabase.from('private_messages').insert([newMsg]);
+    }
+  };
+
+
 
   const handleAddRestaurant = (e) => {
     e.preventDefault();
