@@ -1682,11 +1682,12 @@ const handlePostToBoard = async (e) => {
   const { data, error } = await supabase
     .from('public_posts')
     .insert([
-      { id: optimisticDraft.id,
-        author_name: chatName || 'Anonymous',
-        text: text
-        // If your table requires time: '03:00 PM', keep this. 
-        // If it uses created_at, you can omit it.
+      { iid: optimisticDraft.id,                 // From previous error
+        country: 'Germany',                     // Fixed to Germany[cite: 2]
+        author_name: chatName || 'Anonymous',   // Name[cite: 2]
+        text: text,                             // Post content[cite: 2]
+        time: clientTime,                       // Formatted time[cite: 2]
+        created_at: nowIso
       }
     ])
     .select()
